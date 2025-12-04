@@ -1,0 +1,97 @@
+from rest_framework import serializers
+from .models import Goal, GoalProgress
+
+
+class GoalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = [
+            'id', 'user_id', 'title', 'description',
+            'category_id', 'target_value', 'deadline', 'is_completed',
+            'is_public', 'created_at', 'updated_at'
+        ]
+
+
+class GoalCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = [
+            'user', 'title', 'description',
+            'category', 'target_value', 'deadline',
+            'is_public'
+        ]
+        extra_kwargs = {
+            'title': {'required': True},
+            'description': {'required': True, 'allow_null': True},
+            'target_value': {'required': True},
+            'deadline': {'required': True},
+            'is_public': {'required': True},
+        }
+
+
+class GoalUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = [
+            'title', 'description', 'target_value', 'deadline',
+            'is_public'
+        ]
+        extra_kwargs = {
+            'title': {'required': True},
+            'description': {'required': True, 'allow_null': True},
+            'target_value': {'required': True},
+            'deadline': {'required': True},
+            'is_public': {'required': True},
+        }
+
+
+class GoalPartialUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = [
+            'title', 'description', 'target_value', 'deadline',
+            'is_public'
+        ]
+
+
+class GoalProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoalProgress
+        fields = [
+            'id', 'goal', 'progress_date', 'current_value',
+            'notes', 'created_at', 'updated_at'
+        ]
+
+
+class GoalProgressCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoalProgress
+        fields = [
+            'goal', 'progress_date', 'current_value', 'notes'
+        ]
+        extra_kwargs = {
+            'progress_date': {'required': True},
+            'current_value': {'required': True},
+            'notes': {'required': True, 'allow_null': True}
+        }
+
+
+class GoalProgressUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoalProgress
+        fields = [
+            'progress_date', 'current_value', 'notes'
+        ]
+        extra_kwargs = {
+            'progress_date': {'required': True},
+            'current_value': {'required': True},
+            'notes': {'required': True, 'allow_null': True}
+        }
+
+
+class GoalProgressPartialUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoalProgress
+        fields = [
+            'progress_date', 'current_value', 'notes'
+        ]

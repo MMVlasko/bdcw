@@ -1,0 +1,149 @@
+@startuml
+
+
+
+
+' Сущности (Таблицы)
+
+entity users {
+  * id : BIGSERIAL <<PK>>
+  --
+  username : VARCHAR(50) <<UNIQUE>> <<NOT NULL>>
+  password_hash : VARCHAR(255) <<NOT NULL>>
+  first_name : VARCHAR(50)
+  last_name : VARCHAR(50)
+  description : TEXT
+  role: user_role
+  is_active : BOOLEAN <<DEFAULT true>>
+  is_public : BOOLEAN <<DEFAULT true>>
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity auth_tokens {
+  * key : VARCHAR(64) <<NOT NULL>> <<PK>>
+  --
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  expires_at : TIMESTAMP <<NOT NULL>>
+  is_active : BOOLEAN <<NOT NULL>>
+  user_id : BIGINTEGER <<FK>>
+}
+
+entity goals {
+  * id : BIGSERIAL <<PK>>
+  --
+  user_id : BIGINTEGER <<FK>>
+  title : VARCHAR(255) <<NOT NULL>>
+  description : TEXT
+  category_id : BIGINTEGER <<FK>>
+  target_value : NUMERIC(10, 3) <<NOT NULL>>
+  deadline : DATE <<NOT NULL>>
+  is_completed : BOOLEAN <<DEFAULT false>>
+  is_public : BOOLEAN <<DEFAULT true>>
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity habits {
+  * id : BIGSERIAL <<PK>>
+  --
+  user_id : BIGINTEGER <<FK>>
+  title : VARCHAR(255) <<NOT NULL>>
+  description : TEXT
+  category_id : BIGINTEGER <<FK>>
+  frequency_type_id : BIGINTEGER
+  frequency_value : INTEGER
+  is_active : BOOLEAN <<DEFAULT true>>
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity categories {
+  * id : BIGSERIAL <<PK>>
+  --
+  name : VARCHAR(100) <<UNIQUE>> <<NOT NULL>>
+  description : TEXT
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity habit_logs {
+  * id : BIGSERIAL <<PK>>
+  --
+  habit_id : BIGINTEGER <<FK>>
+  log_date : DATE <<NOT NULL>> <<DEFAULT CURRENT_DATE>>
+  status : VARCHAR(20) <<CHECK>> <<NOT NULL>>
+  notes : TEXT
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity goal_progresses {
+  * id : BIGSERIAL <<PK>>
+  --
+  goal_id : BIGINTEGER <<FK>>
+  progress_date : DATE <<NOT NULL>>
+  current_value : NUMERIC <<NOT NULL>>
+  notes : TEXT
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity challenges {
+  * id : BIGSERIAL <<PK>>
+  --
+  name : VARCHAR(255) <<NOT NULL>>
+  description : TEXT
+  type : challenge_type
+  target_value : NUMERIC
+  start_date : DATE <<NOT NULL>>
+  end_date : DATE <<NOT NULL>>
+  is_active : BOOLEAN <<DEFAULT true>>
+}
+
+entity challenge_categories {
+  * challenge_id : BIGINTEGER <<PK>> <<FK>>
+  * category_id : BIGINTEGER <<PK>> <<FK>>
+}
+
+entity user_challenges {
+  * user_id : BIGINTEGER <<PK>> <<FK>>
+  * challenge_id : BIGINTEGER <<PK>> <<FK>>
+  --
+  joined_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity follows {
+  * follower_id : BIGINTEGER <<PK>> <<FK>>
+  * following_id : BIGINTEGER <<PK>> <<FK>>
+  --
+  followed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+entity audit_log {
+  * id : BIGSERIAL <<PK>>
+  --
+  table_name : VARCHAR(100) <<NOT NULL>>
+  record_id : INTEGER <<NOT NULL>>
+  operation : VARCHAR(10) <<CHECK>> <<NOT NULL>>
+  old_values : JSONB
+  new_values : JSONB
+  changed_by : INTEGER <<FK>>
+  changed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+
+}
+
+goals  "                                 0..n   " --^ "1       "  users  : " user_id:id"
+habits    "0..n    \n" --^ "1       \n"  users  : " user_id:id"
+auth_tokens    "0..n    " --^ "1       "  users  : " user_id:id"
+goals    "\n     0..1   " --^ "1     \n"  categories : " category_id:id  "
+habits     "     0..1    " --^ "1   "  categories : "category_id:id  "
+goal_progresses  "0..n   " --^ "1   "  goals  : "  goal_id:id"
+habit_logs    "0..n  " --^ "1   "  habits  : "  habit_id:id   "
+challenge_categories    "0..n   " --^ "1      "  challenges : " challenge_id:id  "
+challenge_categories     "0..n         " --^ "1\n"  categories : "  category_id:id  "
+user_challenges    "0..n     " --^ "1   "  challenges : " challenge_id:id  "
+user_challenges     "0..n           " --^ " \n1           "  users : " user_id:id  "
+follows    "0..n" --^ "1  \n "  users : " follower_id:id  "
+follows    "0..n   " --^ "            1\n"  users : " following_id:id  "
+@enduml
