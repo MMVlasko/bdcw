@@ -21,6 +21,9 @@ class CategoryCreateAndUpdateSerializer(serializers.ModelSerializer):
             'description': {'required': True, 'allow_null': True}
         }
 
+    def to_representation(self, instance):
+        return CategorySerializer(instance, context=self.context).data
+
 
 class CategoryPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,3 +31,6 @@ class CategoryPartialUpdateSerializer(serializers.ModelSerializer):
         fields = [
             'name', 'description'
         ]
+
+    def to_representation(self, instance):
+        return CategorySerializer(instance, context=self.context).data

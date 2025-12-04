@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'core',
     'categories',
-    'goals'
+    'goals',
+    'habits',
+    'subscriptions'
 ]
 
 # Middleware

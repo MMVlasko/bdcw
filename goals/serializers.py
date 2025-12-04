@@ -28,6 +28,9 @@ class GoalCreateSerializer(serializers.ModelSerializer):
             'is_public': {'required': True},
         }
 
+    def to_representation(self, instance):
+        return GoalSerializer(instance, context=self.context).data
+
 
 class GoalUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,6 +47,9 @@ class GoalUpdateSerializer(serializers.ModelSerializer):
             'is_public': {'required': True},
         }
 
+    def to_representation(self, instance):
+        return GoalSerializer(instance, context=self.context).data
+
 
 class GoalPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,6 +58,9 @@ class GoalPartialUpdateSerializer(serializers.ModelSerializer):
             'title', 'description', 'target_value', 'deadline',
             'is_public'
         ]
+
+    def to_representation(self, instance):
+        return GoalSerializer(instance, context=self.context).data
 
 
 class GoalProgressSerializer(serializers.ModelSerializer):
@@ -75,6 +84,9 @@ class GoalProgressCreateSerializer(serializers.ModelSerializer):
             'notes': {'required': True, 'allow_null': True}
         }
 
+    def to_representation(self, instance):
+        return GoalProgressSerializer(instance, context=self.context).data
+
 
 class GoalProgressUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -88,6 +100,9 @@ class GoalProgressUpdateSerializer(serializers.ModelSerializer):
             'notes': {'required': True, 'allow_null': True}
         }
 
+    def to_representation(self, instance):
+        return GoalProgressSerializer(instance, context=self.context).data
+
 
 class GoalProgressPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -95,3 +110,6 @@ class GoalProgressPartialUpdateSerializer(serializers.ModelSerializer):
         fields = [
             'progress_date', 'current_value', 'notes'
         ]
+
+    def to_representation(self, instance):
+        return GoalProgressSerializer(instance, context=self.context).data

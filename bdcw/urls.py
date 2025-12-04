@@ -124,5 +124,7 @@ urlpatterns = [
 
     path('api/users/', include('core.urls')),
     path('api/categories/', include('categories.urls')),
-    path('api/goals/', include('goals.urls'))
+    path('api/goals/', include('goals.urls')),
+    path('api/habits/', include('habits.urls')),
+    path('api/subscriptions/', include('subscriptions.urls'))
 ]

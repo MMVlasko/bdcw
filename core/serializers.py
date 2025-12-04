@@ -26,7 +26,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'username', 'password', 'confirm_password',
+            'id', 'username', 'password', 'confirm_password',
             'first_name', 'last_name', 'description', 'is_public'
         ]
 
@@ -53,7 +53,7 @@ class UserPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'username',
+            'username',
             'first_name', 'last_name', 'description', 'role',
             'is_active', 'is_public'
         ]
@@ -63,12 +63,15 @@ class UserPartialUpdateSerializer(serializers.ModelSerializer):
             validate_username(data['username'], instance=self.instance)
         return data
 
+    def to_representation(self, instance):
+        return UserSerializer(instance, context=self.context).data
+
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id', 'username',
+            'username',
             'first_name', 'last_name', 'description', 'role',
             'is_active', 'is_public'
         ]
@@ -86,6 +89,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     def validate(self, data):
         validate_username(data['username'], instance=self.instance)
         return data
+
+    def to_representation(self, instance):
+        return UserSerializer(instance, context=self.context).data
 
 
 class UserChangePasswordSerializer(serializers.ModelSerializer):

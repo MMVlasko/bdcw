@@ -1,35 +1,37 @@
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
 from bdcw.authentication import TokenAuthentication, HasValidToken, IsAdminOrSelf, IsAdmin
 from bdcw.error_responses import (BAD_REQUEST_RESPONSE, UNAUTHORIZED_RESPONSE, FORBIDDEN_RESPONSE, NOT_FOUND_RESPONSE,
                                   INTERNAL_SERVER_ERROR)
 from categories.models import Category
-from .models import Goal, GoalProgress
+from .models import Habit, HabitLog
 from core.models import User
-from .serializers import GoalSerializer, GoalCreateSerializer, GoalPartialUpdateSerializer, GoalUpdateSerializer, \
-    GoalProgressSerializer, GoalProgressCreateSerializer, GoalProgressUpdateSerializer, GoalProgressPartialUpdateSerializer
+from .serializers import HabitSerializer, HabitCreateSerializer, HabitUpdateSerializer, HabitPartialUpdateSerializer, \
+    HabitLogSerializer, HabitLogCreateSerializer, HabitLogUpdateSerializer, HabitLogPartialUpdateSerializer
 from rest_framework.pagination import LimitOffsetPagination
 
 
-class GoalLimitOffsetPagination(LimitOffsetPagination):
+class HabitLimitOffsetPagination(LimitOffsetPagination):
     default_limit = 10
     limit_query_param = 'limit'
     offset_query_param = 'offset'
     max_limit = 100
 
 
-class GoalViewSet(viewsets.ModelViewSet):
-    queryset = Goal.objects.all()
-    pagination_class = GoalLimitOffsetPagination
+class HabitViewSet(viewsets.ModelViewSet):
+    queryset = Habit.objects.all()
+    pagination_class = HabitLimitOffsetPagination
     authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
-        if self.action in ['list', 'retrieve', 'user_goals', 'category_goals']:
+        if self.action in ['list', 'retrieve', 'user_habits', 'category_habits']:
             return [HasValidToken()]
 
         elif self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -42,103 +44,103 @@ class GoalViewSet(viewsets.ModelViewSet):
 
         if self.action == 'list':
             if user.role != User.UserRole.ADMIN:
-                return Goal.objects.filter(is_public=True)
+                return Habit.objects.filter(is_public=True)
 
         return super().get_queryset()
 
     def get_serializer_class(self):
         return {
-            'create': GoalCreateSerializer,
-            'update': GoalUpdateSerializer,
-            'partial_update': GoalPartialUpdateSerializer,
-        }.get(self.action, GoalSerializer)
+            'create': HabitCreateSerializer,
+            'update': HabitUpdateSerializer,
+            'partial_update': HabitPartialUpdateSerializer,
+        }.get(self.action, HabitSerializer)
 
     @extend_schema(
-        summary="Список целей",
-        description="Получить список всех целей",
-        responses={200: GoalSerializer(many=True),
+        summary="Список привычек",
+        description="Получить список всех привычек",
+        responses={200: HabitSerializer(many=True),
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Цели']
+        tags=['Привычки']
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать цель",
-        description="Создание новой цели",
-        request=GoalCreateSerializer,
-        responses={201: GoalSerializer,
+        summary="Создать привычку",
+        description="Создание новой привычки",
+        request=HabitCreateSerializer,
+        responses={201: HabitSerializer,
                    400: BAD_REQUEST_RESPONSE,
                    500: INTERNAL_SERVER_ERROR
                    },
-        tags=['Цели']
+        tags=['Привычки']
     )
     def create(self, request, *args, **kwargs):
-        # if request.data['user'] != request.user.id and request.user.role != User.UserRole.ADMIN:
-        #     raise PermissionDenied('Нельзя создать цель у другого пользователя')
+        if request.data['user'] != request.user.id and request.user.role != User.UserRole.ADMIN:
+            raise PermissionDenied('Нельзя создать привычку у другого пользователя')
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить цель",
-        description="Получить информацию о конкретной цели",
-        responses={200: GoalSerializer,
+        summary="Получить привычку",
+        description="Получить информацию о конкретной привычке",
+        responses={200: HabitSerializer,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Цели']
+        tags=['Привычки']
     )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить цель",
-        description="Полное обновление информации о цели",
-        request=GoalUpdateSerializer,
-        responses={200: GoalSerializer,
+        summary="Обновить привычку",
+        description="Полное обновление информации о привычке",
+        request=HabitUpdateSerializer,
+        responses={200: HabitSerializer,
                    400: BAD_REQUEST_RESPONSE,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Цели']
+        tags=['Привычки']
     )
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить цель",
-        description="Частичное обновление информации о цели",
-        request=GoalPartialUpdateSerializer,
-        responses={200: GoalSerializer,
+        summary="Частично обновить привычку",
+        description="Частичное обновление информации о привычке",
+        request=HabitPartialUpdateSerializer,
+        responses={200: HabitSerializer,
                    400: BAD_REQUEST_RESPONSE,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Цели']
+        tags=['Привычки']
     )
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить цель",
-        description="Удаление цели",
+        summary="Удалить привычку",
+        description="Удаление привычки",
         responses={204: None,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Цели']
+        tags=['Привычки']
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить цели пользователя",
-        description="Получить список всех целей конкретного пользователя по его ID",
+        summary="Получить привычки пользователя",
+        description="Получить список всех привычек конкретного пользователя по его ID",
         parameters=[
             OpenApiParameter(
                 name='user_id',
@@ -148,36 +150,36 @@ class GoalViewSet(viewsets.ModelViewSet):
             )
         ],
         responses={
-            200: GoalSerializer(many=True),
+            200: HabitSerializer(many=True),
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
             404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
-        tags=['Цели']
+        tags=['Привычки']
     )
     @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[^/.]+)')
-    def user_goals(self, request, user_id=None):
+    def user_habits(self, request, user_id=None):
         user = get_object_or_404(User, id=user_id)
 
         current_user = request.user
 
         if current_user.id == user.id or current_user.role == User.UserRole.ADMIN:
-            goals = Goal.objects.filter(user=user)
+            habits = Habit.objects.filter(user=user)
         else:
-            goals = Goal.objects.filter(user=user, is_public=True)
+            habits = Habit.objects.filter(user=user, is_public=True)
 
-        page = self.paginate_queryset(goals)
+        page = self.paginate_queryset(habits)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(goals, many=True)
+        serializer = self.get_serializer(habits, many=True)
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить цели по категории",
-        description="Получить список всех целей с конкретной категорией по её ID",
+        summary="Получить привычки по категории",
+        description="Получить список всех привычек с конкретной категорией по её ID",
         parameters=[
             OpenApiParameter(
                 name='category_id',
@@ -187,41 +189,41 @@ class GoalViewSet(viewsets.ModelViewSet):
             )
         ],
         responses={
-            200: GoalSerializer(many=True),
+            200: HabitSerializer(many=True),
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
             404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
-        tags=['Цели']
+        tags=['Привычки']
     )
     @action(detail=False, methods=['get'], url_path='category/(?P<category_id>[^/.]+)')
-    def category_goals(self, request, category_id=None):
+    def category_habits(self, request, category_id=None):
         category = get_object_or_404(Category, id=category_id)
 
         current_user = request.user
 
         if current_user.role == User.UserRole.ADMIN:
-            goals = Goal.objects.filter(category=category)
+            habits = Habit.objects.filter(category=category)
         else:
-            goals = Goal.objects.filter(category=category, is_public=True)
+            habits = Habit.objects.filter(category=category, is_public=True)
 
-        page = self.paginate_queryset(goals)
+        page = self.paginate_queryset(habits)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(goals, many=True)
+        serializer = self.get_serializer(habits, many=True)
         return Response(serializer.data)
 
 
-class GoalProgressViewSet(viewsets.ModelViewSet):
-    queryset = GoalProgress.objects.all()
-    pagination_class = GoalLimitOffsetPagination
+class HabitLogViewSet(viewsets.ModelViewSet):
+    queryset = HabitLog.objects.all()
+    pagination_class = HabitLimitOffsetPagination
     authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
-        if self.action in ['retrieve', 'goal_progresses']:
+        if self.action in ['retrieve', 'habit_logs']:
             return [HasValidToken()]
 
         elif self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -233,131 +235,131 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         return {
-            'create': GoalProgressCreateSerializer,
-            'update': GoalProgressUpdateSerializer,
-            'partial_update': GoalProgressPartialUpdateSerializer,
-        }.get(self.action, GoalProgressSerializer)
+            'create': HabitLogCreateSerializer,
+            'update': HabitLogUpdateSerializer,
+            'partial_update': HabitLogPartialUpdateSerializer,
+        }.get(self.action, HabitLogSerializer)
 
     @extend_schema(
-        summary="Список состояний прогресса",
-        description="Получить список всех состояний прогресса по всем целям всех пользователей",
-        responses={200: GoalProgressSerializer(many=True),
+        summary="Список логов соблюдения привычки",
+        description="Получить список всех логов соблюдения привычек по всем привычкам всех пользователей",
+        responses={200: HabitLogSerializer(many=True),
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать новое состояние прогресса",
-        description="Создание нового состояния прогресса по цели",
-        request=GoalProgressCreateSerializer,
-        responses={201: GoalProgressSerializer,
+        summary="Создать новый лог соблюдения привычки",
+        description="Создание нового лога соблюдения привычки",
+        request=HabitLogCreateSerializer,
+        responses={201: HabitLogSerializer,
                    400: BAD_REQUEST_RESPONSE,
                    500: INTERNAL_SERVER_ERROR
                    },
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
     def create(self, request, *args, **kwargs):
-        goal = Goal.objects.filter(id=request.data['goal']).first()
-        if goal.user != request.user and request.user.role != User.UserRole.ADMIN:
-            raise PermissionDenied('Нельзя создать прогресс по цели у другого пользователя')
+        habit = Habit.objects.filter(id=request.data['habit']).first()
+        if habit.user != request.user and request.user.role != User.UserRole.ADMIN:
+            raise PermissionDenied('Нельзя создать лог привычки у другого пользователя')
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить состояние прогресса",
-        description="Получить информацию о конкретном состоянии прогресса",
-        responses={200: GoalProgressSerializer,
+        summary="Получить лог соблюдения привычки",
+        description="Получить информацию о конкретном логе соблюдения привычки",
+        responses={200: HabitLogSerializer,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить состояние прогресса",
-        description="Полное обновление информации о конкретном состоянии прогресса",
-        request=GoalProgressUpdateSerializer,
-        responses={200: GoalProgressSerializer,
+        summary="Обновить лог соблюдения привычки",
+        description="Полное обновление информации о конкретном логе соблюдения привычки",
+        request=HabitLogUpdateSerializer,
+        responses={200: HabitLogSerializer,
                    400: BAD_REQUEST_RESPONSE,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить состояние прогресса",
-        description="Частичное обновление информации о конкретном состоянии прогресса",
-        request=GoalProgressPartialUpdateSerializer,
-        responses={200: GoalProgressSerializer,
+        summary="Частично обновить лог соблюдения привычки",
+        description="Частичное обновление информации о конкретном логt соблюдения привычки",
+        request=HabitLogPartialUpdateSerializer,
+        responses={200: HabitLogSerializer,
                    400: BAD_REQUEST_RESPONSE,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить состояние прогресса",
-        description="Удаление состояния прогресса",
+        summary="Удалить состояние лог соблюдения привычки",
+        description="Удаление состояния лог соблюдения привычки",
         responses={204: None,
                    401: UNAUTHORIZED_RESPONSE,
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить состояния прогресса по цели",
-        description="Получить список всех состояний прогресса конкретной цели по её D",
+        summary="Получить логи соблюдения привычки",
+        description="Получить список всех логов по конкретной привычке по её ID",
         parameters=[
             OpenApiParameter(
-                name='goal_id',
+                name='habit_id',
                 type=int,
                 location=OpenApiParameter.PATH,
-                description='ID цели'
+                description='ID привычки'
             )
         ],
         responses={
-            200: GoalProgressSerializer(many=True),
+            200: HabitLogSerializer(many=True),
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
             404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
-        tags=['Прогресс по цели']
+        tags=['Логи соблюдения привычки']
     )
-    @action(detail=False, methods=['get'], url_path='goal/(?P<goal_id>[^/.]+)')
-    def goal_progresses(self, request, goal_id=None):
-        goal = get_object_or_404(Goal, id=goal_id)
+    @action(detail=False, methods=['get'], url_path='habit/(?P<habit_id>[^/.]+)')
+    def habit_logs(self, request, habit_id=None):
+        habit = get_object_or_404(Habit, id=habit_id)
 
         current_user = request.user
 
-        if current_user == goal.user or current_user.role == User.UserRole.ADMIN:
-            goals_progresses = GoalProgress.objects.filter(goal=goal)
+        if current_user == habit.user or current_user.role == User.UserRole.ADMIN:
+            habit_logs = HabitLog.objects.filter(habit=habit)
         else:
             raise PermissionDenied('Нет доступа к приватным целям')
 
-        page = self.paginate_queryset(goals_progresses)
+        page = self.paginate_queryset(habit_logs)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(goals_progresses, many=True)
+        serializer = self.get_serializer(habit_logs, many=True)
         return Response(serializer.data)
 

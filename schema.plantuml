@@ -51,9 +51,10 @@ entity habits {
   title : VARCHAR(255) <<NOT NULL>>
   description : TEXT
   category_id : BIGINTEGER <<FK>>
-  frequency_type_id : BIGINTEGER
+  frequency_type : INTEGER
   frequency_value : INTEGER
   is_active : BOOLEAN <<DEFAULT true>>
+  is_public : BOOLEAN <<DEFAULT true>>
   created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
   updated_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
 }
@@ -113,9 +114,9 @@ entity user_challenges {
   joined_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
 }
 
-entity follows {
-  * follower_id : BIGINTEGER <<PK>> <<FK>>
-  * following_id : BIGINTEGER <<PK>> <<FK>>
+entity subscriptions {
+  * subscriber_id : BIGINTEGER <<PK>> <<FK>>
+  * subscribing_id : BIGINTEGER <<PK>> <<FK>>
   --
   followed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
 }
@@ -144,6 +145,6 @@ challenge_categories    "0..n   " --^ "1      "  challenges : " challenge_id:id 
 challenge_categories     "0..n         " --^ "1\n"  categories : "  category_id:id  "
 user_challenges    "0..n     " --^ "1   "  challenges : " challenge_id:id  "
 user_challenges     "0..n           " --^ " \n1           "  users : " user_id:id  "
-follows    "0..n" --^ "1  \n "  users : " follower_id:id  "
-follows    "0..n   " --^ "            1\n"  users : " following_id:id  "
+subscriptions   "0..n" --^ "1  \n "  users : " subscriber_id:id  "
+subscriptions    "0..n   " --^ "            1\n"  users : " subscribing_id:id  "
 @enduml

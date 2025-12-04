@@ -1,7 +1,9 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from django.utils import timezone
-from core.models import AuthToken
+from core.models import AuthToken, User
+from goals.models import Goal, GoalProgress
+from habits.models import Habit, HabitLog
 from rest_framework.permissions import BasePermission
 
 
@@ -25,7 +27,15 @@ class IsAdminOrSelf(BasePermission):
         return bool(request.user and request.auth)
 
     def has_object_permission(self, request, view, obj):
-        return obj.id == request.user.id or request.user.role == 'admin'
+        if type(obj) is HabitLog:
+            habit = Habit.objects.filter(id=obj.habit_id).first()
+            return habit.user == request.user
+        if type(obj) is GoalProgress:
+            goal = Goal.objects.filter(id=obj.goal_id).first()
+            return goal.user == request.user
+        return ((type(obj) is User and obj.id == request.user.id) or
+                (type(obj) in (Goal, Habit) and obj.user_id == request.user.id) or
+                request.user.role == 'admin')
 
 
 class IsAdmin(BasePermission):
