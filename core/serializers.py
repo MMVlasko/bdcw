@@ -54,7 +54,7 @@ class UserPartialUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'username',
-            'first_name', 'last_name', 'description', 'role',
+            'first_name', 'last_name', 'description',
             'is_active', 'is_public'
         ]
 
@@ -72,7 +72,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'username',
-            'first_name', 'last_name', 'description', 'role',
+            'first_name', 'last_name', 'description',
             'is_active', 'is_public'
         ]
 
@@ -81,7 +81,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             'first_name': {'required': True},
             'last_name': {'required': True},
             'description': {'required': True, 'allow_null': True},
-            'role': {'required': True},
             'is_active': {'required': True},
             'is_public': {'required': True},
         }

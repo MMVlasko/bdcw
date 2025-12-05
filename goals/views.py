@@ -1,8 +1,9 @@
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from django.shortcuts import get_object_or_404
 
 from bdcw.authentication import TokenAuthentication, HasValidToken, IsAdminOrSelf, IsAdmin
@@ -76,8 +77,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         tags=['Цели']
     )
     def create(self, request, *args, **kwargs):
-        # if request.data['user'] != request.user.id and request.user.role != User.UserRole.ADMIN:
-        #     raise PermissionDenied('Нельзя создать цель у другого пользователя')
+        if request.data['user'] != request.user.id and request.user.role != User.UserRole.ADMIN:
+            raise PermissionDenied('Нельзя создать цель у другого пользователя')
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
@@ -264,6 +265,10 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         goal = Goal.objects.filter(id=request.data['goal']).first()
         if goal.user != request.user and request.user.role != User.UserRole.ADMIN:
             raise PermissionDenied('Нельзя создать прогресс по цели у другого пользователя')
+        if goal.is_completed:
+            raise ValidationError({'detail': 'Нельзя создать прогресс по достигнутой цели'})
+        if timezone.now().date() > goal.deadline:
+            raise ValidationError({'detail': 'Нельзя создать прогресс после дедлайна'})
         return super().create(request, *args, **kwargs)
 
     @extend_schema(

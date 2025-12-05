@@ -8,7 +8,7 @@ router.register(r'', UserViewSet, basename='user')
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('clean_unused_tokens/', CleanUnusedTokensView.as_view(), name='clean_unused_tokensZ'),
+    path('clean_unused_tokens/', CleanUnusedTokensView.as_view(), name='clean_unused_tokens'),
     # User endpoints через router
     path('', include(router.urls))
 ]

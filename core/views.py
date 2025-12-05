@@ -1,5 +1,5 @@
 from django.utils import timezone
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -35,7 +35,7 @@ class UserViewSet(viewsets.ModelViewSet):
         elif self.action in ['update', 'partial_update', 'change_password']:
             return [HasValidToken(), IsAdminOrSelf()]
 
-        elif self.action == 'destroy':
+        elif self.action in ['destroy', 'change_role']:
             return [HasValidToken(), IsAdmin()]
 
         return [HasValidToken()]
@@ -161,16 +161,6 @@ class UserViewSet(viewsets.ModelViewSet):
                    403: FORBIDDEN_RESPONSE,
                    404: NOT_FOUND_RESPONSE,
                    500: INTERNAL_SERVER_ERROR},
-        examples=[
-            OpenApiExample(
-                'Пример смены пароля',
-                value={
-                    'password': 'NewSecurePass456',
-                    'confirm_password': 'NewSecurePass456'
-                },
-                request_only=True
-            )
-        ],
         tags=['Пользователи']
     )
     @action(['put'], detail=True)
@@ -179,6 +169,47 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserChangePasswordSerializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @extend_schema(
+        summary="Сменить роль",
+        description="Изменить роль пользователя",
+        request=None,
+        parameters=[
+            OpenApiParameter(
+                name='role',
+                type=str,
+                location=OpenApiParameter.QUERY,
+                description='Роль',
+                required=True
+            ),
+        ],
+        responses={200: None,
+                   400: BAD_REQUEST_RESPONSE,
+                   401: UNAUTHORIZED_RESPONSE,
+                   403: FORBIDDEN_RESPONSE,
+                   404: NOT_FOUND_RESPONSE,
+                   500: INTERNAL_SERVER_ERROR},
+        tags=['Пользователи']
+    )
+    @action(['put'], detail=True)
+    def change_role(self, request):
+        role = request.query_params.get('role')
+
+        if not role:
+            return Response(
+                {'error': 'Необходим параметр role'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if role not in ('admin', 'user'):
+            return Response(
+                {'error': 'Роль должна быть admin или user'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        user = self.get_object()
+        user.role = role
+        user.save()
         return Response(status=status.HTTP_200_OK)
 
 

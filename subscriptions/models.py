@@ -5,9 +5,8 @@ from core.models import User
 class Subscription(models.Model):
     class Meta:
         db_table = 'subscriptions'
-        unique_together = ('subscriber', 'subscribing')
 
-    id = models.BigAutoField(primary_key=True)
+    pk = models.CompositePrimaryKey('subscriber', 'subscribing')
 
     subscriber = models.ForeignKey(
         User,
