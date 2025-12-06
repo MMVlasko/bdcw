@@ -1,4 +1,7 @@
 from rest_framework import serializers
+
+from core.models import User
+from goals.models import Goal
 from .models import Challenge, GoalChallenge, ChallengeCategory
 
 
@@ -60,3 +63,51 @@ class GoalChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = GoalChallenge
         fields = ['goal', 'challenge', 'joined_at']
+
+
+class GoalLeaderboardSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        required=True
+    )
+    rank = serializers.IntegerField(
+        required=True
+    )
+    min_diff = serializers.IntegerField(
+        required=True
+    )
+
+    class Meta:
+        model = Goal
+        fields = [
+            'rank', 'min_diff', 'id', 'user_id', 'username', 'title', 'description',
+            'category_id', 'target_value', 'deadline', 'is_completed',
+            'is_public', 'created_at', 'updated_at'
+        ]
+
+
+class UserLeaderboardSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(
+        required=True
+    )
+    user_rank = serializers.IntegerField(
+        required=True
+    )
+    user_best_min_diff = serializers.IntegerField(
+        required=True
+    )
+    total_goals = serializers.IntegerField(
+        required=True
+    )
+    goals_with_progress = serializers.IntegerField(
+        required=True
+    )
+    goals_without_progress = serializers.IntegerField(
+        required=True
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'username', 'user_rank', 'user_best_min_diff',
+            'total_goals', 'goals_with_progress', 'goals_without_progress'
+        ]

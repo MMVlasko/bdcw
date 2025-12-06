@@ -19,7 +19,8 @@ from goals.serializers import GoalSerializer
 from .models import Challenge, GoalChallenge, ChallengeCategory
 from core.models import User
 from .serializers import ChallengeSerializer, ChallengeCreateAndUpdateSerializer, ChallengePartialUpdateSerializer, \
-    AppendCategoryToChallengeSerializer, AppendGoalToChallengeSerializer, GoalChallengeSerializer
+    AppendCategoryToChallengeSerializer, AppendGoalToChallengeSerializer, GoalChallengeSerializer, \
+    GoalLeaderboardSerializer, UserLeaderboardSerializer
 from rest_framework.pagination import LimitOffsetPagination
 
 
@@ -37,7 +38,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve', 'challenge_categories', 'category_challenges', 'challenge_users',
-                           'challenge_goals', 'goal_challenges', 'user_challenges']:
+                           'challenge_goals', 'goal_challenges', 'user_challenges', 'user_leaderboard',
+                           'goal_leaderboard']:
             return [HasValidToken()]
 
         elif self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -427,6 +429,160 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             return paginator.get_paginated_response(serializer.data)
 
         serializer = ChallengeSerializer(challenges, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        summary="Получить список целей-лидеров",
+        description="Получить список целей в порядке лидирования в челлендже",
+        parameters=[
+            OpenApiParameter(
+                name='challenge_id',
+                type=int,
+                location=OpenApiParameter.PATH,
+                description='ID челленджа'
+            )
+        ],
+        responses={
+            200: GoalLeaderboardSerializer(many=True),
+            401: UNAUTHORIZED_RESPONSE,
+            403: FORBIDDEN_RESPONSE,
+            404: NOT_FOUND_RESPONSE,
+            500: INTERNAL_SERVER_ERROR
+        },
+        tags=['Челленджи']
+    )
+    @action(detail=False, methods=['get'], url_path='goal_leaderboard/(?P<challenge_id>[^/.]+)')
+    def goal_leaderboard(self, request, challenge_id=None):
+        try:
+            Challenge.objects.get(id=challenge_id)
+        except Challenge.DoesNotExist:
+            return Response(
+                {'error': 'Челлендж не найден'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        goals = Goal.objects.raw('''
+                        SELECT
+                            ROW_NUMBER() OVER (ORDER BY
+                                (
+                                    SELECT MIN(ABS(gp.current_value - g.target_value))
+                                    FROM goal_progresses gp
+                                    WHERE gp.goal_id = g.id
+                                )
+                            ) AS rank,
+                            g.id, 
+                            g.user_id,
+                            u.username,
+                            g.title, 
+                            g.description,
+                            g.category_id, 
+                            g.target_value, 
+                            g.deadline, 
+                            g.is_completed,
+                            g.is_public, 
+                            g.created_at, 
+                            g.updated_at,
+                            (
+                                SELECT MIN(ABS(gp.current_value - g.target_value))
+                                FROM goal_progresses gp
+                                WHERE gp.goal_id = g.id
+                            ) AS min_diff
+                        FROM goals g
+                        JOIN goal_challenges gc ON g.id = gc.goal_id
+                        JOIN users u ON g.user_id = u.id
+                        WHERE gc.challenge_id = %s
+                            AND g.is_public = true
+                        ORDER BY min_diff
+                        ''', (challenge_id,))
+
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(goals, request)
+
+        if page is not None:
+            serializer = GoalLeaderboardSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = GoalLeaderboardSerializer(goals, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        summary="Получить список участников-лидеров",
+        description="Получить список участников в порядке лидирования в челлендже",
+        parameters=[
+            OpenApiParameter(
+                name='challenge_id',
+                type=int,
+                location=OpenApiParameter.PATH,
+                description='ID челленджа'
+            )
+        ],
+        responses={
+            200: GoalLeaderboardSerializer(many=True),
+            401: UNAUTHORIZED_RESPONSE,
+            403: FORBIDDEN_RESPONSE,
+            404: NOT_FOUND_RESPONSE,
+            500: INTERNAL_SERVER_ERROR
+        },
+        tags=['Челленджи']
+    )
+    @action(detail=False, methods=['get'], url_path='user_leaderboard/(?P<challenge_id>[^/.]+)')
+    def user_leaderboard(self, request, challenge_id=None):
+        try:
+            Challenge.objects.get(id=challenge_id)
+        except Challenge.DoesNotExist:
+            return Response(
+                {'error': 'Челлендж не найден'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        users = User.objects.raw('''
+                            WITH user_best_diffs AS (
+                                SELECT 
+                                    g.user_id,
+                                    u.username,
+                                    MIN(
+                                        (
+                                            SELECT MIN(ABS(gp.current_value - g.target_value))
+                                            FROM goal_progresses gp
+                                            WHERE gp.goal_id = g.id
+                                        )
+                                    ) AS user_best_min_diff,
+                                    COUNT(DISTINCT g.id) AS total_goals,
+                                    COUNT(DISTINCT CASE WHEN EXISTS (
+                                        SELECT 1 FROM goal_progresses gp 
+                                        WHERE gp.goal_id = g.id
+                                    ) THEN g.id END) AS goals_with_progress
+                                FROM goals g
+                                JOIN goal_challenges gc ON g.id = gc.goal_id
+                                JOIN users u ON g.user_id = u.id
+                                WHERE gc.challenge_id = %s
+                                    AND g.is_public = true
+                                GROUP BY g.user_id, u.username
+                            )
+                            SELECT
+                                ROW_NUMBER() OVER (
+                                    ORDER BY
+                                        user_best_min_diff,
+                                        username
+                                ) AS user_rank,
+                                user_id as id,
+                                username,
+                                user_best_min_diff,
+                                total_goals,
+                                goals_with_progress,
+                                total_goals - goals_with_progress AS goals_without_progress
+                            FROM user_best_diffs
+                            ORDER BY user_rank;
+                            ''', (challenge_id,))
+
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(users, request)
+
+        if page is not None:
+            serializer = UserLeaderboardSerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = UserLeaderboardSerializer(users, many=True)
         return Response(serializer.data)
 
 

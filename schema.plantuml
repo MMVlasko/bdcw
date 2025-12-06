@@ -1,10 +1,5 @@
 @startuml
 
-
-
-
-' Сущности (Таблицы)
-
 entity users {
   * id : BIGSERIAL <<PK>>
   --
