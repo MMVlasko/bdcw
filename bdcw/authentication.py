@@ -1,6 +1,7 @@
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 from django.utils import timezone
+from django.db import connection
 from core.models import AuthToken, User
 from goals.models import Goal, GoalProgress
 from habits.models import Habit, HabitLog
@@ -9,6 +10,8 @@ from rest_framework.permissions import BasePermission
 
 class HasValidToken(BasePermission):
     def has_permission(self, request, view):
+        if request.auth is None:
+            raise AuthenticationFailed('Токен не найден')
         if not request.auth.is_active:
             raise AuthenticationFailed('Токен деактивирован')
 
@@ -52,10 +55,14 @@ class TokenAuthentication(BaseAuthentication):
 
         try:
             token = AuthToken.objects.get(key=token_key)
-
-            # Обновляем время последнего использования
             token.last_used = timezone.now()
             token.save()
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT set_config('app.user_id', %s, false)",
+                    [str(token.user.id)]
+                )
 
             return token.user, token
 

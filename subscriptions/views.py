@@ -366,7 +366,7 @@ class CheckSubscriptionView(APIView):
         },
         tags=['Подписки']
     )
-    def post(self, request):
+    def get(self, request):
         subscriber_id = request.query_params.get('subscriber_id')
         subscribing_id = request.query_params.get('subscribing_id')
 

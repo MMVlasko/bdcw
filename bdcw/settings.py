@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'goals',
     'habits',
     'subscriptions',
-    'challenges'
+    'challenges',
+    'audit'
 ]
 
 MIDDLEWARE = [
@@ -43,7 +44,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'audit.middleware.AuditUserMiddleware'
 ]
 
 ROOT_URLCONF = 'bdcw.urls'
