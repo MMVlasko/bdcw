@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'habits',
     'subscriptions',
     'challenges',
-    'audit'
+    'audit',
+    'analytics'
 ]
 
 MIDDLEWARE = [

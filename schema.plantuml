@@ -115,11 +115,11 @@ entity subscriptions {
   followed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
 }
 
-entity audit_log {
+entity audit_logs {
   * id : BIGSERIAL <<PK>>
   --
   table_name : VARCHAR(100) <<NOT NULL>>
-  record_id : INTEGER <<NOT NULL>>
+  record_id : BIGINTEGER
   operation : VARCHAR(10) <<CHECK>> <<NOT NULL>>
   old_values : JSONB
   new_values : JSONB
@@ -129,16 +129,17 @@ entity audit_log {
 }
 
 goals  "                                 0..n   " --^ "1       "  users  : " user_id:id"
-habits    "0..n    \n" --^ "1       \n"  users  : " user_id:id"
-auth_tokens    "0..n    " --^ "1          "  users  : " user_id:id"
+habits    "0..n    \n" --^ "1       "  users  : "    user_id:id"
+auth_tokens    "0..n           " --^ "1          \n"  users  : " user_id:id"
 goals    "\n     0..1   " --^ "1     \n"  categories : " category_id:id  "
 habits     "     0..1    " --^ "1   "  categories : "category_id:id  "
 goal_progresses  "0..n   " --^ "1   "  goals  : "  goal_id:id"
-habit_logs    "0..n  " --^ "1   \n"  habits  : "  habit_id:id   \n"
-challenge_categories    "0..n       " --^ "1      "  challenges : " challenge_id:id  "
+habit_logs    "0..n     " --^ "1   \n"  habits  : "  habit_id:id   \n"
+challenge_categories    "0..n " --^ "1      "  challenges : " challenge_id:id  "
 challenge_categories     "0..n   " --^ "1\n"  categories : "  category_id:id  "
 goal_challenges    "0..n     " --^ "1      "  challenges : " challenge_id:id  "
-goal_challenges     "0..n           " --^ " \n1           "  goals : " user_id:id  "
+goal_challenges     "0..n " --^ " \n1           "  goals : " user_id:id  "
 subscriptions   "0..n   " --^ "1     \n "  users : " subscriber_id:id  "
 subscriptions    "0..n  " --^ " 1     "  users : " subscribing_id:id  "
+audit_logs    "0..n        " --^ " 1     "  users : " changed_by_id:id  "
 @enduml

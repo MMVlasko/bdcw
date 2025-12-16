@@ -15,12 +15,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
-        write_only=True,
-        required=True
+        write_only=True
     )
     confirm_password = serializers.CharField(
-        write_only=True,
-        required=True
+        write_only=True
     )
 
     class Meta:
@@ -95,12 +93,10 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 class UserChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
-        write_only=True,
-        required=True
+        write_only=True
     )
     confirm_password = serializers.CharField(
-        write_only=True,
-        required=True
+        write_only=True
     )
 
     class Meta:
@@ -124,7 +120,6 @@ class UserChangePasswordSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(
-        required=True,
         style={'input_type': 'password'},
         write_only=True
     )
@@ -155,3 +150,53 @@ class LoginResponseSerializer(serializers.Serializer):
     token = serializers.CharField()
     expires_at = serializers.DateTimeField()
     user = UserSerializer()
+
+
+class BatchUserCreateSerializer(serializers.Serializer):
+    users = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )
+
+    update_existing = serializers.BooleanField(default=False)
+
+
+class BatchOperationLogSerializer(serializers.Serializer):
+    total_processed = serializers.IntegerField()
+
+    successful = serializers.IntegerField()
+
+    failed = serializers.IntegerField()
+
+    batch_size = serializers.IntegerField()
+
+    errors = serializers.ListField(
+        child=serializers.DictField(),
+        required=False,
+        allow_empty=True
+    )
+
+    created_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+        allow_empty=True
+    )
+
+    updated_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+        allow_empty=True
+    )
+
+    batches_processed = serializers.IntegerField(
+        required=False,
+        default=0
+    )

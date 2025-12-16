@@ -11,6 +11,22 @@ BAD_REQUEST_RESPONSE = OpenApiResponse(
    description='Bad Request'
 )
 
+BAD_BATCH_REQUEST_RESPONSE = OpenApiResponse(
+   response={
+       'type': 'object',
+       'properties': {
+           'error': {'type': 'string', 'example': 'description'},
+           'details': {
+                'type': 'object',
+                'properties': {
+                    'field_name': {'type': 'array', 'items': {'type': 'string', 'example': 'description'}}
+                }
+            }
+       }
+   },
+   description='Bad Request'
+)
+
 UNAUTHORIZED_RESPONSE = OpenApiResponse(
    response={
        'type': 'object',

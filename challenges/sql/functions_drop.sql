@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS calculate_goal_progress(p_goal_id BIGINT);

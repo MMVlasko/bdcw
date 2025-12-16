@@ -463,13 +463,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
 
         goals = Goal.objects.raw('''
                         SELECT
-                            ROW_NUMBER() OVER (ORDER BY
-                                (
-                                    SELECT MIN(ABS(gp.current_value - g.target_value))
-                                    FROM goal_progresses gp
-                                    WHERE gp.goal_id = g.id
-                                )
-                            ) AS rank,
+                            ROW_NUMBER() OVER (ORDER BY calculate_goal_progress(g.id)) AS rank,
                             g.id, 
                             g.user_id,
                             u.username,
@@ -482,11 +476,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                             g.is_public, 
                             g.created_at, 
                             g.updated_at,
-                            (
-                                SELECT MIN(ABS(gp.current_value - g.target_value))
-                                FROM goal_progresses gp
-                                WHERE gp.goal_id = g.id
-                            ) AS min_diff
+                            calculate_goal_progress(g.id) AS min_diff
                         FROM goals g
                         JOIN goal_challenges gc ON g.id = gc.goal_id
                         JOIN users u ON g.user_id = u.id
@@ -540,13 +530,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                                 SELECT 
                                     g.user_id,
                                     u.username,
-                                    MIN(
-                                        (
-                                            SELECT MIN(ABS(gp.current_value - g.target_value))
-                                            FROM goal_progresses gp
-                                            WHERE gp.goal_id = g.id
-                                        )
-                                    ) AS user_best_min_diff,
+                                    MIN(calculate_goal_progress(g.id)) AS user_best_min_diff,
                                     COUNT(DISTINCT g.id) AS total_goals,
                                     COUNT(DISTINCT CASE WHEN EXISTS (
                                         SELECT 1 FROM goal_progresses gp 

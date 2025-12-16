@@ -281,7 +281,7 @@ class UserSubscribersListView(APIView):
 
     @extend_schema(
         summary="Получить подписчиков пользователя",
-        description="Получить список пользователей, которые подписаны на данного пользоваеля",
+        description="Получить список пользователей, которые подписаны на данного пользователя",
         parameters=[
             OpenApiParameter(
                 name='user_id',

@@ -66,15 +66,9 @@ class GoalChallengeSerializer(serializers.ModelSerializer):
 
 
 class GoalLeaderboardSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
-        required=True
-    )
-    rank = serializers.IntegerField(
-        required=True
-    )
-    min_diff = serializers.IntegerField(
-        required=True
-    )
+    username = serializers.CharField()
+    rank = serializers.IntegerField()
+    min_diff = serializers.IntegerField()
 
     class Meta:
         model = Goal
@@ -86,24 +80,12 @@ class GoalLeaderboardSerializer(serializers.ModelSerializer):
 
 
 class UserLeaderboardSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
-        required=True
-    )
-    user_rank = serializers.IntegerField(
-        required=True
-    )
-    user_best_min_diff = serializers.IntegerField(
-        required=True
-    )
-    total_goals = serializers.IntegerField(
-        required=True
-    )
-    goals_with_progress = serializers.IntegerField(
-        required=True
-    )
-    goals_without_progress = serializers.IntegerField(
-        required=True
-    )
+    username = serializers.CharField()
+    user_rank = serializers.IntegerField()
+    user_best_min_diff = serializers.IntegerField()
+    total_goals = serializers.IntegerField()
+    goals_with_progress = serializers.IntegerField()
+    goals_without_progress = serializers.IntegerField()
 
     class Meta:
         model = User

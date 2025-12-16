@@ -54,7 +54,7 @@ BEGIN
             table_name, record_id, operation,
             old_values, new_values, changed_by_id
         ) VALUES (
-            TG_TABLE_NAME, record_id, 'INSERT',
+            TG_TABLE_NAME, record_id, 'UPDATE',
             old_data, new_data, user_id
         );
         END IF;
@@ -68,7 +68,7 @@ BEGIN
             table_name, record_id, operation,
             old_values, new_values, changed_by_id
         ) VALUES (
-            TG_TABLE_NAME, record_id, 'INSERT',
+            TG_TABLE_NAME, record_id, 'DELETE',
             old_data, new_data, user_id
         );
         RETURN OLD;
