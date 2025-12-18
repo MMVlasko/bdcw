@@ -1,3 +1,5 @@
+from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
 
@@ -45,3 +47,57 @@ class AuditLog(models.Model):
 
     class Meta:
         db_table = 'audit_logs'
+
+
+class BatchLog(models.Model):
+    class Meta:
+        db_table = 'batch_logs'
+
+    id = models.BigAutoField(
+        primary_key=True
+    )
+
+    table_name = models.CharField(
+        max_length=100
+    )
+
+    changed_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='batch_logs'
+    )
+
+    total_processed = models.PositiveIntegerField(
+        default=0
+    )
+
+    successful = models.PositiveIntegerField(
+        default=0
+    )
+
+    failed = models.PositiveIntegerField(
+        default=0
+    )
+
+    errors = models.JSONField(
+        default=list,
+        encoder=DjangoJSONEncoder
+    )
+
+    created_ids = ArrayField(
+        models.BigIntegerField(),
+        default=list,
+        blank=True
+    )
+
+    batches_processed = models.PositiveIntegerField(
+        default=0
+    )
+
+    batch_size = models.PositiveIntegerField(
+        default=100
+    )
+
+    created_at = NowDefaultField()

@@ -93,3 +93,18 @@ class UserLeaderboardSerializer(serializers.ModelSerializer):
             'id', 'username', 'user_rank', 'user_best_min_diff',
             'total_goals', 'goals_with_progress', 'goals_without_progress'
         ]
+
+
+class BatchChallengeCreateSerializer(serializers.Serializer):
+    challenges = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )

@@ -36,7 +36,7 @@ class GoalUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
         fields = [
-            'title', 'description', 'target_value', 'deadline',
+            'title', 'description', 'target_value', 'deadline', 'is_completed',
             'is_public'
         ]
         extra_kwargs = {
@@ -44,6 +44,7 @@ class GoalUpdateSerializer(serializers.ModelSerializer):
             'description': {'required': True, 'allow_null': True},
             'target_value': {'required': True},
             'deadline': {'required': True},
+            'is_completed': {'required': True},
             'is_public': {'required': True},
         }
 
@@ -55,7 +56,7 @@ class GoalPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
         fields = [
-            'title', 'description', 'target_value', 'deadline',
+            'title', 'description', 'target_value', 'deadline', 'is_completed',
             'is_public'
         ]
 
@@ -113,3 +114,33 @@ class GoalProgressPartialUpdateSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return GoalProgressSerializer(instance, context=self.context).data
+
+
+class BatchGoalCreateSerializer(serializers.Serializer):
+    goals = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )
+
+
+class BatchGoalProgressCreateSerializer(serializers.Serializer):
+    goal_progresses = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )

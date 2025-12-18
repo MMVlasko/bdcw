@@ -120,3 +120,33 @@ class HabitLogPartialUpdateSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return HabitLogSerializer(instance, context=self.context).data
+
+
+class BatchHabitCreateSerializer(serializers.Serializer):
+    habits = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )
+
+
+class BatchHabitLogCreateSerializer(serializers.Serializer):
+    habit_logs = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )

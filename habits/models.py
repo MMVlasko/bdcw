@@ -28,8 +28,8 @@ class Habit(models.Model):
         related_name='habits'
     )
 
-    frequency_type = models.IntegerField('Длина временного промежутка')
-    frequency_value = models.IntegerField('Частота')
+    frequency_type = models.PositiveIntegerField('Длина временного промежутка')
+    frequency_value = models.PositiveIntegerField('Частота')
     is_active = models.BooleanField('Выполняется', default=True)
     is_public = models.BooleanField('Общедоступно', default=True)
     created_at = models.DateTimeField('Создан', auto_now_add=True)

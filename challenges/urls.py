@@ -5,13 +5,18 @@ from .views import (
     AppendCategoryToChallengeView,
     DeleteCategoryFromChallengeView,
     AppendGoalToChallengeView,
-    DeleteGoalFromChallengeView
+    DeleteGoalFromChallengeView,
+    BatchChallengeCreateView
 )
 
 router = DefaultRouter()
 router.register(r'', ChallengeViewSet, basename='challenge')
 
 urlpatterns = [
+    path('batch-import/',
+         BatchChallengeCreateView.as_view(),
+         name='batch-challenge-create'),
+
     path('', include(router.urls)),
 
     path('categories/append/',
@@ -28,5 +33,5 @@ urlpatterns = [
 
     path('goals/delete/',
          DeleteGoalFromChallengeView.as_view(),
-         name='delete-goal-from-challenge'),
+         name='delete-goal-from-challenge')
 ]

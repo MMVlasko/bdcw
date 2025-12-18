@@ -34,3 +34,18 @@ class CategoryPartialUpdateSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return CategorySerializer(instance, context=self.context).data
+
+
+class BatchCategoryCreateSerializer(serializers.Serializer):
+    categories = serializers.ListField(
+        child=serializers.DictField(),
+        allow_empty=False,
+        max_length=10000
+    )
+
+    batch_size = serializers.IntegerField(
+        required=False,
+        default=100,
+        min_value=1,
+        max_value=5000
+    )

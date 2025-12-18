@@ -1,8 +1,8 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiExample
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from bdcw.authentication import TokenAuthentication, HasValidToken, IsAdminOrSelf, IsAdmin
+from bdcw.authentication import TokenAuthentication, HasValidToken
 from bdcw.error_responses import (BAD_REQUEST_RESPONSE, UNAUTHORIZED_RESPONSE, FORBIDDEN_RESPONSE, NOT_FOUND_RESPONSE,
                                   INTERNAL_SERVER_ERROR)
 from categories.models import Category
@@ -27,13 +27,83 @@ class GetUsersByCompletedGoalsView(APIView):
 
     @extend_schema(
         summary="Получить рейтинг пользователей по количеству достигнутых целей",
-        description="Получения рейтинга пользователей по количеству достигнутых целей",
+        description="""
+            Получение рейтинга пользователей по количеству достигнутых целей
+
+            Возвращает список пользователей, отсортированных по количеству завершенных целей.
+
+            Права доступа:
+            - Требуется действительный токен
+
+            Пагинация:
+            - limit: Количество записей на странице (макс. 100)
+            - offset: Смещение от начала списка
+
+            Возвращаемые поля:
+            - id: Идентификатор пользователя
+            - username: Имя пользователя
+            - achievements_count: Количество достигнутых целей
+            - avg_progress_percent: Средний процент прогресса по всем целям
+            - total_goals: Общее количество целей пользователя
+            - rank: Ранг пользователя в рейтинге
+            """,
+        parameters=[
+            OpenApiParameter(
+                name='limit',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Количество записей на странице (макс. 100)',
+                required=False,
+                default=10
+            ),
+            OpenApiParameter(
+                name='offset',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Смещение от начала списка',
+                required=False,
+                default=0
+            )
+        ],
         responses={
-            200: GetUsersByCompletedGoalsSerializer(many=True),
+            200: OpenApiResponse(
+                response=GetUsersByCompletedGoalsSerializer(many=True),
+                description='OK',
+                examples=[
+                    OpenApiExample(
+                        name="Рейтинг пользователей по достижениям",
+                        summary="Стандартный ответ с рейтингом пользователей",
+                        value={
+                            "count": 50,
+                            "next": "http://127.0.0.1:8080/api/analytics/users-by-completed-goals/?limit=10&offset=10",
+                            "previous": None,
+                            "results": [
+                                {
+                                    "id": 123,
+                                    "username": "top_achiever",
+                                    "achievements_count": 25,
+                                    "avg_progress_percent": 85.5,
+                                    "total_goals": 30,
+                                    "rank": 1
+                                }
+                            ]
+                        }
+                    ),
+                    OpenApiExample(
+                        name="Пустой рейтинг",
+                        summary="Когда нет данных для рейтинга",
+                        value={
+                            "count": 0,
+                            "next": None,
+                            "previous": None,
+                            "results": []
+                        }
+                    )
+                ]
+            ),
             400: BAD_REQUEST_RESPONSE,
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
-            404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
         tags=['Аналитика']
@@ -69,13 +139,84 @@ class GetUsersByHabitsConsistencyView(APIView):
 
     @extend_schema(
         summary="Получить рейтинг пользователей по проценту соблюдения привычек",
-        description="Получения рейтинга пользователей по проценту соблюдения привычек",
+        description="""
+                Получение рейтинга пользователей по проценту соблюдения привычек
+
+                Возвращает список пользователей, отсортированных по проценту соблюдения привычек.
+
+                Права доступа:
+                - Требуется действительный токен
+
+                Пагинация:
+                - limit: Количество записей на странице (макс. 100)
+                - offset: Смещение от начала списка
+
+                Возвращаемые поля:
+                - id: Идентификатор пользователя
+                - username: Имя пользователя
+                - habit_consistency_percent: Процент соблюдения привычек
+                - active_habits: Количество активных привычек
+                - total_habits: Общее количество привычек пользователя
+                - rank: Ранг пользователя в рейтинге
+                """,
+        parameters=[
+            OpenApiParameter(
+                name='limit',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Количество записей на странице (макс. 100)',
+                required=False,
+                default=10
+            ),
+            OpenApiParameter(
+                name='offset',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Смещение от начала списка',
+                required=False,
+                default=0
+            )
+        ],
         responses={
-            200: GetUsersByHabitsConsistencySerializer(many=True),
+            200: OpenApiResponse(
+                response=GetUsersByHabitsConsistencySerializer(many=True),
+                description='OK',
+                examples=[
+                    OpenApiExample(
+                        name="Рейтинг пользователей по привычкам",
+                        summary="Стандартный ответ с рейтингом соблюдения привычек",
+                        value={
+                            "count": 40,
+                            "next": "http://127.0.0.1:8080/api/analytics/users-by-habit"
+                                    "s-consistency/?limit=10&offset=10",
+                            "previous": None,
+                            "results": [
+                                {
+                                    "id": 456,
+                                    "username": "consistent_user",
+                                    "habit_consistency_percent": 95.2,
+                                    "active_habits": 7,
+                                    "total_habits": 8,
+                                    "rank": 1
+                                }
+                            ]
+                        }
+                    ),
+                    OpenApiExample(
+                        name="Пустой рейтинг по привычкам",
+                        summary="Когда нет данных для рейтинга привычек",
+                        value={
+                            "count": 0,
+                            "next": None,
+                            "previous": None,
+                            "results": []
+                        }
+                    )
+                ]
+            ),
             400: BAD_REQUEST_RESPONSE,
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
-            404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
         tags=['Аналитика']
@@ -110,13 +251,81 @@ class GetUsersBySubscribersCountView(APIView):
 
     @extend_schema(
         summary="Получить рейтинг пользователей по количеству подписчиков",
-        description="Получения рейтинга пользователей по количеству подписчиков",
+        description="""
+            Получение рейтинга пользователей по количеству подписчиков
+
+            Возвращает список пользователей, отсортированных по количеству подписчиков.
+
+            Права доступа:
+            - Требуется действительный токен
+
+            Пагинация:
+            - limit: Количество записей на странице (макс. 100)
+            - offset: Смещение от начала списка
+
+            Возвращаемые поля:
+            - id: Идентификатор пользователя
+            - username: Имя пользователя
+            - subscribers_count: Количество подписчиков
+            - subscribing_count: Количество подписок пользователя
+            - subscribers_rank: Ранг пользователя по количеству подписчиков
+            """,
+        parameters=[
+            OpenApiParameter(
+                name='limit',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Количество записей на странице (макс. 100)',
+                required=False,
+                default=10
+            ),
+            OpenApiParameter(
+                name='offset',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Смещение от начала списка',
+                required=False,
+                default=0
+            )
+        ],
         responses={
-            200: GetUsersBySubscribersCountSerializer(many=True),
+            200: OpenApiResponse(
+                response=GetUsersBySubscribersCountSerializer(many=True),
+                description='OK',
+                examples=[
+                    OpenApiExample(
+                        name="Рейтинг пользователей по подписчикам",
+                        summary="Стандартный ответ с рейтингом по подписчикам",
+                        value={
+                            "count": 35,
+                            "next": None,
+                            "previous": None,
+                            "results": [
+                                {
+                                    "id": 789,
+                                    "username": "popular_user",
+                                    "subscribers_count": 125,
+                                    "subscribing_count": 45,
+                                    "subscribers_rank": 1
+                                }
+                            ]
+                        }
+                    ),
+                    OpenApiExample(
+                        name="Пустой рейтинг по подписчикам",
+                        summary="Когда нет данных для рейтинга подписчиков",
+                        value={
+                            "count": 0,
+                            "next": None,
+                            "previous": None,
+                            "results": []
+                        }
+                    )
+                ]
+            ),
             400: BAD_REQUEST_RESPONSE,
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
-            404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
         tags=['Аналитика']
@@ -151,13 +360,85 @@ class GetCategoriesByPopularityView(APIView):
 
     @extend_schema(
         summary="Получить рейтинг категорий по популярности",
-        description="Получения рейтинга категорий по популярности",
+        description="""
+            Получение рейтинга категорий по популярности
+
+            Возвращает список категорий, отсортированных по популярности и активности.
+
+            Права доступа:
+            - Требуется действительный токен
+
+            Пагинация:
+            - limit: Количество записей на странице (макс. 100)
+            - offset: Смещение от начала списка
+
+            Возвращаемые поля:
+            - id: Идентификатор категории
+            - name: Название категории
+            - total_goals: Общее количество целей в категории
+            - total_habits: Общее количество привычек в категории
+            - unique_users: Количество уникальных пользователей, использующих категорию
+            - activity_score: Общий балл активности категории
+            - rank: Ранг категории по популярности (взвешенный показатель)
+            """,
+        parameters=[
+            OpenApiParameter(
+                name='limit',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Количество записей на странице (макс. 100)',
+                required=False,
+                default=10
+            ),
+            OpenApiParameter(
+                name='offset',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Смещение от начала списка',
+                required=False,
+                default=0
+            )
+        ],
         responses={
-            200: GetCategoriesByPopularitySerializer(many=True),
+            200: OpenApiResponse(
+                response=GetCategoriesByPopularitySerializer(many=True),
+                description='OK',
+                examples=[
+                    OpenApiExample(
+                        name="Рейтинг категорий по популярности",
+                        summary="Стандартный ответ с рейтингом категорий",
+                        value={
+                            "count": 20,
+                            "next": None,
+                            "previous": None,
+                            "results": [
+                                {
+                                    "id": 1,
+                                    "name": "Спорт",
+                                    "total_goals": 150,
+                                    "total_habits": 75,
+                                    "unique_users": 45,
+                                    "activity_score": 89.5,
+                                    "rank": 1
+                                }
+                            ]
+                        }
+                    ),
+                    OpenApiExample(
+                        name="Пустой рейтинг категорий",
+                        summary="Когда нет данных для рейтинга категорий",
+                        value={
+                            "count": 0,
+                            "next": None,
+                            "previous": None,
+                            "results": []
+                        }
+                    )
+                ]
+            ),
             400: BAD_REQUEST_RESPONSE,
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
-            404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
         tags=['Аналитика']
@@ -194,13 +475,85 @@ class GetChallengesByPopularityView(APIView):
 
     @extend_schema(
         summary="Получить рейтинг челленджей по популярности",
-        description="Получения рейтинга челленджей по популярности",
+        description="""
+            Получение рейтинга челленджей по популярности
+
+            Возвращает список челленджей, отсортированных по популярности и активности.
+
+            Права доступа:
+            - Требуется действительный токен
+
+            Пагинация:
+            - limit: Количество записей на странице (макс. 100)
+            - offset: Смещение от начала списка
+
+            Возвращаемые поля:
+            - id: Идентификатор челленджа
+            - name: Название челленджа
+            - participants_count: Количество участников
+            - goals_count: Количество целей в челлендже
+            - is_active: Активен ли челлендж
+            - avg_progress_percent: Средний процент прогресса участников
+            - popularity_rank: Ранг челленджа по популярности
+            """,
+        parameters=[
+            OpenApiParameter(
+                name='limit',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Количество записей на странице (макс. 100)',
+                required=False,
+                default=10
+            ),
+            OpenApiParameter(
+                name='offset',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='Смещение от начала списка',
+                required=False,
+                default=0
+            )
+        ],
         responses={
-            200: GetChallengesByPopularitySerializer(many=True),
+            200: OpenApiResponse(
+                response=GetChallengesByPopularitySerializer(many=True),
+                description='OK',
+                examples=[
+                    OpenApiExample(
+                        name="Рейтинг челленджей по популярности",
+                        summary="Стандартный ответ с рейтингом челленджей",
+                        value={
+                            "count": 15,
+                            "next": None,
+                            "previous": None,
+                            "results": [
+                                {
+                                    "id": 1,
+                                    "name": "Марафон бега",
+                                    "participants_count": 50,
+                                    "goals_count": 60,
+                                    "is_active": True,
+                                    "avg_progress_percent": 65.3,
+                                    "popularity_rank": 1
+                                }
+                            ]
+                        }
+                    ),
+                    OpenApiExample(
+                        name="Пустой рейтинг челленджей",
+                        summary="Когда нет данных для рейтинга челленджей",
+                        value={
+                            "count": 0,
+                            "next": None,
+                            "previous": None,
+                            "results": []
+                        }
+                    )
+                ]
+            ),
             400: BAD_REQUEST_RESPONSE,
             401: UNAUTHORIZED_RESPONSE,
             403: FORBIDDEN_RESPONSE,
-            404: NOT_FOUND_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
         tags=['Аналитика']

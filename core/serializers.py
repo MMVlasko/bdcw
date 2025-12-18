@@ -166,8 +166,6 @@ class BatchUserCreateSerializer(serializers.Serializer):
         max_value=5000
     )
 
-    update_existing = serializers.BooleanField(default=False)
-
 
 class BatchOperationLogSerializer(serializers.Serializer):
     total_processed = serializers.IntegerField()

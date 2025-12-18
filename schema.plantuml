@@ -46,8 +46,8 @@ entity habits {
   title : VARCHAR(255) <<NOT NULL>>
   description : TEXT
   category_id : BIGINTEGER <<FK>>
-  frequency_type : INTEGER
-  frequency_value : INTEGER
+  frequency_type : INTEGER > 0
+  frequency_value : INTEGER > 0
   is_active : BOOLEAN <<DEFAULT true>>
   is_public : BOOLEAN <<DEFAULT true>>
   created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
@@ -112,7 +112,7 @@ entity subscriptions {
   * subscriber_id : BIGINTEGER <<PK>> <<FK>>
   * subscribing_id : BIGINTEGER <<PK>> <<FK>>
   --
-  followed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+  subscribed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
 }
 
 entity audit_logs {
@@ -123,23 +123,38 @@ entity audit_logs {
   operation : VARCHAR(10) <<CHECK>> <<NOT NULL>>
   old_values : JSONB
   new_values : JSONB
-  changed_by : INTEGER <<FK>>
+  changed_by_id : BIGINTEGER <<FK>>
   changed_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
-
 }
 
-goals  "                                 0..n   " --^ "1       "  users  : " user_id:id"
+entity batch_logs {
+  * id : BIGSERIAL <<PK>>
+  --
+  table_name : VARCHAR(100) <<NOT NULL>>
+  total_processed : INTEGER
+  successful : INTEGER
+  failed : INTEGER
+  errors : JSONB
+  created_ids : INTEGER[]
+  batches_processed : INTEGER
+  batch_size : INTEGER
+  changed_by_id : BIGINTEGER <<FK>>
+  created_at : TIMESTAMP <<NOT NULL>> <<DEFAULT NOW()>>
+}
+
+goals  "0..n" --^ "1                        "  users  : " user_id:id"
 habits    "0..n    \n" --^ "1       "  users  : "    user_id:id"
-auth_tokens    "0..n           " --^ "1          \n"  users  : " user_id:id"
-goals    "\n     0..1   " --^ "1     \n"  categories : " category_id:id  "
-habits     "     0..1    " --^ "1   "  categories : "category_id:id  "
+auth_tokens    "0..n  " --^ "1    \n"  users  : " user_id:id"
+goals    "     0..1   " --^ "1     \n"  categories : " category_id:id  "
+habits     "     0..1       " --^ "1   "  categories : "category_id:id  "
 goal_progresses  "0..n   " --^ "1   "  goals  : "  goal_id:id"
-habit_logs    "0..n     " --^ "1   \n"  habits  : "  habit_id:id   \n"
+habit_logs    "0..n   " --^ "1   \n"  habits  : "  habit_id:id   \n"
 challenge_categories    "0..n " --^ "1      "  challenges : " challenge_id:id  "
-challenge_categories     "0..n   " --^ "1\n"  categories : "  category_id:id  "
+challenge_categories     "0..n   " --^ "1\n"  categories : "category_id:id "
 goal_challenges    "0..n     " --^ "1      "  challenges : " challenge_id:id  "
-goal_challenges     "0..n " --^ " \n1           "  goals : " user_id:id  "
-subscriptions   "0..n   " --^ "1     \n "  users : " subscriber_id:id  "
-subscriptions    "0..n  " --^ " 1     "  users : " subscribing_id:id  "
-audit_logs    "0..n        " --^ " 1     "  users : " changed_by_id:id  "
+goal_challenges     "0..n " --^ "       1"  goals : " user_id:id  "
+subscriptions   "0..n     " --^ "1     \n "  users : " subscriber_id:id  "
+subscriptions    "0..n          " --^ " 1     "  users : " subscribing_id:id  "
+audit_logs    "0..n             " --^ " 1     \n"  users : " changed_by_id:id  "
+batch_logs    "0..n        " --^ " 1     \n"  users : " changed_by_id:id  "
 @enduml
