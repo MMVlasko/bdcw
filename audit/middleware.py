@@ -9,6 +9,6 @@ class AuditUserMiddleware:
         response = self.get_response(request)
 
         with connection.cursor() as cursor:
-            cursor.execute("RESET app.user_id")
+            cursor.execute('RESET app.user_id')
 
         return response

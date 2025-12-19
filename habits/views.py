@@ -7,7 +7,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiRespon
 from rest_framework import viewsets, status, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
@@ -63,8 +63,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         }.get(self.action, HabitSerializer)
 
     @extend_schema(
-        summary="Получить список привычек",
-        description="""
+        summary='Получить список привычек',
+        description='''
             Получение списка привычек
 
             Возвращает список всех привычек с пагинацией.
@@ -79,7 +79,7 @@ class HabitViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -104,37 +104,37 @@ class HabitViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список привычек",
-                        summary="Стандартный ответ со списком привычек",
+                        name='Список привычек',
+                        summary='Стандартный ответ со списком привычек',
                         value={
-                            "count": 25,
-                            "next": "http://127.0.0.1:8080/api/habits/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 25,
+                            'next': 'http://127.0.0.1:8080/api/habits/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "user_id": 123,
-                                    "title": "Утренняя зарядка",
-                                    "description": "Ежедневные упражнения",
-                                    "category_id": 5,
-                                    "frequency_type": 1,
-                                    "frequency_value": 7,
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'user_id': 123,
+                                    'title': 'Утренняя зарядка',
+                                    'description': 'Ежедневные упражнения',
+                                    'category_id': 5,
+                                    'frequency_type': 1,
+                                    'frequency_value': 7,
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список привычек",
-                        summary="Когда привычек нет",
+                        name='Пустой список привычек',
+                        summary='Когда привычек нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -149,8 +149,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать привычку",
-        description="""
+        summary='Создать привычку',
+        description='''
             Создание новой привычки
 
             Создает новую привычку для пользователя.
@@ -174,7 +174,7 @@ class HabitViewSet(viewsets.ModelViewSet):
 
             Особенности:
             - Проверяется существование пользователя и категории
-            """,
+            ''',
         request=HabitCreateSerializer,
         responses={
             201: OpenApiResponse(
@@ -182,20 +182,20 @@ class HabitViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Привычка успешно создана",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Привычка успешно создана',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 45,
-                            "user_id": 123,
-                            "title": "Чтение книг",
-                            "description": "Читать 30 минут в день",
-                            "category_id": 3,
-                            "frequency_type": 1,
-                            "frequency_value": 7,
-                            "is_active": True,
-                            "is_public": False,
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 45,
+                            'user_id': 123,
+                            'title': 'Чтение книг',
+                            'description': 'Читать 30 минут в день',
+                            'category_id': 3,
+                            'frequency_type': 1,
+                            'frequency_value': 7,
+                            'is_active': True,
+                            'is_public': False,
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -213,8 +213,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить информацию о привычке",
-        description="""
+        summary='Получить информацию о привычке',
+        description='''
             Получение информации о привычке
 
             Возвращает полную информацию о конкретной привычке по её ID.
@@ -237,44 +237,44 @@ class HabitViewSet(viewsets.ModelViewSet):
             - is_public: Видна ли привычка публично
             - created_at: Дата создания
             - updated_at: Дата обновления
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=HabitSerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Публичная привычка",
-                        summary="Информация о публичной привычке",
+                        name='Публичная привычка',
+                        summary='Информация о публичной привычке',
                         value={
-                            "id": 1,
-                            "user_id": 123,
-                            "title": "Бег по утрам",
-                            "description": "Пробежка 5 км каждое утро",
-                            "category_id": 2,
-                            "frequency_type": 1,
-                            "frequency_value": 7,
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T14:20:45Z"
+                            'id': 1,
+                            'user_id': 123,
+                            'title': 'Бег по утрам',
+                            'description': 'Пробежка 5 км каждое утро',
+                            'category_id': 2,
+                            'frequency_type': 1,
+                            'frequency_value': 7,
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T14:20:45Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Приватная привычка",
-                        summary="Информация о приватной привычке (только для владельца/админа)",
+                        name='Приватная привычка',
+                        summary='Информация о приватной привычке (только для владельца/админа)',
                         value={
-                            "id": 2,
-                            "user_id": 123,
-                            "title": "Личные заметки",
-                            "description": "Ежедневное ведение дневника",
-                            "category_id": 4,
-                            "frequency_type": 1,
-                            "frequency_value": 7,
-                            "is_active": True,
-                            "is_public": False,
-                            "created_at": "2024-01-12T11:45:20Z",
-                            "updated_at": "2024-01-15T16:30:00Z"
+                            'id': 2,
+                            'user_id': 123,
+                            'title': 'Личные заметки',
+                            'description': 'Ежедневное ведение дневника',
+                            'category_id': 4,
+                            'frequency_type': 1,
+                            'frequency_value': 7,
+                            'is_active': True,
+                            'is_public': False,
+                            'created_at': '2024-01-12T11:45:20Z',
+                            'updated_at': '2024-01-15T16:30:00Z'
                         }
                     )
                 ]
@@ -290,8 +290,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить информацию о привычке",
-        description="""
+        summary='Обновить информацию о привычке',
+        description='''
             Полное обновление информации о привычке
 
             Заменяет все данные привычки новыми значениями. Все поля обязательны.
@@ -318,7 +318,7 @@ class HabitViewSet(viewsets.ModelViewSet):
             - Поле user_id обновить нельзя
             - Поле category_id обновить нельзя
             - Поле updated_at обновляется автоматически
-            """,
+            ''',
         request=HabitUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -326,20 +326,20 @@ class HabitViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Привычка успешно обновлена",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Привычка успешно обновлена',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 1,
-                            "user_id": 123,
-                            "title": "Обновленное название",
-                            "description": "Обновленное описание привычки",
-                            "category_id": 2,
-                            "frequency_type": 2,
-                            "frequency_value": 14,
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 1,
+                            'user_id': 123,
+                            'title': 'Обновленное название',
+                            'description': 'Обновленное описание привычки',
+                            'category_id': 2,
+                            'frequency_type': 2,
+                            'frequency_value': 14,
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -356,8 +356,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить информацию о привычке",
-        description="""
+        summary='Частично обновить информацию о привычке',
+        description='''
             Частичное обновление информации о привычке
 
             Обновляет только указанные поля привычки. Не указанные поля остаются без изменений.
@@ -379,7 +379,7 @@ class HabitViewSet(viewsets.ModelViewSet):
             - Можно обновлять любое подмножество полей
             - Не требуется передавать все поля
             - Нельзя изменить user_id и category_id
-            """,
+            ''',
         request=HabitPartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -387,37 +387,37 @@ class HabitViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновлено только описание",
-                        summary="Обновлено одно поле",
+                        name='Обновлено только описание',
+                        summary='Обновлено одно поле',
                         value={
-                            "id": 1,
-                            "user_id": 123,
-                            "title": "Бег по утрам",
-                            "description": "Новое подробное описание",
-                            "category_id": 2,
-                            "frequency_type": 1,
-                            "frequency_value": 7,
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 1,
+                            'user_id': 123,
+                            'title': 'Бег по утрам',
+                            'description': 'Новое подробное описание',
+                            'category_id': 2,
+                            'frequency_type': 1,
+                            'frequency_value': 7,
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновлено несколько полей",
-                        summary="Обновлены title и is_active",
+                        name='Обновлено несколько полей',
+                        summary='Обновлены title и is_active',
                         value={
-                            "id": 2,
-                            "user_id": 123,
-                            "title": "Новое название",
-                            "description": "Старое описание",
-                            "category_id": 3,
-                            "frequency_type": 1,
-                            "frequency_value": 7,
-                            "is_active": False,
-                            "is_public": True,
-                            "created_at": "2024-01-12T11:45:20Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 2,
+                            'user_id': 123,
+                            'title': 'Новое название',
+                            'description': 'Старое описание',
+                            'category_id': 3,
+                            'frequency_type': 1,
+                            'frequency_value': 7,
+                            'is_active': False,
+                            'is_public': True,
+                            'created_at': '2024-01-12T11:45:20Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -434,8 +434,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить привычку",
-        description="""
+        summary='Удалить привычку',
+        description='''
             Удаление привычки
 
             Полностью удаляет привычку и все связанные логи привычки из системы.
@@ -448,7 +448,7 @@ class HabitViewSet(viewsets.ModelViewSet):
             Последствия удаления:
             - Безвозвратное удаление привычки
             - Каскадное удаление всех связанных логов привычки
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -464,8 +464,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить привычки пользователя",
-        description="""
+        summary='Получить привычки пользователя',
+        description='''
             Получение привычек пользователя
 
             Получить список всех привычек конкретного пользователя по его ID.
@@ -479,7 +479,7 @@ class HabitViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='user_id',
@@ -510,37 +510,37 @@ class HabitViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список привычек пользователя",
-                        summary="Стандартный ответ со списком привычек",
+                        name='Список привычек пользователя',
+                        summary='Стандартный ответ со списком привычек',
                         value={
-                            "count": 8,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 8,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "user_id": 123,
-                                    "title": "Утренняя зарядка",
-                                    "description": "Ежедневные упражнения",
-                                    "category_id": 5,
-                                    "frequency_type": 1,
-                                    "frequency_value": 7,
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'user_id': 123,
+                                    'title': 'Утренняя зарядка',
+                                    'description': 'Ежедневные упражнения',
+                                    'category_id': 5,
+                                    'frequency_type': 1,
+                                    'frequency_value': 7,
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список привычек",
-                        summary="Когда у пользователя нет привычек",
+                        name='Пустой список привычек',
+                        summary='Когда у пользователя нет привычек',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -572,8 +572,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить привычки по категории",
-        description="""
+        summary='Получить привычки по категории',
+        description='''
             Получение привычек по категории
 
             Получить список всех привычек с конкретной категорией по её ID.
@@ -586,7 +586,7 @@ class HabitViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='category_id',
@@ -617,37 +617,37 @@ class HabitViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список привычек категории",
-                        summary="Стандартный ответ со списком привычек",
+                        name='Список привычек категории',
+                        summary='Стандартный ответ со списком привычек',
                         value={
-                            "count": 15,
-                            "next": "http://127.0.0.1:8080/api/habits/category/5/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 15,
+                            'next': 'http://127.0.0.1:8080/api/habits/category/5/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 3,
-                                    "user_id": 456,
-                                    "title": "Чтение книг",
-                                    "description": "30 минут в день",
-                                    "category_id": 5,
-                                    "frequency_type": 1,
-                                    "frequency_value": 7,
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2024-01-12T11:45:20Z",
-                                    "updated_at": "2024-01-15T16:30:00Z"
+                                    'id': 3,
+                                    'user_id': 456,
+                                    'title': 'Чтение книг',
+                                    'description': '30 минут в день',
+                                    'category_id': 5,
+                                    'frequency_type': 1,
+                                    'frequency_value': 7,
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2024-01-12T11:45:20Z',
+                                    'updated_at': '2024-01-15T16:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список привычек",
-                        summary="Когда в категории нет привычек",
+                        name='Пустой список привычек',
+                        summary='Когда в категории нет привычек',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -703,8 +703,8 @@ class HabitLogViewSet(viewsets.ModelViewSet):
         }.get(self.action, HabitLogSerializer)
 
     @extend_schema(
-        summary="Список логов соблюдения привычки",
-        description="""
+        summary='Список логов соблюдения привычки',
+        description='''
             Получение списка логов соблюдения привычки
 
             Получить список всех логов соблюдения привычек по всем привычкам всех пользователей.
@@ -716,7 +716,7 @@ class HabitLogViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -741,33 +741,33 @@ class HabitLogViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список логов привычек",
-                        summary="Стандартный ответ со списком логов",
+                        name='Список логов привычек',
+                        summary='Стандартный ответ со списком логов',
                         value={
-                            "count": 150,
-                            "next": "http://127.0.0.1:8080/api/habit-logs/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 150,
+                            'next': 'http://127.0.0.1:8080/api/habit-logs/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "habit_id": 5,
-                                    "log_date": "2024-01-15",
-                                    "status": "completed",
-                                    "notes": "Выполнено успешно",
-                                    "created_at": "2024-01-15T09:30:00Z",
-                                    "updated_at": "2024-01-15T09:30:00Z"
+                                    'id': 1,
+                                    'habit_id': 5,
+                                    'log_date': '2024-01-15',
+                                    'status': 'completed',
+                                    'notes': 'Выполнено успешно',
+                                    'created_at': '2024-01-15T09:30:00Z',
+                                    'updated_at': '2024-01-15T09:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список логов",
-                        summary="Когда логов привычек нет",
+                        name='Пустой список логов',
+                        summary='Когда логов привычек нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -782,8 +782,8 @@ class HabitLogViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать новый лог соблюдения привычки",
-        description="""
+        summary='Создать новый лог соблюдения привычки',
+        description='''
             Создание нового лога соблюдения привычки
 
             Создает новый лог выполнения привычки.
@@ -800,7 +800,7 @@ class HabitLogViewSet(viewsets.ModelViewSet):
 
             Опциональные поля:
             - notes: Примечания к выполнению (текст, может быть null)
-            """,
+            ''',
         request=HabitLogCreateSerializer,
         responses={
             201: OpenApiResponse(
@@ -808,16 +808,16 @@ class HabitLogViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Лог привычки успешно создан",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Лог привычки успешно создан',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 45,
-                            "habit_id": 3,
-                            "log_date": "2024-01-15",
-                            "status": "completed",
-                            "notes": "Выполнено успешно",
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 45,
+                            'habit_id': 3,
+                            'log_date': '2024-01-15',
+                            'status': 'completed',
+                            'notes': 'Выполнено успешно',
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -831,13 +831,15 @@ class HabitLogViewSet(viewsets.ModelViewSet):
     )
     def create(self, request, *args, **kwargs):
         habit = Habit.objects.filter(id=request.data['habit']).first()
+        if habit is None:
+            raise ValidationError({'habit': ['Привычка не найдена']})
         if habit.user != request.user and request.user.role != User.UserRole.ADMIN:
             raise PermissionDenied('Нельзя создать лог привычки у другого пользователя')
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить лог соблюдения привычки",
-        description="""
+        summary='Получить лог соблюдения привычки',
+        description='''
             Получение информации о логе соблюдения привычки
 
             Возвращает полную информацию о конкретном логе привычки по его ID.
@@ -856,36 +858,36 @@ class HabitLogViewSet(viewsets.ModelViewSet):
             - notes: Примечания
             - created_at: Дата создания лога
             - updated_at: Дата обновления лога
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=HabitLogSerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Лог привычки",
-                        summary="Информация о логе привычки",
+                        name='Лог привычки',
+                        summary='Информация о логе привычки',
                         value={
-                            "id": 1,
-                            "habit_id": 3,
-                            "log_date": "2024-01-15",
-                            "status": "completed",
-                            "notes": "Выполнено успешно",
-                            "created_at": "2024-01-15T09:30:00Z",
-                            "updated_at": "2024-01-15T09:30:00Z"
+                            'id': 1,
+                            'habit_id': 3,
+                            'log_date': '2024-01-15',
+                            'status': 'completed',
+                            'notes': 'Выполнено успешно',
+                            'created_at': '2024-01-15T09:30:00Z',
+                            'updated_at': '2024-01-15T09:30:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Лог с пропуском",
-                        summary="Лог со статусом skipped",
+                        name='Лог с пропуском',
+                        summary='Лог со статусом skipped',
                         value={
-                            "id": 2,
-                            "habit_id": 3,
-                            "log_date": "2024-01-14",
-                            "status": "skipped",
-                            "notes": "Был занят",
-                            "created_at": "2024-01-14T09:30:00Z",
-                            "updated_at": "2024-01-14T09:30:00Z"
+                            'id': 2,
+                            'habit_id': 3,
+                            'log_date': '2024-01-14',
+                            'status': 'skipped',
+                            'notes': 'Был занят',
+                            'created_at': '2024-01-14T09:30:00Z',
+                            'updated_at': '2024-01-14T09:30:00Z'
                         }
                     )
                 ]
@@ -899,13 +901,15 @@ class HabitLogViewSet(viewsets.ModelViewSet):
     )
     def retrieve(self, request, *args, **kwargs):
         habit = Habit.objects.filter(id=request.data['habit']).first()
+        if habit is None:
+            raise ValidationError({'habit': ['Привычка не найдена']})
         if habit.user != request.user and not habit.is_public and request.user.role != User.UserRole.ADMIN:
             raise PermissionDenied('Нельзя получить лог приватной привычки у другого пользователя')
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить лог соблюдения привычки",
-        description="""
+        summary='Обновить лог соблюдения привычки',
+        description='''
             Полное обновление информации о логе соблюдения привычки
 
             Заменяет все данные лога привычки новыми значениями. Все поля обязательны.
@@ -926,7 +930,7 @@ class HabitLogViewSet(viewsets.ModelViewSet):
             - Проверка допустимых значений статуса
             - Проверка прав доступа
             - Поле habit_id обновить нельзя
-            """,
+            ''',
         request=HabitLogUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -934,16 +938,16 @@ class HabitLogViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Лог привычки успешно обновлен",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Лог привычки успешно обновлен',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 1,
-                            "habit_id": 3,
-                            "log_date": "2024-01-16",
-                            "status": "skipped",
-                            "notes": "Перенес на завтра",
-                            "created_at": "2024-01-15T09:30:00Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 1,
+                            'habit_id': 3,
+                            'log_date': '2024-01-16',
+                            'status': 'skipped',
+                            'notes': 'Перенес на завтра',
+                            'created_at': '2024-01-15T09:30:00Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -960,8 +964,8 @@ class HabitLogViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить лог соблюдения привычки",
-        description="""
+        summary='Частично обновить лог соблюдения привычки',
+        description='''
             Частичное обновление информации о логе соблюдения привычки
 
             Обновляет только указанные поля лога привычки. Не указанные поля остаются без изменений.
@@ -981,7 +985,7 @@ class HabitLogViewSet(viewsets.ModelViewSet):
             - Не требуется передавать все поля
             - Поле updated_at обновляется автоматически
             - Нельзя изменить habit_id
-            """,
+            ''',
         request=HabitLogPartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -989,29 +993,29 @@ class HabitLogViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновлен только статус",
-                        summary="Обновлено одно поле",
+                        name='Обновлен только статус',
+                        summary='Обновлено одно поле',
                         value={
-                            "id": 1,
-                            "habit_id": 3,
-                            "log_date": "2024-01-15",
-                            "status": "failed",
-                            "notes": "Выполнено успешно",
-                            "created_at": "2024-01-15T09:30:00Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 1,
+                            'habit_id': 3,
+                            'log_date': '2024-01-15',
+                            'status': 'failed',
+                            'notes': 'Выполнено успешно',
+                            'created_at': '2024-01-15T09:30:00Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновлены дата и примечания",
-                        summary="Обновлено несколько полей",
+                        name='Обновлены дата и примечания',
+                        summary='Обновлено несколько полей',
                         value={
-                            "id": 2,
-                            "habit_id": 3,
-                            "log_date": "2024-01-14",
-                            "status": "skipped",
-                            "notes": "Новые примечания",
-                            "created_at": "2024-01-14T09:30:00Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 2,
+                            'habit_id': 3,
+                            'log_date': '2024-01-14',
+                            'status': 'skipped',
+                            'notes': 'Новые примечания',
+                            'created_at': '2024-01-14T09:30:00Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -1028,8 +1032,8 @@ class HabitLogViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить лог соблюдения привычки",
-        description="""
+        summary='Удалить лог соблюдения привычки',
+        description='''
             Удаление лога соблюдения привычки
 
             Полностью удаляет лог выполнения привычки из системы.
@@ -1041,7 +1045,7 @@ class HabitLogViewSet(viewsets.ModelViewSet):
 
             Последствия удаления:
             - Безвозвратное удаление лога привычки
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -1057,8 +1061,8 @@ class HabitLogViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить логи соблюдения привычки",
-        description="""
+        summary='Получить логи соблюдения привычки',
+        description='''
             Получение логов соблюдения привычки
 
             Получить список всех логов по конкретной привычке по её ID.
@@ -1072,7 +1076,7 @@ class HabitLogViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='habit_id',
@@ -1103,33 +1107,33 @@ class HabitLogViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список логов привычки",
-                        summary="Стандартный ответ со списком логов",
+                        name='Список логов привычки',
+                        summary='Стандартный ответ со списком логов',
                         value={
-                            "count": 30,
-                            "next": "http://127.0.0.1:8080/api/habit-logs/habit/3/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 30,
+                            'next': 'http://127.0.0.1:8080/api/habit-logs/habit/3/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 15,
-                                    "habit_id": 3,
-                                    "log_date": "2024-01-15",
-                                    "status": "completed",
-                                    "notes": "Выполнено успешно",
-                                    "created_at": "2024-01-15T09:30:00Z",
-                                    "updated_at": "2024-01-15T09:30:00Z"
+                                    'id': 15,
+                                    'habit_id': 3,
+                                    'log_date': '2024-01-15',
+                                    'status': 'completed',
+                                    'notes': 'Выполнено успешно',
+                                    'created_at': '2024-01-15T09:30:00Z',
+                                    'updated_at': '2024-01-15T09:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список логов",
-                        summary="Когда у привычки нет логов",
+                        name='Пустой список логов',
+                        summary='Когда у привычки нет логов',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -1163,8 +1167,8 @@ class BatchHabitCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка привычек",
-        description="""
+        summary='Батчевая загрузка привычек',
+        description='''
             Массовое создание привычек
 
             Создание нескольких привычек за одну операцию с использованием bulk_create.
@@ -1191,7 +1195,7 @@ class BatchHabitCreateView(APIView):
             - user_id и category_id должны существовать
             - title должен быть уникальным для каждого пользователя
             - frequency_type и frequency_value должны быть положительными числами
-            """,
+            ''',
         request=BatchHabitCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -1199,52 +1203,52 @@ class BatchHabitCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все привычки созданы",
+                        name='Полностью успешная операция',
+                        summary='Все привычки созданы',
                         value={
-                            "total_processed": 100,
-                            "successful": 100,
-                            "failed": 0,
-                            "batch_size": 50,
-                            "errors": [],
-                            "created_ids": [101, 102, 103, 104, 105],
-                            "batches_processed": 2
+                            'total_processed': 100,
+                            'successful': 100,
+                            'failed': 0,
+                            'batch_size': 50,
+                            'errors': [],
+                            'created_ids': [101, 102, 103, 104, 105],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые привычки не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые привычки не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "user_id": 123,
-                                        "title": "Бег по утрам",
-                                        "category_id": 2,
-                                        "frequency_type": 1,
-                                        "frequency_value": 7
+                                    'data': {
+                                        'user_id': 123,
+                                        'title': 'Бег по утрам',
+                                        'category_id': 2,
+                                        'frequency_type': 1,
+                                        'frequency_value': 7
                                     },
-                                    "error": "Привычка с title 'Бег по утрам' для пользователя 123 уже существует",
-                                    "type": "duplicate_error"
+                                    'error': 'Привычка с title "Бег по утрам" для пользователя 123 уже существует',
+                                    'type': 'duplicate_error'
                                 },
                                 {
-                                    "data": {
-                                        "user_id": 999,
-                                        "title": "Чтение",
-                                        "category_id": 3,
-                                        "frequency_type": 1,
-                                        "frequency_value": 7
+                                    'data': {
+                                        'user_id': 999,
+                                        'title': 'Чтение',
+                                        'category_id': 3,
+                                        'frequency_type': 1,
+                                        'frequency_value': 7
                                     },
-                                    "error": "Пользователь с ID 999 не существует",
-                                    "type": "reference_error"
+                                    'error': 'Пользователь с ID 999 не существует',
+                                    'type': 'reference_error'
                                 }
                             ],
-                            "created_ids": [106, 107, 108],
-                            "batches_processed": 1
+                            'created_ids': [106, 107, 108],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -1299,7 +1303,7 @@ class BatchHabitCreateView(APIView):
                             missing_fields.append(field)
 
                     if missing_fields:
-                        raise ValueError(f"Обязательные поля отсутствуют: {', '.join(missing_fields)}")
+                        raise ValueError(f'Обязательные поля отсутствуют: {", ".join(missing_fields)}')
 
                     user_id = processed_data['user_id']
                     title = processed_data['title']
@@ -1308,76 +1312,76 @@ class BatchHabitCreateView(APIView):
                     category_id = processed_data['category_id']
 
                     if not isinstance(title, str):
-                        raise ValueError(f"title должен быть строкой, получено: {title}")
+                        raise ValueError(f'title должен быть строкой, получено: {title}')
 
                     title = title.strip()
                     if not title:
-                        raise ValueError("title не может быть пустой строкой")
+                        raise ValueError('title не может быть пустой строкой')
 
                     if isinstance(user_id, str):
                         try:
                             processed_data['user_id'] = int(user_id)
                         except ValueError:
-                            raise ValueError(f"user_id должен быть целым числом, получено: {user_id}")
+                            raise ValueError(f'user_id должен быть целым числом, получено: {user_id}')
                     elif not isinstance(user_id, int):
-                        raise ValueError(f"user_id должен быть целым числом, получено: {user_id}")
+                        raise ValueError(f'user_id должен быть целым числом, получено: {user_id}')
 
                     if isinstance(category_id, str):
                         try:
                             processed_data['category_id'] = int(category_id)
                         except ValueError:
-                            raise ValueError(f"category_id должен быть целым числом, получено: {category_id}")
+                            raise ValueError(f'category_id должен быть целым числом, получено: {category_id}')
                     elif not isinstance(category_id, int):
-                        raise ValueError(f"category_id должен быть целым числом, получено: {category_id}")
+                        raise ValueError(f'category_id должен быть целым числом, получено: {category_id}')
 
                     # frequency_type - integer not null
                     if isinstance(frequency_type, str):
                         try:
                             processed_data['frequency_type'] = int(frequency_type)
                         except ValueError:
-                            raise ValueError(f"frequency_type должен быть целым числом, получено: {frequency_type}")
+                            raise ValueError(f'frequency_type должен быть целым числом, получено: {frequency_type}')
                     elif not isinstance(frequency_type, int):
-                        raise ValueError(f"frequency_type должен быть целым числом, получено: {frequency_type}")
+                        raise ValueError(f'frequency_type должен быть целым числом, получено: {frequency_type}')
 
                     if processed_data['frequency_type'] <= 0:
-                        raise ValueError(f"frequency_type должен быть целым положительным числом,"
-                                         f" получено: {frequency_type}")
+                        raise ValueError(f'frequency_type должен быть целым положительным числом,'
+                                         f' получено: {frequency_type}')
 
                     if isinstance(frequency_value, str):
                         try:
                             processed_data['frequency_value'] = int(frequency_value)
                         except ValueError:
-                            raise ValueError(f"frequency_value должен быть целым числом, получено: {frequency_value}")
+                            raise ValueError(f'frequency_value должен быть целым числом, получено: {frequency_value}')
                     elif not isinstance(frequency_value, int):
-                        raise ValueError(f"frequency_value должен быть целым числом, получено: {frequency_value}")
+                        raise ValueError(f'frequency_value должен быть целым числом, получено: {frequency_value}')
 
                     if processed_data['frequency_value'] <= 0:
-                        raise ValueError(f"frequency_value должен быть целым положительным числом,"
-                                         f" получено: {frequency_value}")
+                        raise ValueError(f'frequency_value должен быть целым положительным числом,'
+                                         f' получено: {frequency_value}')
 
-                    combination = f"{processed_data['user_id']}:{title}"
+                    combination = f'{processed_data["user_id"]}:{title}'
                     if combination in seen_combinations:
                         raise ValueError(
-                            f"Привычка с title '{title}' для пользователя {user_id} дублируется в запросе")
+                            f'Привычка с title "{title}" для пользователя {user_id} дублируется в запросе')
                     seen_combinations.add(combination)
 
                     if processed_data['user_id'] not in user_ids:
-                        raise ValueError(f"Пользователь с ID {processed_data['user_id']} не существует")
+                        raise ValueError(f'Пользователь с ID {processed_data["user_id"]} не существует')
 
                     if processed_data['category_id'] not in category_ids:
-                        raise ValueError(f"Категория с ID {category_id} не существует")
+                        raise ValueError(f'Категория с ID {category_id} не существует')
 
                     if 'is_active' in processed_data:
                         is_active = processed_data['is_active']
                         if not isinstance(is_active, bool):
-                            raise ValueError(f"is_active должен быть булевым значением, получено: {is_active}")
+                            raise ValueError(f'is_active должен быть булевым значением, получено: {is_active}')
                     else:
                         processed_data['is_active'] = True
 
                     if 'is_public' in processed_data:
                         is_public = processed_data['is_public']
                         if not isinstance(is_public, bool):
-                            raise ValueError(f"is_public должен быть булевым значением, получено: {is_public}")
+                            raise ValueError(f'is_public должен быть булевым значением, получено: {is_public}')
                     else:
                         processed_data['is_public'] = True
 
@@ -1385,7 +1389,7 @@ class BatchHabitCreateView(APIView):
                     if 'description' in processed_data and processed_data['description'] is not None:
                         if not isinstance(processed_data['description'], str):
                             raise ValueError(
-                                f"description должен быть строкой, получено: {processed_data['description']}")
+                                f'description должен быть строкой, получено: {processed_data["description"]}')
 
                     validated_habits_data.append({
                         'index': i,
@@ -1431,7 +1435,7 @@ class BatchHabitCreateView(APIView):
 
                 existing_qs = Habit.objects.filter(q_objects)
                 for habit in existing_qs:
-                    key = f"{habit.user_id}:{habit.title}"
+                    key = f'{habit.user_id}:{habit.title}'
                     existing_habits[key] = habit
 
             filtered_habits = []
@@ -1439,7 +1443,7 @@ class BatchHabitCreateView(APIView):
             for item in validated_habits_data:
                 user_id = item['user_id']
                 title = item['title']
-                key = f"{user_id}:{title}"
+                key = f'{user_id}:{title}'
 
                 if key in existing_habits:
                     operation_log['failed'] += 1
@@ -1546,7 +1550,7 @@ class BatchHabitCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE habits DISABLE TRIGGER audit_habits_trigger")
+                    cursor.execute('ALTER TABLE habits DISABLE TRIGGER audit_habits_trigger')
 
                 try:
                     with transaction.atomic():
@@ -1579,7 +1583,7 @@ class BatchHabitCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute("ALTER TABLE habits ENABLE TRIGGER audit_habits_trigger")
+                        cursor.execute('ALTER TABLE habits ENABLE TRIGGER audit_habits_trigger')
 
                 operation_log['batches_processed'] += 1
 
@@ -1612,8 +1616,8 @@ class BatchHabitLogCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка логов привычек",
-        description="""
+        summary='Батчевая загрузка логов привычек',
+        description='''
             Массовое создание логов привычек
 
             Создание нескольких логов привычек за одну операцию с использованием bulk_create.
@@ -1636,7 +1640,7 @@ class BatchHabitLogCreateView(APIView):
             - habit_id должен существовать
             - log_date должен быть в правильном формате
             - status должен быть одним из допустимых значений
-            """,
+            ''',
         request=BatchHabitLogCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -1644,48 +1648,48 @@ class BatchHabitLogCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все логи созданы",
+                        name='Полностью успешная операция',
+                        summary='Все логи созданы',
                         value={
-                            "total_processed": 50,
-                            "successful": 50,
-                            "failed": 0,
-                            "batch_size": 25,
-                            "errors": [],
-                            "created_ids": [201, 202, 203, 204, 205],
-                            "batches_processed": 2
+                            'total_processed': 50,
+                            'successful': 50,
+                            'failed': 0,
+                            'batch_size': 25,
+                            'errors': [],
+                            'created_ids': [201, 202, 203, 204, 205],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые логи не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые логи не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "habit_id": 3,
-                                        "log_date": "2024-01-15",
-                                        "status": "completed"
+                                    'data': {
+                                        'habit_id': 3,
+                                        'log_date': '2024-01-15',
+                                        'status': 'completed'
                                     },
-                                    "error": "Привычка с ID 3 не существует",
-                                    "type": "reference_error"
+                                    'error': 'Привычка с ID 3 не существует',
+                                    'type': 'reference_error'
                                 },
                                 {
-                                    "data": {
-                                        "habit_id": 5,
-                                        "log_date": "неправильная дата",
-                                        "status": "completed"
+                                    'data': {
+                                        'habit_id': 5,
+                                        'log_date': 'неправильная дата',
+                                        'status': 'completed'
                                     },
-                                    "error": "log_date должен быть в формате YYYY-MM-DD, получено: неправильная дата",
-                                    "type": "validation_error"
+                                    'error': 'log_date должен быть в формате YYYY-MM-DD, получено: неправильная дата',
+                                    'type': 'validation_error'
                                 }
                             ],
-                            "created_ids": [206, 207, 208],
-                            "batches_processed": 1
+                            'created_ids': [206, 207, 208],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -1738,7 +1742,7 @@ class BatchHabitLogCreateView(APIView):
                             missing_fields.append(field)
 
                     if missing_fields:
-                        raise ValueError(f"Обязательные поля отсутствуют: {', '.join(missing_fields)}")
+                        raise ValueError(f'Обязательные поля отсутствуют: {", ".join(missing_fields)}')
 
                     habit_id = processed_data['habit_id']
                     log_date = processed_data['log_date']
@@ -1748,39 +1752,39 @@ class BatchHabitLogCreateView(APIView):
                         try:
                             processed_data['habit_id'] = int(habit_id)
                         except ValueError:
-                            raise ValueError(f"habit_id должен быть целым числом, получено: {habit_id}")
+                            raise ValueError(f'habit_id должен быть целым числом, получено: {habit_id}')
                     elif not isinstance(habit_id, int):
-                        raise ValueError(f"habit_id должен быть целым числом, получено: {habit_id}")
+                        raise ValueError(f'habit_id должен быть целым числом, получено: {habit_id}')
 
                     # status - varchar(20) not null
                     if not isinstance(status_value, str):
-                        raise ValueError(f"status должен быть строкой, получено: {status_value}")
+                        raise ValueError(f'status должен быть строкой, получено: {status_value}')
 
                     status_value = status_value.strip()
                     if not status_value:
-                        raise ValueError("status не может быть пустой строкой")
+                        raise ValueError('status не может быть пустой строкой')
 
                     valid_statuses = ['completed', 'skipped', 'failed']
                     if status_value not in valid_statuses:
-                        raise ValueError(f"status должен быть одним из: {', '.join(valid_statuses)}, "
-                                         f"получено: {status_value}")
+                        raise ValueError(f'status должен быть одним из: {", ".join(valid_statuses)}, '
+                                         f'получено: {status_value}')
 
                     if isinstance(log_date, str):
                         try:
                             processed_data['log_date'] = datetime.strptime(log_date, '%Y-%m-%d').date()
                         except ValueError:
-                            raise ValueError(f"log_date должен быть в формате YYYY-MM-DD, получено: {log_date}")
+                            raise ValueError(f'log_date должен быть в формате YYYY-MM-DD, получено: {log_date}')
                     elif not isinstance(log_date, date):
-                        raise ValueError(f"log_date должен быть датой, получено: {log_date}")
+                        raise ValueError(f'log_date должен быть датой, получено: {log_date}')
 
                     if processed_data['habit_id'] not in habit_ids:
-                        raise ValueError(f"Привычка с ID {processed_data['habit_id']} не существует")
+                        raise ValueError(f'Привычка с ID {processed_data["habit_id"]} не существует')
 
                     # notes - text (может быть null)
                     if 'notes' in processed_data and processed_data['notes'] is not None:
                         if not isinstance(processed_data['notes'], str):
                             raise ValueError(
-                                f"notes должен быть строкой, получено: {processed_data['notes']}")
+                                f'notes должен быть строкой, получено: {processed_data["notes"]}')
 
                     validated_habit_logs_data.append({
                         'index': i,
@@ -1875,7 +1879,7 @@ class BatchHabitLogCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE habit_logs DISABLE TRIGGER audit_habit_logs_trigger")
+                    cursor.execute('ALTER TABLE habit_logs DISABLE TRIGGER audit_habit_logs_trigger')
 
                 try:
                     with transaction.atomic():
@@ -1908,7 +1912,7 @@ class BatchHabitLogCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute("ALTER TABLE habit_logs ENABLE TRIGGER audit_habit_logs_trigger")
+                        cursor.execute('ALTER TABLE habit_logs ENABLE TRIGGER audit_habit_logs_trigger')
 
                 operation_log['batches_processed'] += 1
 

@@ -31,8 +31,8 @@ class SubscriptionCreateView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary="Создать подписку",
-        description="""
+        summary='оздать подписку',
+        description='''
             Создание подписки
 
             Подписаться на другого пользователя.
@@ -46,7 +46,7 @@ class SubscriptionCreateView(APIView):
             - Нельзя подписаться на самого себя
             - Нельзя подписаться на пользователя с приватным профилем (если вы не администратор)
             - Нельзя создать дублирующую подписку
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='subscriber_id',
@@ -69,12 +69,12 @@ class SubscriptionCreateView(APIView):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Подписка успешно создана",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Подписка успешно создана',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "subscriber": 123,
-                            "subscribing": 456,
-                            "subscribed_at": "2024-01-15T10:30:00Z"
+                            'subscriber': 123,
+                            'subscribing': 456,
+                            'subscribed_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -162,8 +162,8 @@ class SubscriptionDeleteView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary="Удалить подписку",
-        description="""
+        summary='Удалить подписку',
+        description='''
             Удаление подписки
 
             Отписаться от пользователя.
@@ -178,7 +178,7 @@ class SubscriptionDeleteView(APIView):
             - Проверка существования подписки
             - Проверка прав доступа
             - Удаление записи подписки
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='subscriber_id',
@@ -268,8 +268,8 @@ class UserSubscriptionsListView(APIView):
     pagination_class = SubscriptionLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить подписки пользователя",
-        description="""
+        summary='Получить подписки пользователя',
+        description='''
             Получение подписок пользователя
 
             Получить список пользователей, на которых подписан данный пользователь.
@@ -287,7 +287,7 @@ class UserSubscriptionsListView(APIView):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='user_id',
@@ -318,36 +318,36 @@ class UserSubscriptionsListView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список подписок",
-                        summary="Стандартный ответ со списком пользователей",
+                        name='Список подписок',
+                        summary='Стандартный ответ со списком пользователей',
                         value={
-                            "count": 15,
-                            "next": "http://127.0.0.1:8080/api/subscriptions/123/subscriptions/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 15,
+                            'next': 'http://127.0.0.1:8080/api/subscriptions/123/subscriptions/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 456,
-                                    "username": "user456",
-                                    "first_name": "Иван",
-                                    "last_name": "Иванов",
-                                    "description": "Публичный профиль",
-                                    "role": "user",
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 456,
+                                    'username': 'user456',
+                                    'first_name': 'Иван',
+                                    'last_name': 'Иванов',
+                                    'description': 'Публичный профиль',
+                                    'role': 'user',
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список подписок",
-                        summary="Когда пользователь ни на кого не подписан",
+                        name='Пустой список подписок',
+                        summary='Когда пользователь ни на кого не подписан',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -393,8 +393,8 @@ class UserSubscribersListView(APIView):
     pagination_class = SubscriptionLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить подписчиков пользователя",
-        description="""
+        summary='Получить подписчиков пользователя',
+        description='''
             Получение подписчиков пользователя
 
             Получить список пользователей, которые подписаны на данного пользователя.
@@ -412,7 +412,7 @@ class UserSubscribersListView(APIView):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='user_id',
@@ -443,36 +443,36 @@ class UserSubscribersListView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список подписчиков",
-                        summary="Стандартный ответ со списком подписчиков",
+                        name='Список подписчиков',
+                        summary='Стандартный ответ со списком подписчиков',
                         value={
-                            "count": 8,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 8,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 789,
-                                    "username": "user789",
-                                    "first_name": "Мария",
-                                    "last_name": "Петрова",
-                                    "description": "Публичный профиль",
-                                    "role": "user",
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2024-01-12T11:45:20Z",
-                                    "updated_at": "2024-01-15T16:30:00Z"
+                                    'id': 789,
+                                    'username': 'user789',
+                                    'first_name': 'Мария',
+                                    'last_name': 'Петрова',
+                                    'description': 'Публичный профиль',
+                                    'role': 'user',
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2024-01-12T11:45:20Z',
+                                    'updated_at': '2024-01-15T16:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список подписчиков",
-                        summary="Когда на пользователя никто не подписан",
+                        name='Пустой список подписчиков',
+                        summary='Когда на пользователя никто не подписан',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -517,8 +517,8 @@ class CheckSubscriptionView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary="Проверить подписку",
-        description="""
+        summary='Проверить подписку',
+        description='''
             Проверка подписки
 
             Проверить, подписан ли один пользователь на другого.
@@ -535,7 +535,7 @@ class CheckSubscriptionView(APIView):
             Особенности:
             - Если подписка существует, возвращается информация о ней
             - Если подписка не существует, возвращается is_subscribed: false
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='subscriber_id',
@@ -557,18 +557,18 @@ class CheckSubscriptionView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Подписка существует",
-                        summary="Пользователь подписан",
+                        name='Подписка существует',
+                        summary='Пользователь подписан',
                         value={
-                            "is_subscribed": True,
-                            "subscribed_at": "2024-01-15T10:30:00Z"
+                            'is_subscribed': True,
+                            'subscribed_at': '2024-01-15T10:30:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Подписка не существует",
-                        summary="Пользователь не подписан",
+                        name='Подписка не существует',
+                        summary='Пользователь не подписан',
                         value={
-                            "is_subscribed": False
+                            'is_subscribed': False
                         }
                     )
                 ]
@@ -636,8 +636,8 @@ class BatchSubscriptionCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка подписок",
-        description="""
+        summary='Батчевая загрузка подписок',
+        description='''
             Массовое создание подписок
 
             Создание нескольких подписок за одну операцию с использованием bulk_create.
@@ -656,7 +656,7 @@ class BatchSubscriptionCreateView(APIView):
             - subscriber_id и subscribing_id должны быть разными
             - Оба пользователя должны существовать в системе
             - Нельзя создавать дублирующие подписки
-            """,
+            ''',
         request=BatchSubscriptionCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -664,46 +664,46 @@ class BatchSubscriptionCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все подписки созданы",
+                        name='Полностью успешная операция',
+                        summary='Все подписки созданы',
                         value={
-                            "total_processed": 50,
-                            "successful": 50,
-                            "failed": 0,
-                            "batch_size": 25,
-                            "errors": [],
-                            "created_ids": [123, 456, 789, 101],
-                            "batches_processed": 2
+                            'total_processed': 50,
+                            'successful': 50,
+                            'failed': 0,
+                            'batch_size': 25,
+                            'errors': [],
+                            'created_ids': [123, 456, 789, 101],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые подписки не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые подписки не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "subscriber_id": 123,
-                                        "subscribing_id": 456
+                                    'ata': {
+                                        'subscriber_id': 123,
+                                        'subscribing_id': 456
                                     },
-                                    "error": "Подписка пользователя 123 на пользователя 456 уже существует",
-                                    "type": "duplicate_error"
+                                    'error': 'Подписка пользователя 123 на пользователя 456 уже существует',
+                                    'type': 'duplicate_error'
                                 },
                                 {
-                                    "data": {
-                                        "subscriber_id": 999,
-                                        "subscribing_id": 888
+                                    'data': {
+                                        'subscriber_id': 999,
+                                        'subscribing_id': 888
                                     },
-                                    "error": "Пользователь-подписчик с ID 999 не существует",
-                                    "type": "validation_error"
+                                    'error': 'Пользователь-подписчик с ID 999 не существует',
+                                    'type': 'validation_error'
                                 }
                             ],
-                            "created_ids": [111, 222, 333],
-                            "batches_processed": 1
+                            'created_ids': [111, 222, 333],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -715,23 +715,23 @@ class BatchSubscriptionCreateView(APIView):
         },
         examples=[
             OpenApiExample(
-                name="Пример создания подписок",
+                name='Пример создания подписок',
                 value={
-                    "subscriptions": [
+                    'subscriptions': [
                         {
-                            "subscriber_id": 1,
-                            "subscribing_id": 2
+                            'subscriber_id': 1,
+                            'subscribing_id': 2
                         },
                         {
-                            "subscriber_id": 1,
-                            "subscribing_id": 3
+                            'subscriber_id': 1,
+                            'subscribing_id': 3
                         },
                         {
-                            "subscriber_id": 2,
-                            "subscribing_id": 1
+                            'subscriber_id': 2,
+                            'subscribing_id': 1
                         }
                     ],
-                    "batch_size": 100
+                    'batch_size': 100
                 },
                 request_only=True
             )
@@ -787,7 +787,7 @@ class BatchSubscriptionCreateView(APIView):
                             missing_fields.append(field)
 
                     if missing_fields:
-                        raise ValueError(f"Обязательные поля отсутствуют: {', '.join(missing_fields)}")
+                        raise ValueError(f'Обязательные поля отсутствуют: {", ".join(missing_fields)}')
 
                     subscriber_id = processed_data['subscriber_id']
                     subscribing_id = processed_data['subscribing_id']
@@ -796,31 +796,31 @@ class BatchSubscriptionCreateView(APIView):
                         try:
                             processed_data['subscriber_id'] = int(subscriber_id)
                         except ValueError:
-                            raise ValueError(f"subscriber_id должен быть целым числом, получено: {subscriber_id}")
+                            raise ValueError(f'subscriber_id должен быть целым числом, получено: {subscriber_id}')
                     elif not isinstance(subscriber_id, int):
-                        raise ValueError(f"subscriber_id должен быть целым числом, получено: {subscriber_id}")
+                        raise ValueError(f'subscriber_id должен быть целым числом, получено: {subscriber_id}')
 
                     if isinstance(subscribing_id, str):
                         try:
                             processed_data['subscribing_id'] = int(subscribing_id)
                         except ValueError:
-                            raise ValueError(f"subscribing_id должен быть целым числом, получено: {subscribing_id}")
+                            raise ValueError(f'subscribing_id должен быть целым числом, получено: {subscribing_id}')
                     elif not isinstance(subscribing_id, int):
-                        raise ValueError(f"subscribing_id должен быть целым числом, получено: {subscribing_id}")
+                        raise ValueError(f'subscribing_id должен быть целым числом, получено: {subscribing_id}')
 
                     if processed_data['subscriber_id'] == processed_data['subscribing_id']:
                         raise ValueError(
-                            f"Пользователь не может подписаться на самого себя. "
-                            f"subscriber_id={subscriber_id}, subscribing_id={subscribing_id}"
+                            f'Пользователь не может подписаться на самого себя. '
+                            f'subscriber_id={subscriber_id}, subscribing_id={subscribing_id}'
                         )
 
                     if processed_data['subscriber_id'] not in existing_user_ids:
-                        raise ValueError(f"Пользователь-подписчик с ID {processed_data['subscriber_id']} не существует")
+                        raise ValueError(f'Пользователь-подписчик с ID {processed_data["subscriber_id"]} не существует')
 
                     if processed_data['subscribing_id'] not in existing_user_ids:
                         raise ValueError(
-                            f"Пользователь, на которого подписываются, с "
-                            f"ID {processed_data['subscribing_id']} не существует")
+                            f'Пользователь, на которого подписываются, с '
+                            f'ID {processed_data["subscribing_id"]} не существует')
 
                     validated_subscriptions_data.append({
                         'index': i,
@@ -951,7 +951,7 @@ class BatchSubscriptionCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE subscriptions DISABLE TRIGGER audit_subscriptions_trigger")
+                    cursor.execute('ALTER TABLE subscriptions DISABLE TRIGGER audit_subscriptions_trigger')
 
                 try:
                     with transaction.atomic():
@@ -985,7 +985,7 @@ class BatchSubscriptionCreateView(APIView):
                 finally:
                     # Включаем триггер обратно
                     with connection.cursor() as cursor:
-                        cursor.execute("ALTER TABLE subscriptions ENABLE TRIGGER audit_subscriptions_trigger")
+                        cursor.execute('ALTER TABLE subscriptions ENABLE TRIGGER audit_subscriptions_trigger')
 
                 operation_log['batches_processed'] += 1
 

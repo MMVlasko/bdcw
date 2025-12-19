@@ -16,4 +16,5 @@ DROP FUNCTION IF EXISTS count_category_users(category_id_param BIGINT);
 DROP FUNCTION IF EXISTS avg_category_goal_progress(category_id_param BIGINT);
 DROP FUNCTION IF EXISTS avg_category_habit_consistency(category_id_param BIGINT);
 DROP FUNCTION IF EXISTS calculate_category_activity_score(category_id_param BIGINT);
+DROP FUNCTION IF EXISTS get_user_habits_consistency();
 DROP VIEW IF EXISTS category_detailed_analytics;

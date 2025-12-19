@@ -64,8 +64,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         }.get(self.action, GoalSerializer)
 
     @extend_schema(
-        summary="Получить список целей",
-        description="""
+        summary='олучить список целей',
+        description='''
             Получение списка целей
 
             Возвращает список всех целей с пагинацией.
@@ -81,7 +81,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -106,37 +106,37 @@ class GoalViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список целей",
-                        summary="Стандартный ответ со списком целей",
+                        name='Список целей',
+                        summary='Стандартный ответ со списком целей',
                         value={
-                            "count": 25,
-                            "next": "http://127.0.0.1:8080/api/goals/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 25,
+                            'next': 'http://127.0.0.1:8080/api/goals/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "user_id": 123,
-                                    "title": "Похудение на 5 кг",
-                                    "description": "Снижение веса до 70 кг",
-                                    "category_id": 3,
-                                    "target_value": "5.000",
-                                    "deadline": "2024-06-30",
-                                    "is_completed": False,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'user_id': 123,
+                                    'title': 'Похудение на 5 кг',
+                                    'description': 'Снижение веса до 70 кг',
+                                    'category_id': 3,
+                                    'target_value': '5.000',
+                                    'deadline': '2024-06-30',
+                                    'is_completed': False,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список целей",
-                        summary="Когда целей нет",
+                        name='Пустой список целей',
+                        summary='Когда целей нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -151,8 +151,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать цель",
-        description="""
+        summary='Создать цель',
+        description='''
             Создание новой цели
 
             Создает новую цель для пользователя.
@@ -176,7 +176,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             Особенности:
             - is_completed устанавливается в false по умолчанию
             - Проверяется существование пользователя и категории
-            """,
+            ''',
         request=GoalCreateSerializer,
         responses={
             201: OpenApiResponse(
@@ -184,20 +184,20 @@ class GoalViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Цель успешно создана",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Цель успешно создана',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 45,
-                            "user_id": 123,
-                            "title": "Накопить 100000 рублей",
-                            "description": "Накопления на отпуск",
-                            "category_id": 5,
-                            "target_value": "100000.000",
-                            "deadline": "2024-12-31",
-                            "is_completed": False,
-                            "is_public": True,
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 45,
+                            'user_id': 123,
+                            'title': 'Накопить 100000 рублей',
+                            'description': 'Накопления на отпуск',
+                            'category_id': 5,
+                            'target_value': '100000.000',
+                            'deadline': '2024-12-31',
+                            'is_completed': False,
+                            'is_public': True,
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -215,8 +215,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить информацию о цели",
-        description="""
+        summary='Получить информацию о цели',
+        description='''
             Получение информации о цели
 
             Возвращает полную информацию о конкретной цели по её ID.
@@ -239,44 +239,44 @@ class GoalViewSet(viewsets.ModelViewSet):
             - is_public: Видна ли цель публично
             - created_at: Дата создания
             - updated_at: Дата обновления
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=GoalSerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Публичная цель",
-                        summary="Информация о публичной цели",
+                        name='Публичная цель',
+                        summary='Информация о публичной цели',
                         value={
-                            "id": 1,
-                            "user_id": 123,
-                            "title": "Прочитать 10 книг",
-                            "description": "Литература для саморазвития",
-                            "category_id": 2,
-                            "target_value": "10.000",
-                            "deadline": "2024-12-31",
-                            "is_completed": False,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T14:20:45Z"
+                            'id': 1,
+                            'user_id': 123,
+                            'title': 'Прочитать 10 книг',
+                            'description': 'Литература для саморазвития',
+                            'category_id': 2,
+                            'target_value': '10.000',
+                            'deadline': '2024-12-31',
+                            'is_completed': False,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T14:20:45Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Приватная цель",
-                        summary="Информация о приватной цели (только для владельца/админа)",
+                        name='Приватная цель',
+                        summary='Информация о приватной цели (только для владельца/админа)',
                         value={
-                            "id": 2,
-                            "user_id": 123,
-                            "title": "Личные финансовые цели",
-                            "description": "Инвестиции и сбережения",
-                            "category_id": 4,
-                            "target_value": "500000.000",
-                            "deadline": "2025-12-31",
-                            "is_completed": False,
-                            "is_public": False,
-                            "created_at": "2024-01-12T11:45:20Z",
-                            "updated_at": "2024-01-15T16:30:00Z"
+                            'id': 2,
+                            'user_id': 123,
+                            'title': 'Личные финансовые цели',
+                            'description': 'Инвестиции и сбережения',
+                            'category_id': 4,
+                            'target_value': '500000.000',
+                            'deadline': '2025-12-31',
+                            'is_completed': False,
+                            'is_public': False,
+                            'created_at': '2024-01-12T11:45:20Z',
+                            'updated_at': '2024-01-15T16:30:00Z'
                         }
                     )
                 ]
@@ -292,8 +292,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить информацию о цели",
-        description="""
+        summary='Обновить информацию о цели',
+        description='''
             Полное обновление информации о цели
 
             Заменяет все данные цели новыми значениями. Все поля обязательны.
@@ -319,7 +319,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             Особенности:
             - Поле user_id обновить нельзя
             - Поле category_id обновить нельзя
-            """,
+            ''',
         request=GoalUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -327,20 +327,20 @@ class GoalViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Цель успешно обновлена",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Цель успешно обновлена',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 1,
-                            "user_id": 123,
-                            "title": "Обновленное название",
-                            "description": "Обновленное описание цели",
-                            "category_id": 2,
-                            "target_value": "15.000",
-                            "deadline": "2024-09-30",
-                            "is_completed": False,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 1,
+                            'user_id': 123,
+                            'title': 'Обновленное название',
+                            'description': 'Обновленное описание цели',
+                            'category_id': 2,
+                            'target_value': '15.000',
+                            'deadline': '2024-09-30',
+                            'is_completed': False,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -357,8 +357,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить информацию о цели",
-        description="""
+        summary='Частично обновить информацию о цели',
+        description='''
             Частичное обновление информации о цели
 
             Обновляет только указанные поля цели. Не указанные поля остаются без изменений.
@@ -380,7 +380,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             - Можно обновлять любое подмножество полей
             - Не требуется передавать все поля
             - Нельзя изменить user_id, category_id
-            """,
+            ''',
         request=GoalPartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -388,37 +388,37 @@ class GoalViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновлено только описание",
-                        summary="Обновлено одно поле",
+                        name='Обновлено только описание',
+                        summary='Обновлено одно поле',
                         value={
-                            "id": 1,
-                            "user_id": 123,
-                            "title": "Похудение на 5 кг",
-                            "description": "Новое подробное описание",
-                            "category_id": 3,
-                            "target_value": "5.000",
-                            "deadline": "2024-06-30",
-                            "is_completed": False,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 1,
+                            'user_id': 123,
+                            'title': 'Похудение на 5 кг',
+                            'description': 'Новое подробное описание',
+                            'category_id': 3,
+                            'target_value': '5.000',
+                            'deadline': '2024-06-30',
+                            'is_completed': False,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновлено несколько полей",
-                        summary="Обновлены target_value и deadline",
+                        name='Обновлено несколько полей',
+                        summary='Обновлены target_value и deadline',
                         value={
-                            "id": 2,
-                            "user_id": 123,
-                            "title": "Накопить 100000 рублей",
-                            "description": "Старое описание",
-                            "category_id": 5,
-                            "target_value": "150000.000",
-                            "deadline": "2024-09-30",
-                            "is_completed": False,
-                            "is_public": True,
-                            "created_at": "2024-01-12T11:45:20Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 2,
+                            'user_id': 123,
+                            'title': 'Накопить 100000 рублей',
+                            'description': 'Старое описание',
+                            'category_id': 5,
+                            'target_value': '150000.000',
+                            'deadline': '2024-09-30',
+                            'is_completed': False,
+                            'is_public': True,
+                            'created_at': '2024-01-12T11:45:20Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -435,8 +435,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить цель",
-        description="""
+        summary='Удалить цель',
+        description='''
             Удаление цели
 
             Полностью удаляет цель и все связанные записи прогресса из системы.
@@ -449,7 +449,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             Последствия удаления:
             - Безвозвратное удаление цели
             - Каскадное удаление всех связанных записей прогресса
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -465,8 +465,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить цели пользователя",
-        description="""
+        summary='Получить цели пользователя',
+        description='''
             Получение целей пользователя
 
             Получить список всех целей конкретного пользователя по его ID.
@@ -480,7 +480,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='user_id',
@@ -511,37 +511,37 @@ class GoalViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список целей пользователя",
-                        summary="Стандартный ответ со списком целей",
+                        name='Список целей пользователя',
+                        summary='Стандартный ответ со списком целей',
                         value={
-                            "count": 8,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 8,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "user_id": 123,
-                                    "title": "Похудение на 5 кг",
-                                    "description": "Снижение веса до 70 кг",
-                                    "category_id": 3,
-                                    "target_value": "5.000",
-                                    "deadline": "2024-06-30",
-                                    "is_completed": False,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'user_id': 123,
+                                    'title': 'Похудение на 5 кг',
+                                    'description': 'Снижение веса до 70 кг',
+                                    'category_id': 3,
+                                    'target_value': '5.000',
+                                    'deadline': '2024-06-30',
+                                    'is_completed': False,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список целей",
-                        summary="Когда у пользователя нет целей",
+                        name='Пустой список целей',
+                        summary='Когда у пользователя нет целей',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -573,8 +573,8 @@ class GoalViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить цели по категории",
-        description="""
+        summary='Получить цели по категории',
+        description='''
             Получение целей по категории
 
             Получить список всех целей с конкретной категорией по её ID.
@@ -587,7 +587,7 @@ class GoalViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='category_id',
@@ -618,37 +618,37 @@ class GoalViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список целей категории",
-                        summary="Стандартный ответ со списком целей",
+                        name='Список целей категории',
+                        summary='Стандартный ответ со списком целей',
                         value={
-                            "count": 15,
-                            "next": "http://127.0.0.1:8080/api/goals/category/3/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 15,
+                            'next': 'http://127.0.0.1:8080/api/goals/category/3/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 3,
-                                    "user_id": 456,
-                                    "title": "Выучить английский язык",
-                                    "description": "Уровень B2 к концу года",
-                                    "category_id": 3,
-                                    "target_value": "1.000",
-                                    "deadline": "2024-12-31",
-                                    "is_completed": False,
-                                    "is_public": True,
-                                    "created_at": "2024-01-12T11:45:20Z",
-                                    "updated_at": "2024-01-15T16:30:00Z"
+                                    'id': 3,
+                                    'user_id': 456,
+                                    'title': 'Выучить английский язык',
+                                    'description': 'Уровень B2 к концу года',
+                                    'category_id': 3,
+                                    'target_value': '1.000',
+                                    'deadline': '2024-12-31',
+                                    'is_completed': False,
+                                    'is_public': True,
+                                    'created_at': '2024-01-12T11:45:20Z',
+                                    'updated_at': '2024-01-15T16:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список целей",
-                        summary="Когда в категории нет целей",
+                        name='Пустой список целей',
+                        summary='Когда в категории нет целей',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -704,8 +704,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         }.get(self.action, GoalProgressSerializer)
 
     @extend_schema(
-        summary="Список состояний прогресса",
-        description="""
+        summary='Список состояний прогресса',
+        description='''
             Получение списка состояний прогресса
 
             Получить список всех состояний прогресса по всем целям всех пользователей.
@@ -717,7 +717,7 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -742,33 +742,33 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список состояний прогресса",
-                        summary="Стандартный ответ со списком состояний прогресса",
+                        name='Список состояний прогресса',
+                        summary='Стандартный ответ со списком состояний прогресса',
                         value={
-                            "count": 150,
-                            "next": "http://127.0.0.1:8080/api/goal-progress/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 150,
+                            'next': 'http://127.0.0.1:8080/api/goal-progress/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "goal": 5,
-                                    "progress_date": "2024-01-15",
-                                    "current_value": "2.500",
-                                    "notes": "Прогресс хороший",
-                                    "created_at": "2024-01-15T09:30:00Z",
-                                    "updated_at": "2024-01-15T09:30:00Z"
+                                    'id': 1,
+                                    'goal': 5,
+                                    'progress_date': '2024-01-15',
+                                    'current_value': '2.500',
+                                    'notes': 'Прогресс хороший',
+                                    'reated_at': '2024-01-15T09:30:00Z',
+                                    'updated_at': '2024-01-15T09:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список состояний прогресса",
-                        summary="Когда состояний прогресса нет",
+                        name='Пустой список состояний прогресса',
+                        summary='Когда состояний прогресса нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -783,8 +783,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать новое состояние прогресса",
-        description="""
+        summary='Создать новое состояние прогресса',
+        description='''
             Создание нового состояния прогресса по цели
 
             Создает новую запись прогресса по цели.
@@ -810,7 +810,7 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
             - Проверяется существование цели
             - Проверяется, что цель не завершена
             - Проверяется, что дата прогресса не позже дедлайна цели
-            """,
+            ''',
         request=GoalProgressCreateSerializer,
         responses={
             201: OpenApiResponse(
@@ -818,16 +818,16 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Прогресс успешно создан",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Прогресс успешно создан',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 45,
-                            "goal": 3,
-                            "progress_date": "2024-01-15",
-                            "current_value": "3.500",
-                            "notes": "Хороший прогресс",
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 45,
+                            'goal': 3,
+                            'progress_date': '2024-01-15',
+                            'current_value': '3.500',
+                            'notes': 'Хороший прогресс',
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -841,6 +841,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
     )
     def create(self, request, *args, **kwargs):
         goal = Goal.objects.filter(id=request.data['goal']).first()
+        if goal is None:
+            raise ValidationError({'goal': ['Цель не найдена']})
         if goal.user != request.user and request.user.role != User.UserRole.ADMIN:
             raise PermissionDenied('Нельзя создать прогресс по цели у другого пользователя')
         if goal.is_completed:
@@ -850,8 +852,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить состояние прогресса",
-        description="""
+        summary='Получить состояние прогресса',
+        description='''
             Получение информации о состоянии прогресса
 
             Возвращает полную информацию о конкретном состоянии прогресса по его ID.
@@ -871,36 +873,36 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
             - created_at: Дата создания записи прогресса
             - updated_at: Дата обновления записи прогресса
 
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=GoalProgressSerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Состояние прогресса",
-                        summary="Информация о состоянии прогресса",
+                        name='Состояние прогресса',
+                        summary='Информация о состоянии прогресса',
                         value={
-                            "id": 1,
-                            "goal": 3,
-                            "progress_date": "2024-01-15",
-                            "current_value": "3.500",
-                            "notes": "Прогресс хороший",
-                            "created_at": "2024-01-15T09:30:00Z",
-                            "updated_at": "2024-01-15T09:30:00Z"
+                            'id': 1,
+                            'goal': 3,
+                            'progress_date': '2024-01-15',
+                            'current_value': '3.500',
+                            'notes': 'Прогресс хороший',
+                            'created_at': '2024-01-15T09:30:00Z',
+                            'updated_at': '2024-01-15T09:30:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Прогресс без примечаний",
-                        summary="Прогресс без notes",
+                        name='Прогресс без примечаний',
+                        summary='Прогресс без notes',
                         value={
-                            "id": 2,
-                            "goal": 3,
-                            "progress_date": "2024-01-14",
-                            "current_value": "2.800",
-                            "notes": None,
-                            "created_at": "2024-01-14T09:30:00Z",
-                            "updated_at": "2024-01-14T09:30:00Z"
+                            'id': 2,
+                            'goal': 3,
+                            'progress_date': '2024-01-14',
+                            'current_value': '2.800',
+                            'notes': None,
+                            'created_at': '2024-01-14T09:30:00Z',
+                            'updated_at': '2024-01-14T09:30:00Z'
                         }
                     )
                 ]
@@ -914,13 +916,15 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
     )
     def retrieve(self, request, *args, **kwargs):
         goal = Goal.objects.filter(id=request.data['goal']).first()
+        if goal is None:
+            raise ValidationError(ValidationError({'goal': ['Цель не найдена']}))
         if goal.user != request.user and not goal.is_public and request.user.role != User.UserRole.ADMIN:
             raise PermissionDenied('Нельзя получить прогресс приватной цели у другого пользователя')
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить состояние прогресса",
-        description="""
+        summary='Обновить состояние прогресса',
+        description='''
             Полное обновление информации о состоянии прогресса
 
             Заменяет все данные записи прогресса новыми значениями. Все поля обязательны.
@@ -943,7 +947,7 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
 
             Особенности:
             - Поле goal обновить нельзя
-            """,
+            ''',
         request=GoalProgressUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -951,16 +955,16 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Прогресс успешно обновлен",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Прогресс успешно обновлен',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 1,
-                            "goal": 3,
-                            "progress_date": "2024-01-16",
-                            "current_value": "4.200",
-                            "notes": "Обновленные примечания",
-                            "created_at": "2024-01-15T09:30:00Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 1,
+                            'goal': 3,
+                            'progress_date': '2024-01-16',
+                            'current_value': '4.200',
+                            'notes': 'Обновленные примечания',
+                            'created_at': '2024-01-15T09:30:00Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -977,8 +981,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить состояние прогресса",
-        description="""
+        summary='Частично обновить состояние прогресса',
+        description='''
             Частичное обновление информации о состоянии прогресса
 
             Обновляет только указанные поля записи прогресса. Не указанные поля остаются без изменений.
@@ -997,7 +1001,7 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
             - Можно обновлять любое подмножество полей
             - Не требуется передавать все поля
             - Нельзя изменить goal
-            """,
+            ''',
         request=GoalProgressPartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -1005,29 +1009,29 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновлено только current_value",
-                        summary="Обновлено одно поле",
+                        name='Обновлено только current_value',
+                        summary='Обновлено одно поле',
                         value={
-                            "id": 1,
-                            "goal": 3,
-                            "progress_date": "2024-01-15",
-                            "current_value": "3.800",
-                            "notes": "Прогресс хороший",
-                            "created_at": "2024-01-15T09:30:00Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 1,
+                            'goal': 3,
+                            'progress_date': '2024-01-15',
+                            'current_value': '3.800',
+                            'notes': 'Прогресс хороший',
+                            'created_at': '2024-01-15T09:30:00Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновлены дата и примечания",
-                        summary="Обновлено несколько полей",
+                        name='Обновлены дата и примечания',
+                        summary='Обновлено несколько полей',
                         value={
-                            "id": 2,
-                            "goal": 3,
-                            "progress_date": "2024-01-14",
-                            "current_value": "2.800",
-                            "notes": "Новые примечания",
-                            "created_at": "2024-01-14T09:30:00Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 2,
+                            'goal': 3,
+                            'progress_date': '2024-01-14',
+                            'current_value'': \'"\2.800'
+                            'notes': 'Новые примечания',
+                            'created_at': '2024-01-14T09:30:00Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -1044,8 +1048,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить состояние прогресса",
-        description="""
+        summary='Удалить состояние прогресса',
+        description='''
             Удаление состояния прогресса
 
             Полностью удаляет запись прогресса по цели из системы.
@@ -1057,7 +1061,7 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
 
             Последствия удаления:
             - Безвозвратное удаление записи прогресса
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -1073,8 +1077,8 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить состояния прогресса по цели",
-        description="""
+        summary='Получить состояния прогресса по цели',
+        description='''
             Получение состояний прогресса по цели
 
             Получить список всех состояний прогресса конкретной цели по её ID.
@@ -1088,7 +1092,7 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='goal_id',
@@ -1119,33 +1123,33 @@ class GoalProgressViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список состояний прогресса цели",
-                        summary="Стандартный ответ со списком состояний прогресса",
+                        name='Список состояний прогресса цели',
+                        summary='Стандартный ответ со списком состояний прогресса',
                         value={
-                            "count": 8,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 8,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 15,
-                                    "goal": 3,
-                                    "progress_date": "2024-01-15",
-                                    "current_value": "3.500",
-                                    "notes": "Прогресс хороший",
-                                    "created_at": "2024-01-15T09:30:00Z",
-                                    "updated_at": "2024-01-15T09:30:00Z"
+                                    'id': 15,
+                                    'goal': 3,
+                                    'progress_date': '2024-01-15',
+                                    'current_value': '3.500',
+                                    'notes': 'Прогресс хороший',
+                                    'created_at': '2024-01-15T09:30:00Z',
+                                    'updated_at': '2024-01-15T09:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список состояний прогресса",
-                        summary="Когда у цели нет состояний прогресса",
+                        name='Пустой список состояний прогресса',
+                        summary='Когда у цели нет состояний прогресса',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -1182,8 +1186,8 @@ class BatchGoalCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка целей",
-        description="""
+        summary='Батчевая загрузка целей',
+        description='''
             Массовое создание целей
 
             Создание нескольких целей за одну операцию с использованием bulk_create.
@@ -1210,7 +1214,7 @@ class BatchGoalCreateView(APIView):
             - user_id и category_id должны существовать
             - title должен быть уникальным для каждого пользователя
             - target_value должно быть числом с точностью до 3 знаков после запятой
-            """,
+            ''',
         request=BatchGoalCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -1218,52 +1222,52 @@ class BatchGoalCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все цели созданы",
+                        name='Полностью успешная операция',
+                        summary='Все цели созданы',
                         value={
-                            "total_processed": 100,
-                            "successful": 100,
-                            "failed": 0,
-                            "batch_size": 50,
-                            "errors": [],
-                            "created_ids": [101, 102, 103, 104, 105],
-                            "batches_processed": 2
+                            'total_processed': 100,
+                            'successful': 100,
+                            'failed': 0,
+                            'batch_size': 50,
+                            'errors': [],
+                            'created_ids': [101, 102, 103, 104, 105],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые цели не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые цели не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "user_id": 123,
-                                        "title": "Похудение на 5 кг",
-                                        "category_id": 3,
-                                        "target_value": "5.000",
-                                        "deadline": "2024-06-30"
+                                    'data': {
+                                        'user_id': 123,
+                                        'title': 'Похудение на 5 кг',
+                                        'category_id': 3,
+                                        'target_value': '5.000',
+                                        'deadline': '2024-06-30'
                                     },
-                                    "error": "Цель с title 'Похудение на 5 кг' для пользователя 123 уже существует",
-                                    "type": "duplicate_error"
+                                    'error': 'Цель с title \'Похудение на 5 кг\' для пользователя 123 уже существует',
+                                    'type': 'duplicate_error'
                                 },
                                 {
-                                    "data": {
-                                        "user_id": 999,
-                                        "title": "Накопить 100000 рублей",
-                                        "category_id": 5,
-                                        "target_value": "100000.000",
-                                        "deadline": "2024-12-31"
+                                    'data': {
+                                        'user_id': 999,
+                                        'title': 'Накопить 100000 рублей',
+                                        'category_id': 5,
+                                        'target_value': '100000.000',
+                                        'deadline': '2024-12-31'
                                     },
-                                    "error": "Пользователь с ID 999 не существует",
-                                    "type": "reference_error"
+                                    'error': 'Пользователь с ID 999 не существует',
+                                    'type': 'reference_error'
                                 }
                             ],
-                            "created_ids": [106, 107, 108],
-                            "batches_processed": 1
+                            'created_ids': [106, 107, 108],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -1318,7 +1322,7 @@ class BatchGoalCreateView(APIView):
                             missing_fields.append(field)
 
                     if missing_fields:
-                        raise ValueError(f"Обязательные поля отсутствуют: {', '.join(missing_fields)}")
+                        raise ValueError(f'Обязательные поля отсутствуют: {", ".join(missing_fields)}')
 
                     user_id = processed_data['user_id']
                     title = processed_data['title']
@@ -1327,73 +1331,73 @@ class BatchGoalCreateView(APIView):
                     category_id = processed_data['category_id']
 
                     if not isinstance(title, str):
-                        raise ValueError(f"title должен быть строкой, получено: {title}")
+                        raise ValueError(f'title должен быть строкой, получено: {title}')
 
                     title = title.strip()
                     if not title:
-                        raise ValueError("title не может быть пустой строкой")
+                        raise ValueError('title не может быть пустой строкой')
 
                     if isinstance(user_id, str):
                         try:
                             processed_data['user_id'] = int(user_id)
                         except ValueError:
-                            raise ValueError(f"user_id должен быть целым числом, получено: {user_id}")
+                            raise ValueError(f'user_id должен быть целым числом, получено: {user_id}')
                     elif not isinstance(user_id, int):
-                        raise ValueError(f"user_id должен быть целым числом, получено: {user_id}")
+                        raise ValueError(f'user_id должен быть целым числом, получено: {user_id}')
 
                     if isinstance(category_id, str):
                         try:
                             processed_data['category_id'] = int(category_id)
                         except ValueError:
-                            raise ValueError(f"category_id должен быть целым числом, получено: {category_id}")
+                            raise ValueError(f'category_id должен быть целым числом, получено: {category_id}')
                     elif not isinstance(category_id, int):
-                        raise ValueError(f"category_id должен быть целым числом, получено: {category_id}")
+                        raise ValueError(f'category_id должен быть целым числом, получено: {category_id}')
 
-                    combination = f"{processed_data['user_id']}:{title}"
+                    combination = f'{processed_data["user_id"]}:{title}'
                     if combination in seen_combinations:
                         raise ValueError(
-                            f"Цель с title '{title}' для пользователя {user_id} дублируется в запросе")
+                            f'Цель с title "{title}" для пользователя {user_id} дублируется в запросе')
                     seen_combinations.add(combination)
 
                     if processed_data['user_id'] not in user_ids:
-                        raise ValueError(f"Пользователь с ID {processed_data['user_id']} не существует")
+                        raise ValueError(f'Пользователь с ID {processed_data["user_id"]} не существует')
 
                     if processed_data['category_id'] not in category_ids:
-                        raise ValueError(f"Категория с ID {category_id} не существует")
+                        raise ValueError(f'Категория с ID {category_id} не существует')
 
                     try:
                         target_value_decimal = Decimal(str(target_value))
                         processed_data['target_value'] = target_value_decimal.quantize(Decimal('0.001'))
                     except (ValueError, TypeError, InvalidOperation):
                         raise ValueError(
-                            f"target_value должно быть числом (до 3 знаков после запятой), получено: {target_value}")
+                            f'target_value должно быть числом (до 3 знаков после запятой), получено: {target_value}')
 
                     if isinstance(deadline, str):
                         try:
                             processed_data['deadline'] = datetime.strptime(deadline, '%Y-%m-%d').date()
                         except ValueError:
-                            raise ValueError(f"deadline должен быть в формате YYYY-MM-DD, получено: {deadline}")
+                            raise ValueError(f'deadline должен быть в формате YYYY-MM-DD, получено: {deadline}')
                     elif not isinstance(deadline, date):
-                        raise ValueError(f"deadline должен быть датой, получено: {deadline}")
+                        raise ValueError(f'deadline должен быть датой, получено: {deadline}')
 
                     if 'is_completed' in processed_data:
                         is_completed = processed_data['is_completed']
                         if not isinstance(is_completed, bool):
-                            raise ValueError(f"is_completed должен быть булевым значением, получено: {is_completed}")
+                            raise ValueError(f'is_completed должен быть булевым значением, получено: {is_completed}')
                     else:
                         processed_data['is_completed'] = False
 
                     if 'is_public' in processed_data:
                         is_public = processed_data['is_public']
                         if not isinstance(is_public, bool):
-                            raise ValueError(f"is_public должен быть булевым значением, получено: {is_public}")
+                            raise ValueError(f'is_public должен быть булевым значением, получено: {is_public}')
                     else:
                         processed_data['is_public'] = True
 
                     if 'description' in processed_data and processed_data['description'] is not None:
                         if not isinstance(processed_data['description'], str):
                             raise ValueError(
-                                f"description должен быть строкой, получено: {processed_data['description']}")
+                                f'description должен быть строкой, получено: {processed_data["description"]}')
 
                     validated_goals_data.append({
                         'index': i,
@@ -1439,7 +1443,7 @@ class BatchGoalCreateView(APIView):
 
                 existing_qs = Goal.objects.filter(q_objects)
                 for goal in existing_qs:
-                    key = f"{goal.user_id}:{goal.title}"
+                    key = f'{goal.user_id}:{goal.title}'
                     existing_goals[key] = goal
 
             filtered_goals = []
@@ -1447,7 +1451,7 @@ class BatchGoalCreateView(APIView):
             for item in validated_goals_data:
                 user_id = item['user_id']
                 title = item['title']
-                key = f"{user_id}:{title}"
+                key = f'{user_id}:{title}'
 
                 if key in existing_goals:
                     operation_log['failed'] += 1
@@ -1553,7 +1557,7 @@ class BatchGoalCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE goals DISABLE TRIGGER audit_goals_trigger")
+                    cursor.execute('ALTER TABLE goals DISABLE TRIGGER audit_goals_trigger')
 
                 try:
                     with transaction.atomic():
@@ -1586,7 +1590,7 @@ class BatchGoalCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute("ALTER TABLE goals ENABLE TRIGGER audit_goals_trigger")
+                        cursor.execute('ALTER TABLE goals ENABLE TRIGGER audit_goals_trigger')
 
                 operation_log['batches_processed'] += 1
 
@@ -1619,8 +1623,8 @@ class BatchGoalProgressCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка прогресса по целям",
-        description="""
+        summary='Батчевая загрузка прогресса по целям',
+        description='''
             Массовое создание прогресса по целям
 
             Создание нескольких записей прогресса по целям за одну операцию с использованием bulk_create.
@@ -1643,7 +1647,7 @@ class BatchGoalProgressCreateView(APIView):
             - goal_id должен существовать
             - progress_date должен быть в правильном формате
             - current_value должно быть числом с точностью до 3 знаков после запятой
-            """,
+            ''',
         request=BatchGoalProgressCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -1651,49 +1655,49 @@ class BatchGoalProgressCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все записи прогресса созданы",
+                        name='Полностью успешная операция',
+                        summary='Все записи прогресса созданы',
                         value={
-                            "total_processed": 50,
-                            "successful": 50,
-                            "failed": 0,
-                            "batch_size": 25,
-                            "errors": [],
-                            "created_ids": [201, 202, 203, 204, 205],
-                            "batches_processed": 2
+                            'total_processed': 50,
+                            'successful': 50,
+                            'failed': 0,
+                            'batch_size': 25,
+                            'errors': [],
+                            'created_ids': [201, 202, 203, 204, 205],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые записи прогресса не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые записи прогресса не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "goal_id": 3,
-                                        "progress_date": "2024-01-15",
-                                        "current_value": "2.500"
+                                    'data': {
+                                        'goal_id': 3,
+                                        'progress_date': '2024-01-15',
+                                        'current_value': '2.500'
                                     },
-                                    "error": "Цель с ID 3 не существует",
-                                    "type": "reference_error"
+                                    'error': 'Цель с ID 3 не существует',
+                                    'type': 'reference_error'
                                 },
                                 {
-                                    "data": {
-                                        "goal_id": 5,
-                                        "progress_date": "неправильная дата",
-                                        "current_value": "1.500"
+                                    'data': {
+                                        'goal_id': 5,
+                                        'progress_date': 'неправильная дата',
+                                        'current_value': '1.500'
                                     },
-                                    "error": "progress_date должен быть в формате YYYY-MM-DD, получено:"
-                                             " неправильная дата",
-                                    "type": "validation_error"
+                                    'error': 'progress_date должен быть в формате YYYY-MM-DD, получено:'
+                                             ' неправильная дата',
+                                    'type': 'validation_error'
                                 }
                             ],
-                            "created_ids": [206, 207, 208],
-                            "batches_processed": 1
+                            'created_ids': [206, 207, 208],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -1746,7 +1750,7 @@ class BatchGoalProgressCreateView(APIView):
                             missing_fields.append(field)
 
                     if missing_fields:
-                        raise ValueError(f"Обязательные поля отсутствуют: {', '.join(missing_fields)}")
+                        raise ValueError(f'Обязательные поля отсутствуют: {", ".join(missing_fields)}')
 
                     goal_id = processed_data['goal_id']
                     progress_date = processed_data['progress_date']
@@ -1756,32 +1760,32 @@ class BatchGoalProgressCreateView(APIView):
                         try:
                             processed_data['goal_id'] = int(goal_id)
                         except ValueError:
-                            raise ValueError(f"goal_id должен быть целым числом, получено: {goal_id}")
+                            raise ValueError(f'goal_id должен быть целым числом, получено: {goal_id}')
                     elif not isinstance(goal_id, int):
-                        raise ValueError(f"goal_id должен быть целым числом, получено: {goal_id}")
+                        raise ValueError(f'goal_id должен быть целым числом, получено: {goal_id}')
 
                     try:
                         current_value_decimal = Decimal(str(current_value))
                         processed_data['current_value'] = current_value_decimal.quantize(Decimal('0.001'))
                     except (ValueError, TypeError, InvalidOperation):
                         raise ValueError(
-                            f"current_value должно быть числом (до 3 знаков после запятой), получено: {current_value}")
+                            f'current_value должно быть числом (до 3 знаков после запятой), получено: {current_value}')
 
                     if isinstance(progress_date, str):
                         try:
                             processed_data['progress_date'] = datetime.strptime(progress_date, '%Y-%m-%d').date()
                         except ValueError:
-                            raise ValueError(f"progress_date должен быть в формате YYYY-MM-DD, получено: {progress_date}")
+                            raise ValueError(f'progress_date должен быть в формате YYYY-MM-DD, получено: {progress_date}')
                     elif not isinstance(progress_date, date):
-                        raise ValueError(f"progress_date должен быть датой, получено: {progress_date}")
+                        raise ValueError(f'progress_date должен быть датой, получено: {progress_date}')
 
                     if processed_data['goal_id'] not in goal_ids:
-                        raise ValueError(f"Цель с ID {processed_data['goal_id']} не существует")
+                        raise ValueError(f'Цель с ID {processed_data["goal_id"]} не существует')
 
                     if 'notes' in processed_data and processed_data['notes'] is not None:
                         if not isinstance(processed_data['notes'], str):
                             raise ValueError(
-                                f"notes должен быть строкой, получено: {processed_data['notes']}")
+                                f'notes должен быть строкой, получено: {processed_data["notes"]}')
 
                     validated_goal_progresses_data.append({
                         'index': i,
@@ -1876,7 +1880,7 @@ class BatchGoalProgressCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE goal_progresses DISABLE TRIGGER audit_goal_progresses_trigger")
+                    cursor.execute('ALTER TABLE goal_progresses DISABLE TRIGGER audit_goal_progresses_trigger')
 
                 try:
                     with transaction.atomic():
@@ -1909,7 +1913,7 @@ class BatchGoalProgressCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute("ALTER TABLE goal_progresses ENABLE TRIGGER audit_goal_progresses_trigger")
+                        cursor.execute('ALTER TABLE goal_progresses ENABLE TRIGGER audit_goal_progresses_trigger')
 
                 operation_log['batches_processed'] += 1
 

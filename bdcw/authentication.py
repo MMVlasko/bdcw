@@ -60,7 +60,7 @@ class TokenAuthentication(BaseAuthentication):
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT set_config('app.user_id', %s, false)",
+                    'SELECT set_config(\'app.user_id\', %s, false)',
                     [str(token.user.id)]
                 )
 

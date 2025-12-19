@@ -9,7 +9,7 @@ class ChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = [
-            'id', 'name', 'description', 'target_value', 'start_date', 'end_date',
+            'id', 'name', 'description', 'start_date', 'end_date',
             'is_active', 'created_at', 'updated_at'
         ]
 
@@ -18,7 +18,7 @@ class ChallengeCreateAndUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = [
-            'name', 'description', 'target_value', 'start_date', 'end_date',
+            'name', 'description', 'start_date', 'end_date',
             'is_active'
         ]
         extra_kwargs = {
@@ -39,7 +39,7 @@ class ChallengePartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = [
-            'name', 'description', 'target_value', 'start_date', 'end_date',
+            'name', 'description', 'start_date', 'end_date',
             'is_active'
         ]
 

@@ -26,8 +26,8 @@ class AuditLogDeleteView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Удалить запись журнала аудита",
-        description="""
+        summary='далить запись журнала аудита',
+        description='''
             Удаление записи журнала аудита
 
             Полностью удаляет запись аудита по её ID.
@@ -35,7 +35,7 @@ class AuditLogDeleteView(APIView):
             Права доступа:
             - Требуется действительный токен
             - Только администраторы могут удалять записи аудита
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='log_id',
@@ -75,8 +75,8 @@ class AuditLogListView(APIView):
     pagination_class = AuditLogLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить записи журнала аудита",
-        description="""
+        summary='Получить записи журнала аудита',
+        description='''
             Получение записей журнала аудита
 
             Возвращает список всех записей аудита с пагинацией.
@@ -98,7 +98,7 @@ class AuditLogListView(APIView):
             - new_values: Новые значения (для INSERT и UPDATE)
             - changed_by: Пользователь, выполнивший изменение
             - changed_at: Дата и время изменения
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -123,34 +123,34 @@ class AuditLogListView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список записей аудита",
-                        summary="Стандартный ответ со списком записей",
+                        name='Список записей аудита',
+                        summary='Стандартный ответ со списком записей',
                         value={
-                            "count": 150,
-                            "next": "http://127.0.0.1:8080/api/audit-logs/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 150,
+                            'next': 'http://127.0.0.1:8080/api/audit-logs/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 12345,
-                                    "table_name": "users",
-                                    "record_id": 456,
-                                    "operation": "UPDATE",
-                                    "old_values": {"is_active": True},
-                                    "new_values": {"is_active": False},
-                                    "changed_by": 1,
-                                    "changed_at": "2024-01-15T14:30:00Z"
+                                    'id': 12345,
+                                    'table_name': 'users',
+                                    'record_id': 456,
+                                    'peration': 'UPDATE',
+                                    'old_values': {'is_active': True},
+                                    'new_values': {'is_active': False},
+                                    'changed_by': 1,
+                                    'changed_at': '2024-01-15T14:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой журнал аудита",
-                        summary="Когда записей аудита нет",
+                        name='Пустой журнал аудита',
+                        summary='Когда записей аудита нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -179,8 +179,8 @@ class BatchLogDeleteView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Удалить запись журнала батчевого импорта",
-        description="""
+        summary='Удалить запись журнала батчевого импорта',
+        description='''
             Удаление записи журнала батчевого импорта
 
             Полностью удаляет запись лога батчевой операции по её ID.
@@ -188,7 +188,7 @@ class BatchLogDeleteView(APIView):
             Права доступа:
             - Требуется действительный токен
             - Только администраторы могут удалять записи логов батчевых операций
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='log_id',
@@ -228,8 +228,8 @@ class BatchLogListView(APIView):
     pagination_class = AuditLogLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить записи журнала батчевого импорта",
-        description="""
+        summary='Получить записи журнала батчевого импорта',
+        description='''
             Получение записей журнала батчевого импорта
 
             Возвращает список всех записей логов батчевых операций с пагинацией.
@@ -254,7 +254,7 @@ class BatchLogListView(APIView):
             - batch_size: Размер пачки для обработки
             - changed_by: Пользователь, выполнивший операцию
             - created_at: Дата и время создания лога
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -279,44 +279,44 @@ class BatchLogListView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список логов батчевых операций",
-                        summary="Стандартный ответ со списком логов",
+                        name='Список логов батчевых операций',
+                        summary='Стандартный ответ со списком логов',
                         value={
-                            "count": 25,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 25,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 100,
-                                    "table_name": "categories",
-                                    "total_processed": 50,
-                                    "successful": 48,
-                                    "failed": 2,
-                                    "errors": [
+                                    'id': 100,
+                                    'table_name': 'categories',
+                                    'total_processed': 50,
+                                    'successful': 48,
+                                    'failed': 2,
+                                    'errors': [
                                         {
-                                            "data": {"name": ""},
-                                            "name": "unknown",
-                                            "error": "Название категории не может быть пустым",
-                                            "type": "validation_error"
+                                            'data': {'name': ''},
+                                            'name': 'unknown',
+                                            'error': 'Название категории не может быть пустым',
+                                            'type': 'validation_error'
                                         }
                                     ],
-                                    "created_ids": [101, 102, 103],
-                                    "batches_processed": 1,
-                                    "batch_size": 100,
-                                    "changed_by": 1,
-                                    "created_at": "2024-01-15T10:30:00Z"
+                                    'created_ids': [101, 102, 103],
+                                    'batches_processed': 1,
+                                    'batch_size': 100,
+                                    'changed_by': 1,
+                                    'created_at': '2024-01-15T10:30:00Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой журнал батчевых операций",
-                        summary="Когда логов батчевых операций нет",
+                        name='Пустой журнал батчевых операций',
+                        summary='Когда логов батчевых операций нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]

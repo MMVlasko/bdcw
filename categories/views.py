@@ -44,8 +44,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         }.get(self.action, CategorySerializer)
 
     @extend_schema(
-        summary="Список категорий",
-        description="""
+        summary='писок категорий',
+        description='''
             Получение списка категорий
 
             Возвращает список всех категорий с пагинацией.
@@ -56,7 +56,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -81,31 +81,31 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список категорий",
-                        summary="Стандартный ответ со списком категорий",
+                        name='Список категорий',
+                        summary='Стандартный ответ со списком категорий',
                         value={
-                            "count": 25,
-                            "next": "http://127.0.0.1:8080/api/categories/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 25,
+                            'next': 'http://127.0.0.1:8080/api/categories/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Спорт",
-                                    "description": "Спортивные активности и упражнения",
-                                    "created_at": "2024-01-01T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'name': 'Спорт',
+                                    'description': 'Спортивные активности и упражнения',
+                                    'created_at': '2024-01-01T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список категорий",
-                        summary="Когда категорий нет",
+                        name='Пустой список категорий',
+                        summary='Когда категорий нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -120,8 +120,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать категорию",
-        description="""
+        summary='Создать категорию',
+        description='''
             Создание новой категории
 
             Создает новую категорию с указанными параметрами.
@@ -140,7 +140,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             - Проверка уникальности имени категории
             - Проверка длины названия (максимум 100 символов)
             - Проверка, что название не пустое
-            """,
+            ''',
         request=CategoryCreateAndUpdateSerializer,
         responses={
             201: OpenApiResponse(
@@ -148,14 +148,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Категория успешно создана",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Категория успешно создана',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 45,
-                            "name": "Программирование",
-                            "description": "Изучение языков программирования и технологий",
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 45,
+                            'name': 'Программирование',
+                            'description': 'Изучение языков программирования и технологий',
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -171,8 +171,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить категорию",
-        description="""
+        summary='Получить категорию',
+        description='''
             Получение информации о категории
 
             Возвращает полную информацию о конкретной категории по её ID.
@@ -186,32 +186,32 @@ class CategoryViewSet(viewsets.ModelViewSet):
             - description: Описание категории
             - created_at: Дата создания
             - updated_at: Дата обновления
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=CategorySerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Категория с описанием",
-                        summary="Информация о категории с описанием",
+                        name='Категория с описанием',
+                        summary='Информация о категории с описанием',
                         value={
-                            "id": 1,
-                            "name": "Спорт",
-                            "description": "Спортивные активности и упражнения",
-                            "created_at": "2024-01-01T09:15:30Z",
-                            "updated_at": "2024-01-15T14:20:45Z"
+                            'id': 1,
+                            'name': 'Спорт',
+                            'description': 'Спортивные активности и упражнения',
+                            'created_at': '2024-01-01T09:15:30Z',
+                            'updated_at': '2024-01-15T14:20:45Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Категория без описания",
-                        summary="Информация о категории без описания",
+                        name='Категория без описания',
+                        summary='Информация о категории без описания',
                         value={
-                            "id": 2,
-                            "name": "Музыка",
-                            "description": None,
-                            "created_at": "2024-01-02T11:45:20Z",
-                            "updated_at": "2024-01-02T11:45:20Z"
+                            'id': 2,
+                            'name': 'Музыка',
+                            'description': None,
+                            'created_at': '2024-01-02T11:45:20Z',
+                            'updated_at': '2024-01-02T11:45:20Z'
                         }
                     )
                 ]
@@ -227,8 +227,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить категорию",
-        description="""
+        summary='Обновить категорию',
+        description='''
             Полное обновление информации о категории
 
             Заменяет все данные категории новыми значениями. Все поля обязательны.
@@ -246,7 +246,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             - Проверка уникальности имени категории
             - Проверка длины названия (максимум 100 символов)
             - Проверка, что название не пустое
-            """,
+            ''',
         request=CategoryCreateAndUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -254,14 +254,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Категория успешно обновлена",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Категория успешно обновлена',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 1,
-                            "name": "Обновленная категория",
-                            "description": "Обновленное описание категории",
-                            "created_at": "2024-01-01T09:15:30Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 1,
+                            'name': 'Обновленная категория',
+                            'description': 'Обновленное описание категории',
+                            'created_at': '2024-01-01T09:15:30Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -278,8 +278,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить категорию",
-        description="""
+        summary='Частично обновить категорию',
+        description='''
             Частичное обновление информации о категории
 
             Обновляет только указанные поля категории. Не указанные поля остаются без изменений.
@@ -297,7 +297,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             - Не требуется передавать все поля
             - Проверка уникальности имени при обновлении
             - Проверка длины названия (максимум 100 символов)
-            """,
+            ''',
         request=CategoryPartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -305,25 +305,25 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновлено только описание",
-                        summary="Обновлено одно поле",
+                        name='Обновлено только описание',
+                        summary='Обновлено одно поле',
                         value={
-                            "id": 1,
-                            "name": "Спорт",
-                            "description": "Новое подробное описание спортивных активностей",
-                            "created_at": "2024-01-01T09:15:30Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 1,
+                            'name': 'Спорт',
+                            'description': 'Новое подробное описание спортивных активностей',
+                            'created_at': '2024-01-01T09:15:30Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновлено название и описание",
-                        summary="Обновлено несколько полей",
+                        name='Обновлено название и описание',
+                        summary='Обновлено несколько полей',
                         value={
-                            "id": 2,
-                            "name": "Музыкальное искусство",
-                            "description": "Новое описание музыкальной категории",
-                            "created_at": "2024-01-02T11:45:20Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 2,
+                            'name': 'Музыкальное искусство',
+                            'description': 'Новое описание музыкальной категории',
+                            'created_at': '2024-01-02T11:45:20Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -340,8 +340,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить категорию",
-        description="""
+        summary='Удалить категорию',
+        description='''
             Удаление категории
 
             Полностью удаляет категорию из системы.
@@ -353,7 +353,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             Последствия удаления:
             - Безвозвратное удаление категории
             - Каскадное удаление связей с целями, привычками и челленджами
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -375,8 +375,8 @@ class BatchCategoryCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка категорий",
-        description="""
+        summary='Батчевая загрузка категорий',
+        description='''
             Массовое создание категорий
 
             Создание нескольких категорий за одну операцию с использованием bulk_create.
@@ -401,7 +401,7 @@ class BatchCategoryCreateView(APIView):
             - Проверка длины названия (максимум 100 символов)
             - Проверка, что название не пустое
             - Проверка типа данных для описания
-            """,
+            ''',
         request=BatchCategoryCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -409,47 +409,47 @@ class BatchCategoryCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все категории созданы",
+                        name='Полностью успешная операция',
+                        summary='Все категории созданы',
                         value={
-                            "total_processed": 50,
-                            "successful": 50,
-                            "failed": 0,
-                            "batch_size": 25,
-                            "errors": [],
-                            "created_ids": [101, 102, 103, 104, 105],
-                            "batches_processed": 2
+                            'total_processed': 50,
+                            'successful': 50,
+                            'failed': 0,
+                            'batch_size': 25,
+                            'errors': [],
+                            'created_ids': [101, 102, 103, 104, 105],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые категории не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые категории не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "name": "Спорт"
+                                    'data': {
+                                        'name': 'Спорт'
                                     },
-                                    "name": "Спорт",
-                                    "error": "Категория с названием Спорт уже существует",
-                                    "type": "duplicate_error"
+                                    'name': 'Спорт',
+                                    'error': 'Категория с названием Спорт уже существует',
+                                    'type': 'duplicate_error'
                                 },
                                 {
-                                    "data": {
-                                        "name": "",
-                                        "description": "Описание"
+                                    'data': {
+                                        'name': '',
+                                        'description': 'Описание'
                                     },
-                                    "name": "unknown",
-                                    "error": "Название категории не может быть пустым",
-                                    "type": "validation_error"
+                                    'name': 'unknown',
+                                    'error': 'Название категории не может быть пустым',
+                                    'type': 'validation_error'
                                 }
                             ],
-                            "created_ids": [106, 107, 108],
-                            "batches_processed": 1
+                            'created_ids': [106, 107, 108],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -584,7 +584,7 @@ class BatchCategoryCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE categories DISABLE TRIGGER audit_categories_trigger")
+                    cursor.execute('ALTER TABLE categories DISABLE TRIGGER audit_categories_trigger')
 
                 try:
                     with transaction.atomic():
@@ -611,7 +611,7 @@ class BatchCategoryCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute("ALTER TABLE categories ENABLE TRIGGER audit_categories_trigger")
+                        cursor.execute('ALTER TABLE categories ENABLE TRIGGER audit_categories_trigger')
 
                 operation_log['batches_processed'] += 1
 

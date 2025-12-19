@@ -16,7 +16,6 @@ class Challenge(models.Model):
 
     description = models.TextField('Описание', null=True)
 
-    target_value = models.DecimalField('Целевой показатель', max_digits=10, decimal_places=3)
     start_date = models.DateField('Дата начала')
     end_date = models.DateField('Дата начала')
     is_active = models.BooleanField('Активен', default=True)

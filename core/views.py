@@ -63,8 +63,8 @@ class UserViewSet(viewsets.ModelViewSet):
         }.get(self.action, UserSerializer)
 
     @extend_schema(
-        summary="Получить список пользователей",
-        description="""
+        summary='олучить список пользователей',
+        description='''
             Получение списка пользователей
 
             Возвращает список пользователей с пагинацией.
@@ -81,7 +81,7 @@ class UserViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -115,74 +115,74 @@ class UserViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Пустой список",
-                        summary="Когда пользователей нет или недоступны",
+                        name='Пустой список',
+                        summary='Когда пользователей нет или недоступны',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         },
-                        description="Пользователей не найдено или у вас нет доступа"
+                        description='Пользователей не найдено или у вас нет доступа'
                     ),
                     OpenApiExample(
-                        name="Список пользователей (администратор)",
-                        summary="Полный список для администратора",
+                        name='Список пользователей (администратор)',
+                        summary='Полный список для администратора',
                         value={
-                            "count": 502,
-                            "next": "http://127.0.0.1:8080/api/users/?limit=2&offset=2",
-                            "previous": None,
-                            "results": [
+                            'ount': 502,
+                            'next': 'http://127.0.0.1:8080/api/users/?limit=2&offset=2',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 581,
-                                    "username": "srdthjri",
-                                    "first_name": "reyt",
-                                    "last_name": "fhdf",
-                                    "description": None,
-                                    "role": "user",
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2025-12-18T00:33:52.606000+03:00",
-                                    "updated_at": "2025-12-18T00:33:54.468000+03:00"
+                                    'id': 581,
+                                    'username': 'srdthjri',
+                                    'first_name': 'reyt',
+                                    'last_name': 'fhdf',
+                                    'description': None,
+                                    'role': 'user',
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2025-12-18T00:33:52.606000+03:00',
+                                    'updated_at': '2025-12-18T00:33:54.468000+03:00'
                                 },
                                 {
-                                    "id": 582,
-                                    "username": "avdeevagalina2057",
-                                    "first_name": "Ульяна",
-                                    "last_name": "Петрова",
-                                    "description": None,
-                                    "role": "user",
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2025-12-18T13:19:36.784614+03:00",
-                                    "updated_at": "2025-12-18T13:19:36.784640+03:00"
+                                    'id': 582,
+                                    'username': 'avdeevagalina2057',
+                                    'first_name': 'Ульяна',
+                                    'last_name': 'Петрова',
+                                    'description': None,
+                                    'role': 'user',
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2025-12-18T13:19:36.784614+03:00',
+                                    'updated_at': '2025-12-18T13:19:36.784640+03:00'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Список пользователей (обычный пользователь)",
-                        summary="Только публичные пользователи",
+                        name='Список пользователей (обычный пользователь)',
+                        summary='Только публичные пользователи',
                         value={
-                            "count": 150,
-                            "next": "http://127.0.0.1:8080/api/users/?limit=2&offset=2",
-                            "previous": None,
-                            "results": [
+                            'count': 150,
+                            'next': 'http://127.0.0.1:8080/api/users/?limit=2&offset=2',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 581,
-                                    "username": "public_user1",
-                                    "first_name": "Иван",
-                                    "last_name": "Петров",
-                                    "description": "Публичный профиль",
-                                    "role": "user",
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2025-12-18T00:33:52.606000+03:00",
-                                    "updated_at": "2025-12-18T00:33:54.468000+03:00"
+                                    'id': 581,
+                                    'username': 'public_user1',
+                                    'first_name': 'Иван',
+                                    'last_name': 'Петров',
+                                    'description': 'Публичный профиль',
+                                    'role': 'user',
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2025-12-18T00:33:52.606000+03:00',
+                                    'updated_at': '2025-12-18T00:33:54.468000+03:00'
                                 }
                             ]
                         },
-                        description="Обычные пользователи видят только пользователей с is_public=True"
+                        description='Обычные пользователи видят только пользователей с is_public=True'
                     )
                 ]
             ),
@@ -196,8 +196,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать нового пользователя",
-        description="""
+        summary='Создать нового пользователя',
+        description='''
             Регистрация нового пользователя
 
             Создает нового пользователя в системе. Эндпоинт не требует аутентификации.
@@ -224,7 +224,7 @@ class UserViewSet(viewsets.ModelViewSet):
             - Проверка формата username
             - Проверка сложности пароля
             - Проверка совпадения password и confirm_password
-            """,
+            ''',
         request=UserCreateSerializer,
         responses={
             201: OpenApiResponse(
@@ -232,19 +232,19 @@ class UserViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Пользователь успешно создан",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Пользователь успешно создан',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 789,
-                            "username": "john_doe",
-                            "first_name": "John",
-                            "last_name": "Doe",
-                            "description": "Разработчик из Москвы",
-                            "role": "user",
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 789,
+                            'username': 'john_doe',
+                            'first_name': 'John',
+                            'last_name': 'Doe',
+                            'description': 'Разработчик из Москвы',
+                            'role': 'user',
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -254,7 +254,7 @@ class UserViewSet(viewsets.ModelViewSet):
         },
         examples=[
             OpenApiExample(
-                name="Пример создания пользователя",
+                name='Пример создания пользователя',
                 value={
                     'username': 'john_doe',
                     'password': 'SecurePass123',
@@ -273,8 +273,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить информацию о пользователе",
-        description="""
+        summary='Получить информацию о пользователе',
+        description='''
             Получение детальной информации о пользователе
 
             Возвращает полную информацию о конкретном пользователе по его ID.
@@ -297,42 +297,42 @@ class UserViewSet(viewsets.ModelViewSet):
             - is_public: Виден ли профиль публично
             - created_at: Дата создания
             - updated_at: Дата обновления
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=UserSerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Активный публичный пользователь",
-                        summary="Стандартный профиль пользователя",
+                        name='Активный публичный пользователь',
+                        summary='Стандартный профиль пользователя',
                         value={
-                            "id": 123,
-                            "username": "ivan_ivanov",
-                            "first_name": "Иван",
-                            "last_name": "Иванов",
-                            "description": "Бэкенд разработчик",
-                            "role": "user",
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T14:20:45Z"
+                            'id': 123,
+                            'username': 'ivan_ivanov',
+                            'first_name': 'Иван',
+                            'last_name': 'Иванов',
+                            'description': 'Бэкенд разработчик',
+                            'role': 'user',
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T14:20:45Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Пользователь-администратор",
-                        summary="Профиль администратора",
+                        name='Пользователь-администратор',
+                        summary='Профиль администратора',
                         value={
-                            "id": 1,
-                            "username": "admin",
-                            "first_name": "Алексей",
-                            "last_name": "Петров",
-                            "description": "Системный администратор",
-                            "role": "admin",
-                            "is_active": True,
-                            "is_public": False,
-                            "created_at": "2024-01-01T00:00:00Z",
-                            "updated_at": "2024-01-15T16:30:00Z"
+                            'id': 1,
+                            'username': 'admin',
+                            'first_name': 'Алексей',
+                            'last_name': 'Петров',
+                            'description': 'Системный администратор',
+                            'role': 'admin',
+                            'is_active': True,
+                            'is_public': False,
+                            'created_at': '2024-01-01T00:00:00Z',
+                            'updated_at': '2024-01-15T16:30:00Z'
                         }
                     )
                 ]
@@ -348,8 +348,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Полное обновление пользователя",
-        description="""
+        summary='Полное обновление пользователя',
+        description='''
             Полное обновление информации пользователя
 
             Заменяет все данные пользователя новыми значениями. Все поля обязательны.
@@ -375,7 +375,7 @@ class UserViewSet(viewsets.ModelViewSet):
             Примечание:
             - Пароль изменяется через отдельный эндпоинт change_password
             - Роль изменяется через отдельный эндпоинт change_role
-            """,
+            ''',
         request=UserUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -383,19 +383,19 @@ class UserViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Пользователь успешно обновлен",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Пользователь успешно обновлен',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 123,
-                            "username": "new_username",
-                            "first_name": "НовоеИмя",
-                            "last_name": "НоваяФамилия",
-                            "description": "Обновленное описание",
-                            "role": "user",
-                            "is_active": True,
-                            "is_public": False,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 123,
+                            'username': 'new_username',
+                            'first_name': 'НовоеИмя',
+                            'last_name': 'НоваяФамилия',
+                            'description': 'Обновленное описание',
+                            'role': 'user',
+                            'is_active': True,
+                            'is_public': False,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -408,14 +408,14 @@ class UserViewSet(viewsets.ModelViewSet):
         },
         examples=[
             OpenApiExample(
-                name="Пример полного обновления",
+                name='Пример полного обновления',
                 value={
-                    "username": "ivanov_ivan",
-                    "first_name": "Иван",
-                    "last_name": "Иванов",
-                    "description": "Обновленное описание профиля",
-                    "is_active": True,
-                    "is_public": True
+                    'username': 'ivanov_ivan',
+                    'first_name': 'Иван',
+                    'last_name': 'Иванов',
+                    'description': 'Обновленное описание профиля',
+                    'is_active': True,
+                    'is_public': True
                 },
                 request_only=True
             )
@@ -426,8 +426,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частичное обновление пользователя",
-        description="""
+        summary='Частичное обновление пользователя',
+        description='''
             Частичное обновление информации пользователя
 
             Обновляет только указанные поля пользователя. Не указанные поля остаются без изменений.
@@ -448,7 +448,7 @@ class UserViewSet(viewsets.ModelViewSet):
             Ограничения:
             - Нельзя изменить роль (используйте change_role)
             - Нельзя изменить пароль (используйте change_password)
-            """,
+            ''',
         request=UserPartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -456,35 +456,35 @@ class UserViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновление описания",
-                        summary="Обновлено только описание",
+                        name='Обновление описания',
+                        summary='Обновлено только описание',
                         value={
-                            "id": 123,
-                            "username": "ivanov",
-                            "first_name": "Иван",
-                            "last_name": "Иванов",
-                            "description": "Новое описание профиля",
-                            "role": "user",
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 123,
+                            'username': 'ivanov',
+                            'first_name': 'Иван',
+                            'last_name': 'Иванов',
+                            'description': 'Новое описание профиля',
+                            'role': 'user',
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновление имени и публичности",
-                        summary="Обновлено несколько полей",
+                        name='Обновление имени и публичности',
+                        summary='Обновлено несколько полей',
                         value={
-                            "id": 456,
-                            "username": "petrov",
-                            "first_name": "Петр",
-                            "last_name": "Петров",
-                            "description": "Старое описание",
-                            "role": "user",
-                            "is_active": True,
-                            "is_public": True,
-                            "created_at": "2024-01-05T11:45:20Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 456,
+                            'username': 'petrov',
+                            'first_name': 'Петр',
+                            'last_name': 'Петров',
+                            'escription': 'Старое описание',
+                            'role': 'user',
+                            'is_active': True,
+                            'is_public': True,
+                            'created_at': '2024-01-05T11:45:20Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -497,17 +497,17 @@ class UserViewSet(viewsets.ModelViewSet):
         },
         examples=[
             OpenApiExample(
-                name="Обновить только описание",
+                name='Обновить только описание',
                 value={
-                    "description": "Новое описание моего профиля"
+                    'description': 'Новое описание моего профиля'
                 },
                 request_only=True
             ),
             OpenApiExample(
-                name="Обновить имя и публичность",
+                name='Обновить имя и публичность',
                 value={
-                    "first_name": "Александр",
-                    "is_public": False
+                    'first_name': 'Александр',
+                    'is_public': False
                 },
                 request_only=True
             )
@@ -518,8 +518,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить пользователя",
-        description="""
+        summary='Удалить пользователя',
+        description='''
             Удаление пользователя из системы
 
             Полностью удаляет пользователя и все связанные данные из системы.
@@ -533,7 +533,7 @@ class UserViewSet(viewsets.ModelViewSet):
             - Безвозвратное удаление пользователя
             - Каскадное удаление связанных записей
             - Освобождение username для повторного использования
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -549,8 +549,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Изменить пароль пользователя",
-        description="""
+        summary='Изменить пароль пользователя',
+        description='''
             Смена пароля пользователя
 
             Позволяет пользователю изменить свой пароль или администратору изменить пароль другого пользователя.
@@ -573,7 +573,7 @@ class UserViewSet(viewsets.ModelViewSet):
             - Хэширование с помощью bcrypt
             - Обновление password_hash в базе данных
             - Не влияет на активные сессии (токены продолжают работать)
-            """,
+            ''',
         request=UserChangePasswordSerializer,
         responses={
             200: OpenApiResponse(
@@ -587,10 +587,10 @@ class UserViewSet(viewsets.ModelViewSet):
         },
         examples=[
             OpenApiExample(
-                name="Пример смены пароля",
+                name='Пример смены пароля',
                 value={
-                    "password": "NewSecurePass123",
-                    "confirm_password": "NewSecurePass123"
+                    'password': 'NewSecurePass123',
+                    'confirm_password': 'NewSecurePass123'
                 },
                 request_only=True
             )
@@ -606,8 +606,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
     @extend_schema(
-        summary="Изменить роль пользователя",
-        description="""
+        summary='Изменить роль пользователя',
+        description='''
             Изменение роли пользователя
 
             Позволяет администраторам изменять роль пользователя между user и admin.
@@ -632,7 +632,7 @@ class UserViewSet(viewsets.ModelViewSet):
             - Изменение роли применяется немедленно
             - Активные токены сохраняют свои права
             - Новые права применяются к новым сессиям
-            """,
+            ''',
         request=None,
         parameters=[
             OpenApiParameter(
@@ -686,8 +686,8 @@ class LoginView(APIView):
     permission_classes = []
 
     @extend_schema(
-        summary="Вход в систему",
-        description="""
+        summary='Вход в систему',
+        description='''
             Аутентификация пользователя
 
             Получение токена доступа для работы с API.
@@ -712,7 +712,7 @@ class LoginView(APIView):
             - token: Токен для авторизации
             - expires_at: Время истечения токена
             - user: Данные аутентифицированного пользователя
-            """,
+            ''',
         request=LoginSerializer,
         responses={
             200: OpenApiResponse(
@@ -720,24 +720,24 @@ class LoginView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Успешный вход",
-                        summary="Стандартный успешный ответ",
+                        name='Успешный вход',
+                        summary='Стандартный успешный ответ',
                         value={
-                            "success": True,
-                            "message": "Авторизация успешна",
-                            "token": "a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef",
-                            "expires_at": "2024-01-16T10:30:00Z",
-                            "user": {
-                                "id": 123,
-                                "username": "john_doe",
-                                "first_name": "John",
-                                "last_name": "Doe",
-                                "description": "Разработчик",
-                                "role": "user",
-                                "is_active": True,
-                                "is_public": True,
-                                "created_at": "2024-01-10T09:15:30Z",
-                                "updated_at": "2024-01-15T14:20:45Z"
+                            'success': True,
+                            'message': 'Авторизация успешна',
+                            'token': 'a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef',
+                            'expires_at': '2024-01-16T10:30:00Z',
+                            'user': {
+                                'id': 123,
+                                'username': 'john_doe',
+                                'first_name': 'John',
+                                'ast_name': 'Doe',
+                                'description': 'Разработчик',
+                                'role': 'user',
+                                'is_active': True,
+                                'is_public': True,
+                                'created_at': '2024-01-10T09:15:30Z',
+                                'updated_at': '2024-01-15T14:20:45Z'
                             }
                         }
                     )
@@ -748,10 +748,10 @@ class LoginView(APIView):
         },
         examples=[
             OpenApiExample(
-                name="Пример входа",
+                name='Пример входа',
                 value={
-                    "username": "john_doe",
-                    "password": "SecurePass123"
+                    'username': 'john_doe',
+                    'password': 'SecurePass123'
                 },
                 request_only=True
             )
@@ -788,8 +788,8 @@ class LogoutView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary="Выход из системы",
-        description="""
+        summary='Выход из системы',
+        description='''
             Завершение сессии пользователя
 
             Деактивирует текущий токен авторизации, делая его недействительным для последующих запросов.
@@ -804,7 +804,7 @@ class LogoutView(APIView):
             - Другие активные токены пользователя остаются действительными
             - Токен помечается как неактивный, но не удаляется
             - Для полной очистки используйте /auth/clean-tokens/
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 description='OK'
@@ -827,8 +827,8 @@ class CleanUnusedTokensView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Очистка деактивированных токенов авторизации",
-        description="""
+        summary='Очистка деактивированных токенов авторизации',
+        description='''
             Административная очистка токенов
 
             Полностью удаляет все деактивированные (неактивные) токены авторизации из базы данных.
@@ -857,15 +857,15 @@ class CleanUnusedTokensView(APIView):
             - Невозможно восстановить удаленные токены
             - Активные сессии не затрагиваются
             - Операция безопасна для активных пользователей
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content',
                 examples=[
                     OpenApiExample(
-                        name="Очистка выполнена успешно",
+                        name='Очистка выполнена успешно',
                         value=None,
-                        description="Для статуса 204 тело ответа всегда пустое"
+                        description='Для статуса 204 тело ответа всегда пустое'
                     )
                 ]
             ),
@@ -875,12 +875,12 @@ class CleanUnusedTokensView(APIView):
                 description='Forbidden',
                 examples=[
                     OpenApiExample(
-                        name="Обычный пользователь пытается очистить",
+                        name='Обычный пользователь пытается очистить',
                         value={
-                            "detail": "У вас недостаточно прав для очистки токенов.",
-                            "code": "permission_denied",
-                            "required_role": "admin",
-                            "current_role": "user"
+                            'detail': 'У вас недостаточно прав для очистки токенов.',
+                            'code': 'permission_denied',
+                            'required_role': 'admin',
+                            'current_role': 'user'
                         }
                     )
                 ]
@@ -900,8 +900,8 @@ class BatchUserCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка пользователей",
-        description="""
+        summary='Батчевая загрузка пользователей',
+        description='''
             Массовое создание пользователей
 
             Создание множества пользователей за одну операцию с использованием оптимизированных bulk операций.
@@ -928,7 +928,7 @@ class BatchUserCreateView(APIView):
             - batch_size от 1 до 5,000
             - Все username должны быть уникальными
             - Нельзя создавать существующих пользователей
-            """,
+            ''',
         request=BatchUserCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -936,43 +936,43 @@ class BatchUserCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все пользователи созданы",
+                        name='Полностью успешная операция',
+                        summary='Все пользователи созданы',
                         value={
-                            "total_processed": 100,
-                            "successful": 100,
-                            "failed": 0,
-                            "batch_size": 50,
-                            "errors": [],
-                            "created_ids": [1001, 1002, 1003, 1004, 1005],
-                            "batches_processed": 2
+                            'total_processed': 100,
+                            'successful': 100,
+                            'failed': 0,
+                            'batch_size': 50,
+                            'errors': [],
+                            'created_ids': [1001, 1002, 1003, 1004, 1005],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые пользователи не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые пользователи не созданы',
                         value={
-                            "total_processed": 4,
-                            "successful": 3,
-                            "failed": 1,
-                            "batch_size": 4,
-                            "errors": [
+                            'total_processed': 4,
+                            'successful': 3,
+                            'failed': 1,
+                            'batch_size': 4,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "username": "existing_user",
-                                        "password": "pass123",
-                                        "confirm_password": "pass123",
-                                        "first_name": "Иван",
-                                        "last_name": "Иванов",
-                                        "role": "user"
+                                    'data': {
+                                        'username': 'existing_user',
+                                        'password': 'pass123',
+                                        'confirm_password': 'pass123',
+                                        'first_name': 'Иван',
+                                        'last_name': 'Иванов',
+                                        'role': 'user'
                                     },
-                                    "username": "existing_user",
-                                    "error": "Пользователь с username existing_user уже существует",
-                                    "type": "duplicate_error"
+                                    'username': 'existing_user',
+                                    'error': 'Пользователь с username existing_user уже существует',
+                                    'type': 'duplicate_error'
                                 }
                             ],
-                            "created_ids": [1006, 1007, 1008],
-                            "batches_processed": 1
+                            'created_ids': [1006, 1007, 1008],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -984,32 +984,32 @@ class BatchUserCreateView(APIView):
         },
         examples=[
             OpenApiExample(
-                name="Создание 3 пользователей",
+                name='Создание 3 пользователей',
                 value={
-                    "users": [
+                    'users': [
                         {
-                            "username": "user001",
-                            "password": "Pass123456",
-                            "confirm_password": "Pass123456",
-                            "first_name": "Иван",
-                            "last_name": "Иванов",
-                            "role": "user",
-                            "description": "Первый тестовый пользователь",
-                            "is_public": True,
-                            "is_active": True
+                            'username': 'user001',
+                            'password': 'Pass123456',
+                            'confirm_password': 'Pass123456',
+                            'first_name': 'Иван',
+                            'last_name': 'Иванов',
+                            'role': 'user',
+                            'description': 'Первый тестовый пользователь',
+                            'is_public': True,
+                            'is_active': True
                         },
                         {
-                            "username": "user002",
-                            "password": "Pass123456",
-                            "confirm_password": "Pass123456",
-                            "first_name": "Мария",
-                            "last_name": "Петрова",
-                            "role": "user",
-                            "is_public": False,
-                            "is_active": True
+                            'username': 'user002',
+                            'password': 'Pass123456',
+                            'confirm_password': 'Pass123456',
+                            'first_name': 'Мария',
+                            'last_name': 'Петрова',
+                            'role': 'user',
+                            'is_public': False,
+                            'is_active': True
                         }
                     ],
-                    "batch_size": 2
+                    'batch_size': 2
                 },
                 request_only=True
             )
@@ -1156,9 +1156,9 @@ class BatchUserCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute(f"""
+                    cursor.execute(f'''
                         ALTER TABLE users DISABLE TRIGGER audit_users_trigger
-                    """)
+                    ''')
 
                 try:
                     with transaction.atomic():
@@ -1185,9 +1185,9 @@ class BatchUserCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute(f"""
+                        cursor.execute(f'''
                             ALTER TABLE users ENABLE TRIGGER audit_users_trigger
-                        """)
+                        ''')
 
                 operation_log['batches_processed'] += 1
 

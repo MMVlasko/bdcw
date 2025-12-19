@@ -58,8 +58,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         }.get(self.action, ChallengeSerializer)
 
     @extend_schema(
-        summary="Получить список челленджей",
-        description="""
+        summary='олучить список челленджей',
+        description='''
             Получение списка челленджей
 
             Возвращает список всех челленджей с пагинацией.
@@ -73,7 +73,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -98,35 +98,34 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список челленджей",
-                        summary="Стандартный ответ со списком челленджей",
+                        name='Список челленджей',
+                        summary='Стандартный ответ со списком челленджей',
                         value={
-                            "count": 15,
-                            "next": "http://127.0.0.1:8080/api/challenges/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 15,
+                            'next': 'http://127.0.0.1:8080/api/challenges/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Зимний фитнес-челлендж",
-                                    "description": "Тренировки всю зиму",
-                                    "target_value": "30.000",
-                                    "start_date": "2024-01-01",
-                                    "end_date": "2024-03-31",
-                                    "is_active": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'name': 'Зимний фитнес-челлендж',
+                                    'description': 'Тренировки всю зиму',
+                                    'start_date': '2024-01-01',
+                                    'end_date': '2024-03-31',
+                                    'is_active': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список челленджей",
-                        summary="Когда челленджей нет",
+                        name='Пустой список челленджей',
+                        summary='Когда челленджей нет',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -141,8 +140,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return super().list(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Создать челлендж",
-        description="""
+        summary='Создать челлендж',
+        description='''
             Создание нового челленджа
 
             Создает новый челлендж для участия пользователей.
@@ -153,14 +152,13 @@ class ChallengeViewSet(viewsets.ModelViewSet):
 
             Обязательные поля:
             - name: Название челленджа (строка, максимум 255 символов)
-            - target_value: Целевое значение (число с точностью до 3 знаков после запятой)
             - start_date: Дата начала челленджа (в формате YYYY-MM-DD)
             - end_date: Дата окончания челленджа (в формате YYYY-MM-DD)
             - is_active: Активен ли челлендж (булево значение)
 
             Опциональные поля:
             - description: Описание челленджа (текст, может быть null)
-            """,
+            ''',
         request=ChallengeCreateAndUpdateSerializer,
         responses={
             201: OpenApiResponse(
@@ -168,18 +166,17 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Челлендж успешно создан",
-                        summary="Стандартный ответ при успешном создании",
+                        name='Челлендж успешно создан',
+                        summary='Стандартный ответ при успешном создании',
                         value={
-                            "id": 45,
-                            "name": "Новогодний челлендж",
-                            "description": "Достижение целей к Новому году",
-                            "target_value": "100.000",
-                            "start_date": "2024-11-01",
-                            "end_date": "2024-12-31",
-                            "is_active": True,
-                            "created_at": "2024-01-15T10:30:00Z",
-                            "updated_at": "2024-01-15T10:30:00Z"
+                            'id': 45,
+                            'name': 'Новогодний челлендж',
+                            'description': 'Достижение целей к Новому году',
+                            'start_date': '2024-11-01',
+                            'end_date': '2024-12-31',
+                            'is_active': True,
+                            'created_at': '2024-01-15T10:30:00Z',
+                            'updated_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -195,8 +192,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить информацию о челлендже",
-        description="""
+        summary='Получить информацию о челлендже',
+        description='''
             Получение информации о челлендже
 
             Возвращает полную информацию о конкретном челлендже по его ID.
@@ -209,46 +206,43 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             - id: Идентификатор челленджа
             - name: Название челленджа
             - description: Описание челленджа
-            - target_value: Целевое значение
             - start_date: Дата начала челленджа
             - end_date: Дата окончания челленджа
             - is_active: Активен ли челлендж
             - created_at: Дата создания
             - updated_at: Дата обновления
-            """,
+            ''',
         responses={
             200: OpenApiResponse(
                 response=ChallengeSerializer,
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Активный челлендж",
-                        summary="Информация об активном челлендже",
+                        name='Активный челлендж',
+                        summary='Информация об активном челлендже',
                         value={
-                            "id": 1,
-                            "name": "Летний беговой челлендж",
-                            "description": "Пробежать 100 км за лето",
-                            "target_value": "100.000",
-                            "start_date": "2024-06-01",
-                            "end_date": "2024-08-31",
-                            "is_active": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T14:20:45Z"
+                            'id': 1,
+                            'name': 'Летний беговой челлендж',
+                            'description': 'Пробежать 100 км за лето',
+                            'start_date': '2024-06-01',
+                            'end_date': '2024-08-31',
+                            'is_active': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T14:20:45Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Неактивный челлендж",
-                        summary="Информация о завершенном челлендже",
+                        name='Неактивный челлендж',
+                        summary='Информация о завершенном челлендже',
                         value={
-                            "id": 2,
-                            "name": "Весенний челлендж",
-                            "description": "Челлендж прошлой весны",
-                            "target_value": "50.000",
-                            "start_date": "2023-03-01",
-                            "end_date": "2023-05-31",
-                            "is_active": False,
-                            "created_at": "2024-01-12T11:45:20Z",
-                            "updated_at": "2024-01-15T16:30:00Z"
+                            'id': 2,
+                            'name': 'Весенний челлендж',
+                            'description': 'Челлендж прошлой весны',
+                            'start_date': '2023-03-01',
+                            'end_date': '2023-05-31',
+                            'is_active': False,
+                            'created_at': '2024-01-12T11:45:20Z',
+                            'updated_at': '2024-01-15T16:30:00Z'
                         }
                     )
                 ]
@@ -264,8 +258,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Обновить информацию о челлендже",
-        description="""
+        summary='Обновить информацию о челлендже',
+        description='''
             Полное обновление информации о челлендже
 
             Заменяет все данные челленджа новыми значениями. Все поля обязательны.
@@ -277,7 +271,6 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Обязательные поля:
             - name: Название челленджа
             - description: Описание челленджа (может быть null)
-            - target_value: Целевое значение
             - start_date: Дата начала челленджа
             - end_date: Дата окончания челленджа
             - is_active: Активен ли челлендж
@@ -287,7 +280,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             - Проверка типов данных
             - Проверка прав доступа
             - Проверка, что end_date позже start_date
-            """,
+            ''',
         request=ChallengeCreateAndUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -295,18 +288,17 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Челлендж успешно обновлен",
-                        summary="Стандартный ответ при успешном обновлении",
+                        name='Челлендж успешно обновлен',
+                        summary='Стандартный ответ при успешном обновлении',
                         value={
-                            "id": 1,
-                            "name": "Обновленное название",
-                            "description": "Обновленное описание челленджа",
-                            "target_value": "150.000",
-                            "start_date": "2024-02-01",
-                            "end_date": "2024-04-30",
-                            "is_active": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:30:00Z"
+                            'id': 1,
+                            'name': 'Обновленное название',
+                            'description': 'Обновленное описание челленджа',
+                            'start_date': '2024-02-01',
+                            'end_date': '2024-04-30',
+                            'is_active': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:30:00Z'
                         }
                     )
                 ]
@@ -323,8 +315,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Частично обновить информацию о челлендже",
-        description="""
+        summary='Частично обновить информацию о челлендже',
+        description='''
             Частичное обновление информации о челлендже
 
             Обновляет только указанные поля челленджа. Не указанные поля остаются без изменений.
@@ -336,7 +328,6 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Доступные для обновления поля:
             - name: Название челленджа
             - description: Описание челленджа (можно установить в null)
-            - target_value: Целевое значение
             - start_date: Дата начала челленджа
             - end_date: Дата окончания челленджа
             - is_active: Активен ли челлендж
@@ -344,7 +335,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Особенности:
             - Можно обновлять любое подмножество полей
             - Не требуется передавать все поля
-            """,
+            ''',
         request=ChallengePartialUpdateSerializer,
         responses={
             200: OpenApiResponse(
@@ -352,33 +343,31 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Обновлено только название",
-                        summary="Обновлено одно поле",
+                        name='Обновлено только название',
+                        summary='Обновлено одно поле',
                         value={
-                            "id": 1,
-                            "name": "Новое название челленджа",
-                            "description": "Старое описание",
-                            "target_value": "100.000",
-                            "start_date": "2024-06-01",
-                            "end_date": "2024-08-31",
-                            "is_active": True,
-                            "created_at": "2024-01-10T09:15:30Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 1,
+                            'name': 'Новое название челленджа',
+                            'description': 'Старое описание',
+                            'start_date': '2024-06-01',
+                            'end_date': '2024-08-31',
+                            'is_active': True,
+                            'created_at': '2024-01-10T09:15:30Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     ),
                     OpenApiExample(
-                        name="Обновлены даты",
-                        summary="Обновлено несколько полей",
+                        name='Обновлены даты',
+                        summary='Обновлено несколько полей',
                         value={
-                            "id": 2,
-                            "name": "Весенний челлендж",
-                            "description": "Старое описание",
-                            "target_value": "50.000",
-                            "start_date": "2024-03-01",
-                            "end_date": "2024-05-31",
-                            "is_active": False,
-                            "created_at": "2024-01-12T11:45:20Z",
-                            "updated_at": "2024-01-15T15:45:00Z"
+                            'id': 2,
+                            'name': 'Весенний челлендж',
+                            'description': 'Старое описание',
+                            'start_date': '2024-03-01',
+                            'end_date': '2024-05-31',
+                            'is_active': False,
+                            'created_at': '2024-01-12T11:45:20Z',
+                            'updated_at': '2024-01-15T15:45:00Z'
                         }
                     )
                 ]
@@ -395,8 +384,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Удалить челлендж",
-        description="""
+        summary='Удалить челлендж',
+        description='''
             Удаление челленджа
 
             Полностью удаляет челлендж и все связанные записи из системы.
@@ -409,7 +398,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             - Безвозвратное удаление челленджа
             - Каскадное удаление всех связей с категориями
             - Каскадное удаление всех связей с целями
-            """,
+            ''',
         responses={
             204: OpenApiResponse(
                 description='No Content'
@@ -425,8 +414,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        summary="Получить категории челленджа",
-        description="""
+        summary='Получить категории челленджа',
+        description='''
             Получение категорий челленджа
 
             Получить список всех категорий данного челленджа по его ID.
@@ -438,7 +427,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -469,31 +458,31 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список категорий челленджа",
-                        summary="Стандартный ответ со списком категорий",
+                        name='Список категорий челленджа',
+                        summary='Стандартный ответ со списком категорий',
                         value={
-                            "count": 3,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 3,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Фитнес",
-                                    "description": "Спортивные цели",
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'name': 'Фитнес',
+                                    'description': 'Спортивные цели',
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список категорий",
-                        summary="Когда у челленджа нет категорий",
+                        name='Пустой список категорий',
+                        summary='Когда у челленджа нет категорий',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -532,8 +521,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить челленджи по категории",
-        description="""
+        summary='Получить челленджи по категории',
+        description='''
             Получение челленджей по категории
 
             Получить список всех челленджей с данной категорией по её ID.
@@ -545,7 +534,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='category_id',
@@ -576,35 +565,34 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список челленджей категории",
-                        summary="Стандартный ответ со списком челленджей",
+                        name='Список челленджей категории',
+                        summary='Стандартный ответ со списком челленджей',
                         value={
-                            "count": 5,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 5,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Фитнес-челлендж",
-                                    "description": "Спортивные достижения",
-                                    "target_value": "30.000",
-                                    "start_date": "2024-01-01",
-                                    "end_date": "2024-03-31",
-                                    "is_active": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'name': 'Фитнес-челлендж',
+                                    'description': 'Спортивные достижения',
+                                    'start_date': '2024-01-01',
+                                    'end_date': '2024-03-31',
+                                    'is_active': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список челленджей",
-                        summary="Когда в категории нет челленджей",
+                        name='Пустой список челленджей',
+                        summary='Когда в категории нет челленджей',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -644,8 +632,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить участников челленджа",
-        description="""
+        summary='Получить участников челленджа',
+        description='''
             Получение участников челленджа
 
             Получить список всех участников данного челленджа по его ID.
@@ -662,7 +650,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -693,36 +681,36 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список участников челленджа",
-                        summary="Стандартный ответ со списком участников",
+                        name='Список участников челленджа',
+                        summary='Стандартный ответ со списком участников',
                         value={
-                            "count": 8,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 8,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 123,
-                                    "username": "user123",
-                                    "first_name": "Иван",
-                                    "last_name": "Иванов",
-                                    "description": "Участник челленджа",
-                                    "role": "user",
-                                    "is_active": True,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 123,
+                                    'username': 'user123',
+                                    'first_name': 'Иван',
+                                    'last_name': 'Иванов',
+                                    'description': 'Участник челленджа',
+                                    'role': 'user',
+                                    'is_active': True,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список участников",
-                        summary="Когда в челлендже нет участников",
+                        name='Пустой список участников',
+                        summary='Когда в челлендже нет участников',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -763,8 +751,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить цели челленджа",
-        description="""
+        summary='Получить цели челленджа',
+        description='''
             Получение целей челленджа
 
             Получить список всех целей, участвующих в данном челлендже по его ID.
@@ -781,7 +769,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -812,37 +800,36 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список целей челленджа",
-                        summary="Стандартный ответ со списком целей",
+                        name='Список целей челленджа',
+                        summary='Стандартный ответ со списком целей',
                         value={
-                            "count": 12,
-                            "next": "http://127.0.0.1:8080/api/challenges/challenge_goals/1/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 12,
+                            'next': 'http://127.0.0.1:8080/api/challenges/challenge_goals/1/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 5,
-                                    "user_id": 123,
-                                    "title": "Похудение на 5 кг",
-                                    "description": "Участвует в челлендже",
-                                    "category_id": 3,
-                                    "target_value": "5.000",
-                                    "deadline": "2024-06-30",
-                                    "is_completed": False,
-                                    "is_public": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 5,
+                                    'user_id': 123,
+                                    'title': 'Похудение на 5 кг',
+                                    'description': 'Участвует в челлендже',
+                                    'category_id': 3,
+                                    'deadline': '2024-06-30',
+                                    'is_completed': False,
+                                    'is_public': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список целей",
-                        summary="Когда в челлендже нет целей",
+                        name='Пустой список целей',
+                        summary='Когда в челлендже нет целей',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -883,8 +870,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить челленджи с участием цели",
-        description="""
+        summary='Получить челленджи с участием цели',
+        description='''
             Получение челленджей цели
 
             Получить список всех челленджей, в которых участвует данная цель по её ID.
@@ -898,7 +885,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='goal_id',
@@ -929,35 +916,34 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список челленджей цели",
-                        summary="Стандартный ответ со списком челленджей",
+                        name='Список челленджей цели',
+                        summary='Стандартный ответ со списком челленджей',
                         value={
-                            "count": 3,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 3,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Зимний фитнес-челлендж",
-                                    "description": "Тренировки всю зиму",
-                                    "target_value": "30.000",
-                                    "start_date": "2024-01-01",
-                                    "end_date": "2024-03-31",
-                                    "is_active": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'name': 'Зимний фитнес-челлендж',
+                                    'description': 'Тренировки всю зиму',
+                                    'start_date': '2024-01-01',
+                                    'end_date': '2024-03-31',
+                                    'is_active': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список челленджей",
-                        summary="Когда цель не участвует в челленджах",
+                        name='Пустой список челленджей',
+                        summary='Когда цель не участвует в челленджах',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -986,7 +972,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             )
 
         challenges = Challenge.objects.raw('''
-                        SELECT c.id, c.name, c.description, c.target_value, 
+                        SELECT c.id, c.name, c.description, 
                                c.start_date, c.end_date, c.is_active, c.created_at, c.updated_at 
                         FROM challenges c
                         JOIN goal_challenges gc ON c.id = gc.challenge_id
@@ -1003,8 +989,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить челленджи с участием пользователя",
-        description="""
+        summary='Получить челленджи с участием пользователя',
+        description='''
             Получение челленджей пользователя
 
             Получить список всех челленджей, в которых участвуют цели данного пользователя по его ID.
@@ -1018,7 +1004,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='user_id',
@@ -1049,35 +1035,34 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Список челленджей пользователя",
-                        summary="Стандартный ответ со списком челленджей",
+                        name='Список челленджей пользователя',
+                        summary='Стандартный ответ со списком челленджей',
                         value={
-                            "count": 5,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 5,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Зимний фитнес-челлендж",
-                                    "description": "Тренировки всю зиму",
-                                    "target_value": "30.000",
-                                    "start_date": "2024-01-01",
-                                    "end_date": "2024-03-31",
-                                    "is_active": True,
-                                    "created_at": "2024-01-10T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'id': 1,
+                                    'name': 'Зимний фитнес-челлендж',
+                                    'description': 'Тренировки всю зиму',
+                                    'start_date': '2024-01-01',
+                                    'end_date': '2024-03-31',
+                                    'is_active': True,
+                                    'created_at': '2024-01-10T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой список челленджей",
-                        summary="Когда пользователь не участвует в челленджах",
+                        name='Пустой список челленджей',
+                        summary='Когда пользователь не участвует в челленджах',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -1106,7 +1091,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             )
 
         challenges = Challenge.objects.raw('''
-                            SELECT c.id, c.name, c.description, c.target_value, 
+                            SELECT c.id, c.name, c.description, 
                                    c.start_date, c.end_date, c.is_active, c.created_at, c.updated_at 
                             FROM challenges c
                             JOIN goal_challenges gc ON c.id = gc.challenge_id
@@ -1124,8 +1109,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить список целей-лидеров",
-        description="""
+        summary='Получить список целей-лидеров',
+        description='''
             Получение лидерборда целей в челлендже
 
             Получить список целей, участвующих в челлендже, отсортированных по прогрессу выполнения.
@@ -1140,7 +1125,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -1171,40 +1156,40 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Лидерборд целей",
-                        summary="Стандартный ответ со списком целей-лидеров",
+                        name='Лидерборд целей',
+                        summary='Стандартный ответ со списком целей-лидеров',
                         value={
-                            "count": 50,
-                            "next": "http://127.0.0.1:8080/api/challenges/goal_leaderboard/1/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 50,
+                            'next': 'http://127.0.0.1:8080/api/challenges/goal_leaderboard/1/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "rank": 1,
-                                    "min_diff": 5,
-                                    "id": 5,
-                                    "user_id": 123,
-                                    "username": "john_doe",
-                                    "title": "Бег 5 км",
-                                    "description": "Ежедневный бег 5 километров",
-                                    "category_id": 1,
-                                    "target_value": 150.000,
-                                    "deadline": "2024-01-31",
-                                    "is_completed": False,
-                                    "is_public": True,
-                                    "created_at": "2024-01-01T09:15:30Z",
-                                    "updated_at": "2024-01-15T14:20:45Z"
+                                    'rank': 1,
+                                    'min_diff': 5,
+                                    'id': 5,
+                                    'user_id': 123,
+                                    'username': 'john_doe',
+                                    'title': 'Бег 5 км',
+                                    'description': 'Ежедневный бег 5 километров',
+                                    'category_id': 1,
+                                    'target_value': 150.000,
+                                    'deadline': '2024-01-31',
+                                    'is_completed': False,
+                                    'is_public': True,
+                                    'created_at': '2024-01-01T09:15:30Z',
+                                    'updated_at': '2024-01-15T14:20:45Z'
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой лидерборд",
-                        summary="Когда в челлендже нет целей",
+                        name='Пустой лидерборд',
+                        summary='Когда в челлендже нет целей',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -1261,8 +1246,8 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @extend_schema(
-        summary="Получить список участников-лидеров",
-        description="""
+        summary='Получить список участников-лидеров',
+        description='''
             Получение лидерборда участников в челлендже
 
             Получить список участников челленджа, отсортированных по лучшему прогрессу их целей.
@@ -1281,7 +1266,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             Пагинация:
             - limit: Количество записей на странице (макс. 100)
             - offset: Смещение от начала списка
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -1312,33 +1297,33 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Лидерборд участников",
-                        summary="Стандартный ответ со списком участников-лидеров",
+                        name='Лидерборд участников',
+                        summary='Стандартный ответ со списком участников-лидеров',
                         value={
-                            "count": 30,
-                            "next": "http://127.0.0.1:8080/api/challenges/user_leaderboard/1/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 30,
+                            'next': 'http://127.0.0.1:8080/api/challenges/user_leaderboard/1/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 123,
-                                    "username": "john_doe",
-                                    "user_rank": 1,
-                                    "user_best_min_diff": 5,
-                                    "total_goals": 3,
-                                    "goals_with_progress": 3,
-                                    "goals_without_progress": 0
+                                    'id': 123,
+                                    'username': 'john_doe',
+                                    'user_rank': 1,
+                                    'user_best_min_diff': 5,
+                                    'total_goals': 3,
+                                    'goals_with_progress': 3,
+                                    'goals_without_progress': 0
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой лидерборд",
-                        summary="Когда в челлендже нет участников",
+                        name='Пустой лидерборд',
+                        summary='Когда в челлендже нет участников',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -1410,8 +1395,8 @@ class AppendCategoryToChallengeView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Добавить категорию к челленджу",
-        description="""
+        summary='Добавить категорию к челленджу',
+        description='''
             Добавление категории к челленджу
 
             Создает связь между существующим челленджем и категорией.
@@ -1428,7 +1413,7 @@ class AppendCategoryToChallengeView(APIView):
             - Проверка существования челленджа и категории
             - Проверка уникальности связи (нельзя добавить уже существующую связь)
             - Проверка типов данных параметров
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -1518,8 +1503,8 @@ class DeleteCategoryFromChallengeView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Удалить категорию у челленджа",
-        description="""
+        summary='Удалить категорию у челленджа',
+        description='''
             Удаление категории у челленджа
 
             Удаляет связь между существующим челленджем и категорией.
@@ -1536,7 +1521,7 @@ class DeleteCategoryFromChallengeView(APIView):
             - Проверка существования челленджа и категории
             - Проверка существования связи (нельзя удалить несуществующую связь)
             - Проверка типов данных параметров
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='challenge_id',
@@ -1619,8 +1604,8 @@ class AppendGoalToChallengeView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary="Присоединить цель к челленджу",
-        description="""
+        summary='Присоединить цель к челленджу',
+        description='''
             Присоединение цели к челленджу
 
             Создает связь между существующей целью и челленджем.
@@ -1642,7 +1627,7 @@ class AppendGoalToChallengeView(APIView):
             - Цель не должна быть завершена
             - Челлендж должен быть активен и доступен для присоединения
             - Категория цели должна участвовать в челлендже
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='goal_id',
@@ -1665,12 +1650,12 @@ class AppendGoalToChallengeView(APIView):
                 description='Created',
                 examples=[
                     OpenApiExample(
-                        name="Цель успешно присоединена",
-                        summary="Цель успешно связана с челленджем",
+                        name='Цель успешно присоединена',
+                        summary='Цель успешно связана с челленджем',
                         value={
-                            "goal": 5,
-                            "challenge": 1,
-                            "joined_at": "2024-01-15T10:30:00Z"
+                            'goal': 5,
+                            'challenge': 1,
+                            'joined_at': '2024-01-15T10:30:00Z'
                         }
                     )
                 ]
@@ -1716,9 +1701,15 @@ class AppendGoalToChallengeView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if not goal.is_public or (goal.user != request.user and request.user.role != User.UserRole.ADMIN):
+        if goal.user != request.user and request.user.role != User.UserRole.ADMIN:
             return Response(
-                {'error': 'Нельзя присоединить цель другого пользователя или приватную цель'},
+                {'error': 'Нельзя присоединить цель другого пользователя'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        if not goal.is_public or not goal.user.is_public:
+            return Response(
+                {'error': 'Нельзя присоединить приватную цель или цель приватного пользователя'},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -1778,8 +1769,8 @@ class DeleteGoalFromChallengeView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary="Исключить цель из челленджа",
-        description="""
+        summary='Исключить цель из челленджа',
+        description='''
             Исключение цели из челленджа
 
             Удаляет связь между существующей целью и челленджем.
@@ -1797,7 +1788,7 @@ class DeleteGoalFromChallengeView(APIView):
             - Проверка существования цели и челленджа
             - Проверка существования связи
             - Только владелец цели или администратор могут исключать цель
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='goal_id',
@@ -1819,8 +1810,8 @@ class DeleteGoalFromChallengeView(APIView):
                 description='No Content',
                 examples=[
                     OpenApiExample(
-                        name="Цель успешно исключена",
-                        summary="Связь успешно удалена",
+                        name='Цель успешно исключена',
+                        summary='Связь успешно удалена',
                         value=None
                     )
                 ]
@@ -1892,8 +1883,8 @@ class BatchChallengeCreateView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary="Батчевая загрузка челленджей",
-        description="""
+        summary='Батчевая загрузка челленджей',
+        description='''
             Массовое создание челленджей
 
             Создание нескольких челленджей за одну операцию с использованием bulk_create.
@@ -1908,7 +1899,6 @@ class BatchChallengeCreateView(APIView):
 
             Обязательные поля для каждого челленджа:
             - name: Название челленджа (строка, максимум 255 символов, не может быть пустой)
-            - target_value: Целевое значение (число с 3 знаками после запятой)
             - start_date: Дата начала (в формате YYYY-MM-DD)
             - end_date: Дата окончания (в формате YYYY-MM-DD)
 
@@ -1924,7 +1914,7 @@ class BatchChallengeCreateView(APIView):
             - Проверка, что end_date не раньше start_date
             - Проверка существования категорий и целей
             - Удаление дубликатов в списках ID
-            """,
+            ''',
         request=BatchChallengeCreateSerializer,
         responses={
             200: OpenApiResponse(
@@ -1932,49 +1922,47 @@ class BatchChallengeCreateView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Полностью успешная операция",
-                        summary="Все челленджи созданы",
+                        name='Полностью успешная операция',
+                        summary='Все челленджи созданы',
                         value={
-                            "total_processed": 100,
-                            "successful": 100,
-                            "failed": 0,
-                            "batch_size": 50,
-                            "errors": [],
-                            "created_ids": [101, 102, 103, 104, 105],
-                            "batches_processed": 2
+                            'total_processed': 100,
+                            'successful': 100,
+                            'failed': 0,
+                            'batch_size': 50,
+                            'errors': [],
+                            'created_ids': [101, 102, 103, 104, 105],
+                            'batches_processed': 2
                         }
                     ),
                     OpenApiExample(
-                        name="Операция с ошибками",
-                        summary="Некоторые челленджи не созданы",
+                        name='Операция с ошибками',
+                        summary='Некоторые челленджи не созданы',
                         value={
-                            "total_processed": 5,
-                            "successful": 3,
-                            "failed": 2,
-                            "batch_size": 100,
-                            "errors": [
+                            'total_processed': 5,
+                            'successful': 3,
+                            'failed': 2,
+                            'batch_size': 100,
+                            'errors': [
                                 {
-                                    "data": {
-                                        "name": "Марафон бега",
-                                        "target_value": 100.000,
-                                        "start_date": "2024-01-01",
-                                        "end_date": "2023-12-31"
+                                    'data': {
+                                        'name': 'Марафон бега',
+                                        'start_date': '2024-01-01',
+                                        'end_date': '2023-12-31'
                                     },
-                                    "error": "end_date (2023-12-31) не может быть раньше start_date (2024-01-01)",
-                                    "type": "validation_error"
+                                    'error': 'end_date (2023-12-31) не может быть раньше start_date (2024-01-01)',
+                                    'type': 'validation_error'
                                 },
                                 {
-                                    "data": {
-                                        "target_value": "не число",
-                                        "start_date": "2024-01-01",
-                                        "end_date": "2024-01-31"
+                                    'data': {
+                                        'start_date': '2024-01-01',
+                                        'end_date': '2024-01-31'
                                     },
-                                    "error": "Обязательные поля отсутствуют: name",
-                                    "type": "validation_error"
+                                    'error': 'Обязательные поля отсутствуют: name',
+                                    'type': 'validation_error'
                                 }
                             ],
-                            "created_ids": [106, 107, 108],
-                            "batches_processed": 1
+                            'created_ids': [106, 107, 108],
+                            'batches_processed': 1
                         }
                     )
                 ]
@@ -2026,61 +2014,53 @@ class BatchChallengeCreateView(APIView):
                             missing_fields.append(field)
 
                     if missing_fields:
-                        raise ValueError(f"Обязательные поля отсутствуют: {', '.join(missing_fields)}")
+                        raise ValueError(f'Обязательные поля отсутствуют: {", ".join(missing_fields)}')
 
                     name = processed_data['name']
-                    target_value = processed_data['target_value']
                     start_date = processed_data['start_date']
                     end_date = processed_data['end_date']
 
                     if not isinstance(name, str):
-                        raise ValueError(f"name должен быть строкой, получено: {name}")
+                        raise ValueError(f'name должен быть строкой, получено: {name}')
 
                     name = name.strip()
                     if not name:
-                        raise ValueError("name не может быть пустой строкой")
-
-                    try:
-                        target_value_decimal = Decimal(str(target_value))
-                        processed_data['target_value'] = target_value_decimal.quantize(Decimal('0.001'))
-                    except (ValueError, TypeError, InvalidOperation):
-                        raise ValueError(
-                            f"target_value должно быть числом (до 3 знаков после запятой), получено: {target_value}")
+                        raise ValueError('name не может быть пустой строкой')
 
                     if isinstance(start_date, str):
                         try:
                             processed_data['start_date'] = datetime.strptime(start_date, '%Y-%m-%d').date()
                         except ValueError:
-                            raise ValueError(f"start_date должен быть в формате YYYY-MM-DD, получено: {start_date}")
+                            raise ValueError(f'start_date должен быть в формате YYYY-MM-DD, получено: {start_date}')
                     elif not isinstance(start_date, date):
-                        raise ValueError(f"start_date должен быть датой, получено: {start_date}")
+                        raise ValueError(f'start_date должен быть датой, получено: {start_date}')
 
                     if isinstance(end_date, str):
                         try:
                             processed_data['end_date'] = datetime.strptime(end_date, '%Y-%m-%d').date()
                         except ValueError:
-                            raise ValueError(f"end_date должен быть в формате YYYY-MM-DD, получено: {end_date}")
+                            raise ValueError(f'end_date должен быть в формате YYYY-MM-DD, получено: {end_date}')
                     elif not isinstance(end_date, date):
-                        raise ValueError(f"end_date должен быть датой, получено: {end_date}")
+                        raise ValueError(f'end_date должен быть датой, получено: {end_date}')
 
                     if processed_data['end_date'] < processed_data['start_date']:
-                        raise ValueError(f"end_date ({end_date}) не может быть раньше start_date ({start_date})")
+                        raise ValueError(f'end_date ({end_date}) не может быть раньше start_date ({start_date})')
 
                     if 'is_active' in processed_data:
                         is_active = processed_data['is_active']
                         if not isinstance(is_active, bool):
-                            raise ValueError(f"is_active должен быть булевым значением, получено: {is_active}")
+                            raise ValueError(f'is_active должен быть булевым значением, получено: {is_active}')
                     else:
                         processed_data['is_active'] = True
 
                     if 'description' in processed_data and processed_data['description'] is not None:
                         if not isinstance(processed_data['description'], str):
                             raise ValueError(
-                                f"description должен быть строкой, получено: {processed_data['description']}")
+                                f'description должен быть строкой, получено: {processed_data["description"]}')
 
                     category_ids = processed_data.get('category_ids', [])
                     if not isinstance(category_ids, list):
-                        raise ValueError(f"category_ids должен быть списком, получено: {category_ids}")
+                        raise ValueError(f'category_ids должен быть списком, получено: {category_ids}')
 
                     validated_category_ids = []
                     seen_categories = set()
@@ -2102,7 +2082,7 @@ class BatchChallengeCreateView(APIView):
 
                     goal_ids = processed_data.get('goal_ids', [])
                     if not isinstance(goal_ids, list):
-                        raise ValueError(f"goal_ids должен быть списком, получено: {goal_ids}")
+                        raise ValueError(f'goal_ids должен быть списком, получено: {goal_ids}')
 
                     validated_goal_ids = []
                     seen_goals = set()
@@ -2184,7 +2164,6 @@ class BatchChallengeCreateView(APIView):
                     challenge = Challenge(
                         name=item_data['data']['name'],
                         description=item_data['data'].get('description'),
-                        target_value=item_data['data']['target_value'],
                         start_date=item_data['data']['start_date'],
                         end_date=item_data['data']['end_date'],
                         is_active=item_data['data']['is_active'],
@@ -2213,9 +2192,9 @@ class BatchChallengeCreateView(APIView):
                 return Response(response_serializer.data)
 
             with connection.cursor() as cursor:
-                cursor.execute("ALTER TABLE challenges DISABLE TRIGGER audit_challenges_trigger")
-                cursor.execute("ALTER TABLE challenge_categories DISABLE TRIGGER audit_challenge_categories_trigger")
-                cursor.execute("ALTER TABLE goal_challenges DISABLE TRIGGER audit_goal_challenges_trigger")
+                cursor.execute('ALTER TABLE challenges DISABLE TRIGGER audit_challenges_trigger')
+                cursor.execute('ALTER TABLE challenge_categories DISABLE TRIGGER audit_challenge_categories_trigger')
+                cursor.execute('ALTER TABLE goal_challenges DISABLE TRIGGER audit_goal_challenges_trigger')
 
             try:
                 with transaction.atomic():
@@ -2313,9 +2292,9 @@ class BatchChallengeCreateView(APIView):
 
             finally:
                 with connection.cursor() as cursor:
-                    cursor.execute("ALTER TABLE challenges ENABLE TRIGGER audit_challenges_trigger")
-                    cursor.execute("ALTER TABLE challenge_categories ENABLE TRIGGER audit_challenge_categories_trigger")
-                    cursor.execute("ALTER TABLE goal_challenges ENABLE TRIGGER audit_goal_challenges_trigger")
+                    cursor.execute('ALTER TABLE challenges ENABLE TRIGGER audit_challenges_trigger')
+                    cursor.execute('ALTER TABLE challenge_categories ENABLE TRIGGER audit_challenge_categories_trigger')
+                    cursor.execute('ALTER TABLE goal_challenges ENABLE TRIGGER audit_goal_challenges_trigger')
 
             operation_log['batches_processed'] += 1
 

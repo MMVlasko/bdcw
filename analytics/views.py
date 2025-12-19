@@ -26,8 +26,8 @@ class GetUsersByCompletedGoalsView(APIView):
     pagination_class = AnalyticsLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить рейтинг пользователей по количеству достигнутых целей",
-        description="""
+        summary='олучить рейтинг пользователей по количеству достигнутых целей',
+        description='''
             Получение рейтинга пользователей по количеству достигнутых целей
 
             Возвращает список пользователей, отсортированных по количеству завершенных целей.
@@ -46,7 +46,7 @@ class GetUsersByCompletedGoalsView(APIView):
             - avg_progress_percent: Средний процент прогресса по всем целям
             - total_goals: Общее количество целей пользователя
             - rank: Ранг пользователя в рейтинге
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -71,32 +71,32 @@ class GetUsersByCompletedGoalsView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Рейтинг пользователей по достижениям",
-                        summary="Стандартный ответ с рейтингом пользователей",
+                        name='Рейтинг пользователей по достижениям',
+                        summary='Стандартный ответ с рейтингом пользователей',
                         value={
-                            "count": 50,
-                            "next": "http://127.0.0.1:8080/api/analytics/users-by-completed-goals/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 50,
+                            'next': 'http://127.0.0.1:8080/api/analytics/users-by-completed-goals/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 123,
-                                    "username": "top_achiever",
-                                    "achievements_count": 25,
-                                    "avg_progress_percent": 85.5,
-                                    "total_goals": 30,
-                                    "rank": 1
+                                    'id': 123,
+                                    'username': 'top_achiever',
+                                    'achievements_count': 25,
+                                    'avg_progress_percent': 85.5,
+                                    'total_goals': 30,
+                                    'rank': 1
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой рейтинг",
-                        summary="Когда нет данных для рейтинга",
+                        name='Пустой рейтинг',
+                        summary='Когда нет данных для рейтинга',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -138,8 +138,8 @@ class GetUsersByHabitsConsistencyView(APIView):
     pagination_class = AnalyticsLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить рейтинг пользователей по проценту соблюдения привычек",
-        description="""
+        summary='Получить рейтинг пользователей по проценту соблюдения привычек',
+        description='''
                 Получение рейтинга пользователей по проценту соблюдения привычек
 
                 Возвращает список пользователей, отсортированных по проценту соблюдения привычек.
@@ -158,7 +158,7 @@ class GetUsersByHabitsConsistencyView(APIView):
                 - active_habits: Количество активных привычек
                 - total_habits: Общее количество привычек пользователя
                 - rank: Ранг пользователя в рейтинге
-                """,
+                ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -183,33 +183,33 @@ class GetUsersByHabitsConsistencyView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Рейтинг пользователей по привычкам",
-                        summary="Стандартный ответ с рейтингом соблюдения привычек",
+                        name='Рейтинг пользователей по привычкам',
+                        summary='Стандартный ответ с рейтингом соблюдения привычек',
                         value={
-                            "count": 40,
-                            "next": "http://127.0.0.1:8080/api/analytics/users-by-habit"
-                                    "s-consistency/?limit=10&offset=10",
-                            "previous": None,
-                            "results": [
+                            'count': 40,
+                            'next': 'http://127.0.0.1:8080/api/analytics/users-by-habit'
+                                    's-consistency/?limit=10&offset=10',
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 456,
-                                    "username": "consistent_user",
-                                    "habit_consistency_percent": 95.2,
-                                    "active_habits": 7,
-                                    "total_habits": 8,
-                                    "rank": 1
+                                    'id': 456,
+                                    'username': 'consistent_user',
+                                    'habit_consistency_percent': 95.2,
+                                    'active_habits': 7,
+                                    'total_habits': 8,
+                                    'rank': 1
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой рейтинг по привычкам",
-                        summary="Когда нет данных для рейтинга привычек",
+                        name='Пустой рейтинг по привычкам',
+                        summary='Когда нет данных для рейтинга привычек',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -250,8 +250,8 @@ class GetUsersBySubscribersCountView(APIView):
     pagination_class = AnalyticsLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить рейтинг пользователей по количеству подписчиков",
-        description="""
+        summary='Получить рейтинг пользователей по количеству подписчиков',
+        description='''
             Получение рейтинга пользователей по количеству подписчиков
 
             Возвращает список пользователей, отсортированных по количеству подписчиков.
@@ -269,7 +269,7 @@ class GetUsersBySubscribersCountView(APIView):
             - subscribers_count: Количество подписчиков
             - subscribing_count: Количество подписок пользователя
             - subscribers_rank: Ранг пользователя по количеству подписчиков
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -294,31 +294,31 @@ class GetUsersBySubscribersCountView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Рейтинг пользователей по подписчикам",
-                        summary="Стандартный ответ с рейтингом по подписчикам",
+                        name='Рейтинг пользователей по подписчикам',
+                        summary='Стандартный ответ с рейтингом по подписчикам',
                         value={
-                            "count": 35,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 35,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 789,
-                                    "username": "popular_user",
-                                    "subscribers_count": 125,
-                                    "subscribing_count": 45,
-                                    "subscribers_rank": 1
+                                    'id': 789,
+                                    'username': 'popular_user',
+                                    'subscribers_count': 125,
+                                    'subscribing_count': 45,
+                                    'subscribers_rank': 1
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой рейтинг по подписчикам",
-                        summary="Когда нет данных для рейтинга подписчиков",
+                        name='Пустой рейтинг по подписчикам',
+                        summary='Когда нет данных для рейтинга подписчиков',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -359,8 +359,8 @@ class GetCategoriesByPopularityView(APIView):
     pagination_class = AnalyticsLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить рейтинг категорий по популярности",
-        description="""
+        summary='Получить рейтинг категорий по популярности',
+        description='''
             Получение рейтинга категорий по популярности
 
             Возвращает список категорий, отсортированных по популярности и активности.
@@ -380,7 +380,7 @@ class GetCategoriesByPopularityView(APIView):
             - unique_users: Количество уникальных пользователей, использующих категорию
             - activity_score: Общий балл активности категории
             - rank: Ранг категории по популярности (взвешенный показатель)
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -405,33 +405,33 @@ class GetCategoriesByPopularityView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Рейтинг категорий по популярности",
-                        summary="Стандартный ответ с рейтингом категорий",
+                        name='Рейтинг категорий по популярности',
+                        summary='Стандартный ответ с рейтингом категорий',
                         value={
-                            "count": 20,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 20,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Спорт",
-                                    "total_goals": 150,
-                                    "total_habits": 75,
-                                    "unique_users": 45,
-                                    "activity_score": 89.5,
-                                    "rank": 1
+                                    'id': 1,
+                                    'name': 'Спорт',
+                                    'total_goals': 150,
+                                    'total_habits': 75,
+                                    'unique_users': 45,
+                                    'activity_score': 89.5,
+                                    'rank': 1
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой рейтинг категорий",
-                        summary="Когда нет данных для рейтинга категорий",
+                        name='Пустой рейтинг категорий',
+                        summary='Когда нет данных для рейтинга категорий',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]
@@ -474,8 +474,8 @@ class GetChallengesByPopularityView(APIView):
     pagination_class = AnalyticsLimitOffsetPagination
 
     @extend_schema(
-        summary="Получить рейтинг челленджей по популярности",
-        description="""
+        summary='Получить рейтинг челленджей по популярности',
+        description='''
             Получение рейтинга челленджей по популярности
 
             Возвращает список челленджей, отсортированных по популярности и активности.
@@ -495,7 +495,7 @@ class GetChallengesByPopularityView(APIView):
             - is_active: Активен ли челлендж
             - avg_progress_percent: Средний процент прогресса участников
             - popularity_rank: Ранг челленджа по популярности
-            """,
+            ''',
         parameters=[
             OpenApiParameter(
                 name='limit',
@@ -520,33 +520,33 @@ class GetChallengesByPopularityView(APIView):
                 description='OK',
                 examples=[
                     OpenApiExample(
-                        name="Рейтинг челленджей по популярности",
-                        summary="Стандартный ответ с рейтингом челленджей",
+                        name='Рейтинг челленджей по популярности',
+                        summary='Стандартный ответ с рейтингом челленджей',
                         value={
-                            "count": 15,
-                            "next": None,
-                            "previous": None,
-                            "results": [
+                            'count': 15,
+                            'next': None,
+                            'previous': None,
+                            'results': [
                                 {
-                                    "id": 1,
-                                    "name": "Марафон бега",
-                                    "participants_count": 50,
-                                    "goals_count": 60,
-                                    "is_active": True,
-                                    "avg_progress_percent": 65.3,
-                                    "popularity_rank": 1
+                                    'id': 1,
+                                    'name': 'Марафон бега',
+                                    'participants_count': 50,
+                                    'goals_count': 60,
+                                    'is_active': True,
+                                    'avg_progress_percent': 65.3,
+                                    'popularity_rank': 1
                                 }
                             ]
                         }
                     ),
                     OpenApiExample(
-                        name="Пустой рейтинг челленджей",
-                        summary="Когда нет данных для рейтинга челленджей",
+                        name='Пустой рейтинг челленджей',
+                        summary='Когда нет данных для рейтинга челленджей',
                         value={
-                            "count": 0,
-                            "next": None,
-                            "previous": None,
-                            "results": []
+                            'count': 0,
+                            'next': None,
+                            'previous': None,
+                            'results': []
                         }
                     )
                 ]

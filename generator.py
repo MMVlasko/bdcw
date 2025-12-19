@@ -31,6 +31,7 @@ class TestDataGenerator:
         self.created_goals = []
         self.created_habits = []
         self.created_challenges = []
+        self.loading_stats = defaultdict(lambda: {'count': 0, 'time': 0.0})
 
     def make_request(self, method, endpoint, data=None):
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
@@ -88,6 +89,7 @@ class TestDataGenerator:
 
     def generate_users(self, count=500):
         logger.info(f"Generating {count} users...")
+        start_time = time.time()
 
         users = []
         used_usernames = set()
@@ -107,7 +109,7 @@ class TestDataGenerator:
                 "confirm_password": password,
                 "first_name": self.fake.first_name(),
                 "last_name": self.fake.last_name(),
-                "role": random.choice(["user", "manager", "admin"]),
+                "role": random.choice(["user", "admin"]),
                 "is_active": random.random() > 0.1,
                 "is_public": random.random() > 0.3,
                 "description": self.fake.text(max_nb_chars=100) if random.random() > 0.5 else None
@@ -118,11 +120,13 @@ class TestDataGenerator:
         user_ids = self.batch_import("users/batch-import/", "users", users)
 
         self.created_users = user_ids
+        self.loading_stats['users'] = {'count': len(user_ids), 'time': time.time() - start_time}
         logger.info(f"Successfully generated {len(user_ids)} users")
         return user_ids
 
     def generate_categories(self, count=30):
         logger.info(f"Generating {count} categories...")
+        start_time = time.time()
 
         categories = []
         category_names = set()
@@ -154,6 +158,7 @@ class TestDataGenerator:
             logger.warning(f"Requested {count} categories, but only {len(category_ids)} were created")
 
         self.created_categories = category_ids
+        self.loading_stats['categories'] = {'count': len(category_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(category_ids)} categories")
         return category_ids
 
@@ -162,6 +167,7 @@ class TestDataGenerator:
             raise ValueError("Need users and categories first")
 
         logger.info(f"Generating {count} goals...")
+        start_time = time.time()
 
         goals = []
         for i in range(count):
@@ -189,6 +195,7 @@ class TestDataGenerator:
             logger.warning(f"Requested {count} goals, but only {len(goal_ids)} were created")
 
         self.created_goals = goal_ids
+        self.loading_stats['goals'] = {'count': len(goal_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(goal_ids)} goals")
         return goal_ids
 
@@ -197,6 +204,7 @@ class TestDataGenerator:
             raise ValueError("Need users and categories first")
 
         logger.info(f"Generating {count} habits...")
+        start_time = time.time()
 
         habits = []
         for i in range(count):
@@ -221,6 +229,7 @@ class TestDataGenerator:
             logger.warning(f"Requested {count} habits, but only {len(habit_ids)} were created")
 
         self.created_habits = habit_ids
+        self.loading_stats['habits'] = {'count': len(habit_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(habit_ids)} habits")
         return habit_ids
 
@@ -229,6 +238,7 @@ class TestDataGenerator:
             raise ValueError("Need goals first")
 
         logger.info(f"Generating {count} goal progresses...")
+        start_time = time.time()
 
         progresses = []
 
@@ -276,6 +286,7 @@ class TestDataGenerator:
 
         progress_ids = self.batch_import("goals/progress/batch-import/", "goal_progresses", progresses)
 
+        self.loading_stats['goal_progresses'] = {'count': len(progress_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(progress_ids)} goal progresses")
         return progress_ids
 
@@ -284,6 +295,7 @@ class TestDataGenerator:
             raise ValueError("Need habits first")
 
         logger.info(f"Generating {count} habit logs...")
+        start_time = time.time()
 
         logs = []
 
@@ -328,6 +340,7 @@ class TestDataGenerator:
 
         log_ids = self.batch_import("habits/log/batch-import/", "habit_logs", logs)
 
+        self.loading_stats['habit_logs'] = {'count': len(log_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(log_ids)} habit logs")
         return log_ids
 
@@ -336,6 +349,7 @@ class TestDataGenerator:
             raise ValueError("Need categories and goals first")
 
         logger.info(f"Generating {count} challenges...")
+        start_time = time.time()
 
         challenges = []
         for i in range(count):
@@ -367,6 +381,7 @@ class TestDataGenerator:
             logger.warning(f"Requested {count} challenges, but only {len(challenge_ids)} were created")
 
         self.created_challenges = challenge_ids
+        self.loading_stats['challenges'] = {'count': len(challenge_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(challenge_ids)} challenges")
         return challenge_ids
 
@@ -375,6 +390,7 @@ class TestDataGenerator:
             raise ValueError("Need at least 2 users first")
 
         logger.info(f"Generating {count} subscriptions...")
+        start_time = time.time()
 
         subscriptions = []
         subscription_pairs = set()
@@ -414,6 +430,7 @@ class TestDataGenerator:
 
         subscription_ids = self.batch_import("subscriptions/batch-import/", "subscriptions", subscriptions)
 
+        self.loading_stats['subscriptions'] = {'count': len(subscription_ids), 'time': time.time() - start_time}
         logger.info(f"Generated {len(subscription_ids)} subscriptions")
         return subscription_ids
 
@@ -424,24 +441,30 @@ class TestDataGenerator:
         start_time = time.time()
 
         try:
-            self.generate_users()
+            self.generate_users(5000)
 
-            self.generate_categories()
+            self.generate_categories(5000)
 
-            self.generate_goals()
+            self.generate_goals(5000)
 
-            self.generate_habits()
+            self.generate_habits(5000)
 
             self.generate_goal_progresses()
 
             self.generate_habit_logs()
 
-            self.generate_challenges()
+            self.generate_challenges(5000)
 
-            self.generate_subscriptions()
+            self.generate_subscriptions(5000)
 
             elapsed_time = time.time() - start_time
             logger.info(f"Data generation completed in {elapsed_time:.2f} seconds")
+
+            print("\nСтатистика загрузки:")
+            print("=" * 50)
+            for record_type, stats in self.loading_stats.items():
+                print(f"{record_type}: {stats['count']} записей, время: {stats['time']:.2f} сек")
+            print("=" * 50)
 
         except Exception as e:
             logger.error(f"Error during data generation: {e}")
@@ -482,14 +505,10 @@ def test_connection(base_url, token=None):
 
 def main():
     BASE_URL = "http://127.0.0.1:8080/api"
-    AUTH_TOKEN = "767723a59106846be347cfdcda32d5bfc72d849dea736089f9c8dacdbd561630"
+    AUTH_TOKEN = "699556ee76c094dc67ea81c5ffbb6a5d61bcb0bff68ca1eedb85ea4207edbb2d"
 
     if not test_connection(BASE_URL, AUTH_TOKEN):
         print("\nCannot connect to server.")
-        print("Please make sure:")
-        print("1. Django server is running: python manage.py runserver 8080")
-        print("2. Server is accessible at: http://127.0.0.1:8080")
-        print("3. Port 8080 is not blocked by firewall")
         return
 
     print("\nConnection successful!")
@@ -499,24 +518,11 @@ def main():
     try:
         generator.generate_all_data()
         print("\n Data generation completed successfully!")
-        print("\n" + "=" * 60)
-        print("FINAL SUMMARY:")
-        print("=" * 60)
-        print(f"Users created: {len(generator.created_users)}")
-        print(f"Categories created: {len(generator.created_categories)}")
-        print(f"Goals created: {len(generator.created_goals)}")
-        print(f"Habits created: {len(generator.created_habits)}")
-        print(f"Challenges created: {len(generator.created_challenges)}")
-        print("=" * 60)
 
     except KeyboardInterrupt:
         print("\nData generation interrupted by user")
     except Exception as e:
         print(f"\nError: {e}")
-        print("\nPossible issues:")
-        print("1. Invalid authentication token")
-        print("2. Insufficient permissions (need admin)")
-        print("3. Server error")
 
 
 if __name__ == "__main__":
