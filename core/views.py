@@ -839,52 +839,13 @@ class CleanUnusedTokensView(APIView):
 
             Что удаляется:
             - Все токены с is_active=false
-
-            Что НЕ удаляется:
-            - Активные токены (is_active=true)
-
-            Цель очистки:
-            - Оптимизация базы данных: Уменьшение размера таблицы токенов
-            - Безопасность: Удаление потенциально скомпрометированных токенов
-            - Производительность: Ускорение запросов к таблице auth_tokens
-
-            Рекомендации:
-            - Выполняйте очистку регулярно (например, раз в неделю)
-            - Можно настроить cron задачу для автоматической очистки
-            - Перед очисткой убедитесь в наличии резервной копии
-
-            Риски:
-            - Невозможно восстановить удаленные токены
-            - Активные сессии не затрагиваются
-            - Операция безопасна для активных пользователей
             ''',
         responses={
             204: OpenApiResponse(
-                description='No Content',
-                examples=[
-                    OpenApiExample(
-                        name='Очистка выполнена успешно',
-                        value=None,
-                        description='Для статуса 204 тело ответа всегда пустое'
-                    )
-                ]
+                description='No Content'
             ),
             401: UNAUTHORIZED_RESPONSE,
-            403: OpenApiResponse(
-                response=OpenApiTypes.OBJECT,
-                description='Forbidden',
-                examples=[
-                    OpenApiExample(
-                        name='Обычный пользователь пытается очистить',
-                        value={
-                            'detail': 'У вас недостаточно прав для очистки токенов.',
-                            'code': 'permission_denied',
-                            'required_role': 'admin',
-                            'current_role': 'user'
-                        }
-                    )
-                ]
-            ),
+            403: FORBIDDEN_RESPONSE,
             500: INTERNAL_SERVER_ERROR
         },
         tags=['Пользователи']
@@ -1156,9 +1117,7 @@ class BatchUserCreateView(APIView):
                         })
 
                 with connection.cursor() as cursor:
-                    cursor.execute(f'''
-                        ALTER TABLE users DISABLE TRIGGER audit_users_trigger
-                    ''')
+                    cursor.execute(f'ALTER TABLE users DISABLE TRIGGER audit_users_trigger')
 
                 try:
                     with transaction.atomic():
@@ -1185,9 +1144,7 @@ class BatchUserCreateView(APIView):
 
                 finally:
                     with connection.cursor() as cursor:
-                        cursor.execute(f'''
-                            ALTER TABLE users ENABLE TRIGGER audit_users_trigger
-                        ''')
+                        cursor.execute(f'ALTER TABLE users ENABLE TRIGGER audit_users_trigger')
 
                 operation_log['batches_processed'] += 1
 

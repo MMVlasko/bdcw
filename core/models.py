@@ -1,8 +1,9 @@
 import secrets
-
+import datetime
+import bcrypt
+from django.utils import timezone
 from django.db import models
 from django.core.validators import MinLengthValidator, RegexValidator
-import bcrypt
 
 
 class User(models.Model):
@@ -91,9 +92,6 @@ class AuthToken(models.Model):
 
     @classmethod
     def create_token(cls, user, expires_hours=24):
-        from django.utils import timezone
-        import datetime
-
         token = cls(
             user=user,
             expires_at=timezone.now() + datetime.timedelta(hours=expires_hours)
@@ -102,5 +100,4 @@ class AuthToken(models.Model):
         return token
 
     def is_valid(self):
-        from django.utils import timezone
         return self.is_active and self.expires_at > timezone.now()

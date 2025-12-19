@@ -1780,7 +1780,6 @@ class BatchHabitLogCreateView(APIView):
                     if processed_data['habit_id'] not in habit_ids:
                         raise ValueError(f'Привычка с ID {processed_data["habit_id"]} не существует')
 
-                    # notes - text (может быть null)
                     if 'notes' in processed_data and processed_data['notes'] is not None:
                         if not isinstance(processed_data['notes'], str):
                             raise ValueError(
@@ -1857,7 +1856,7 @@ class BatchHabitLogCreateView(APIView):
                             habit=habit,
                             log_date=habit_log_data['log_date'],
                             status=habit_log_data['status'],
-                            notes=habit_log_data.get('notes'),  # может быть null
+                            notes=habit_log_data.get('notes'),
                             created_at=timezone.now(),
                             updated_at=timezone.now()
                         )
