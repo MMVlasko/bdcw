@@ -31,7 +31,7 @@ class SubscriptionCreateView(APIView):
     permission_classes = [HasValidToken]
 
     @extend_schema(
-        summary='оздать подписку',
+        summary='Создать подписку',
         description='''
             Создание подписки
 
@@ -874,7 +874,8 @@ class BatchSubscriptionCreateView(APIView):
                     operation_log['failed'] += 1
                     operation_log['errors'].append({
                         'data': item['data'],
-                        'error': f'Подписка пользователя {subscriber_id} на пользователя {subscribing_id} уже существует',
+                        'error': f'Подписка пользователя {subscriber_id} на '
+                                 f'пользователя {subscribing_id} уже существует',
                         'type': 'duplicate_error'
                     })
                 else:
@@ -907,7 +908,7 @@ class BatchSubscriptionCreateView(APIView):
                 filtered_subscriptions_data = [
                     item for item in filtered_subscriptions_data
                     if item['data']['subscriber_id'] not in missing_users and
-                       item['data']['subscribing_id'] not in missing_users
+                    item['data']['subscribing_id'] not in missing_users
                 ]
 
             if not filtered_subscriptions_data:

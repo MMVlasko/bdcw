@@ -58,7 +58,7 @@ class ChallengeViewSet(viewsets.ModelViewSet):
         }.get(self.action, ChallengeSerializer)
 
     @extend_schema(
-        summary='олучить список челленджей',
+        summary='Получить список челленджей',
         description='''
             Получение списка челленджей
 

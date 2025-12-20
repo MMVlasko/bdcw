@@ -441,21 +441,21 @@ class TestDataGenerator:
         start_time = time.time()
 
         try:
-            self.generate_users(5000)
+            self.generate_users()
 
-            self.generate_categories(5000)
+            self.generate_categories()
 
-            self.generate_goals(5000)
+            self.generate_goals()
 
-            self.generate_habits(5000)
+            self.generate_habits()
 
             self.generate_goal_progresses()
 
             self.generate_habit_logs()
 
-            self.generate_challenges(5000)
+            self.generate_challenges()
 
-            self.generate_subscriptions(5000)
+            self.generate_subscriptions()
 
             elapsed_time = time.time() - start_time
             logger.info(f'Data generation completed in {elapsed_time:.2f} seconds')
@@ -526,13 +526,4 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        import requests
-        import faker
-        from collections import defaultdict
-    except ImportError:
-        print('Missing dependencies. Please install:')
-        print('pip install requests faker')
-        exit(1)
-
     main()

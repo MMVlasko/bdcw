@@ -14,7 +14,7 @@ from rest_framework.pagination import LimitOffsetPagination
 
 
 class AnalyticsLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 10
+    default_limit = 0
     limit_query_param = 'limit'
     offset_query_param = 'offset'
     max_limit = 100
@@ -26,7 +26,7 @@ class GetUsersByCompletedGoalsView(APIView):
     pagination_class = AnalyticsLimitOffsetPagination
 
     @extend_schema(
-        summary='олучить рейтинг пользователей по количеству достигнутых целей',
+        summary='Получить рейтинг пользователей по количеству достигнутых целей',
         description='''
             Получение рейтинга пользователей по количеству достигнутых целей
 

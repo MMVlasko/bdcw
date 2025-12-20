@@ -26,7 +26,7 @@ class AuditLogDeleteView(APIView):
     permission_classes = [HasValidToken, IsAdmin]
 
     @extend_schema(
-        summary='далить запись журнала аудита',
+        summary='Удалить запись журнала аудита',
         description='''
             Удаление записи журнала аудита
 

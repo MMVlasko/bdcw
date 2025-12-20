@@ -64,7 +64,7 @@ class GoalViewSet(viewsets.ModelViewSet):
         }.get(self.action, GoalSerializer)
 
     @extend_schema(
-        summary='олучить список целей',
+        summary='Получить список целей',
         description='''
             Получение списка целей
 

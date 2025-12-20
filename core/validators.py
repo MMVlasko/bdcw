@@ -32,9 +32,9 @@ def validate_password(password, confirm_password):
         raise serializers.ValidationError({
             'confirm_password': 'Пароли не совпадают'
         })
-    if len(password) < 8:
+    if len(password) < 5:
         raise serializers.ValidationError({
-            'password': 'Пароль должен содержать заглавные, строчные буквы и цифры'
+            'password': 'Пароль должен длиной не менее 5 символов'
         })
     if not PASSWORD_PATTERN.match(password):
         raise serializers.ValidationError({

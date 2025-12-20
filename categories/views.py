@@ -44,7 +44,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         }.get(self.action, CategorySerializer)
 
     @extend_schema(
-        summary='писок категорий',
+        summary='Список категорий',
         description='''
             Получение списка категорий
 

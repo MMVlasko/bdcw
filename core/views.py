@@ -63,7 +63,7 @@ class UserViewSet(viewsets.ModelViewSet):
         }.get(self.action, UserSerializer)
 
     @extend_schema(
-        summary='олучить список пользователей',
+        summary='Получить список пользователей',
         description='''
             Получение списка пользователей
 
@@ -598,7 +598,7 @@ class UserViewSet(viewsets.ModelViewSet):
         tags=['Пользователи']
     )
     @action(['put'], detail=True)
-    def change_password(self, request):
+    def change_password(self, request, pk=None):
         user = self.get_object()
         serializer = UserChangePasswordSerializer(user, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -661,7 +661,7 @@ class UserViewSet(viewsets.ModelViewSet):
         tags=['Пользователи']
     )
     @action(['put'], detail=True)
-    def change_role(self, request):
+    def change_role(self, request, pk=None):
         role = request.query_params.get('role')
 
         if not role:
